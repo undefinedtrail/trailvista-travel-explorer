@@ -1,7 +1,7 @@
 {
-  "name": "yatra-travel-explorer",
+  "name": "trailvista",
   "version": "1.0.0",
-  "description": "Yātrā Boutique Travel Explorer mobile application",
+  "description": "TrailVista Boutique Travel Explorer mobile application",
   "main": "index.ts",
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",

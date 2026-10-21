@@ -116,8 +116,8 @@ function MainApp() {
           theme={theme}
           isDark={themeMode === 'dark'}
           onToggleTheme={handleToggleTheme}
-          title="Yātrā"
-          subtitle="Explorer"
+          title="TrailVista"
+          subtitle="Travel Explorer"
         />
       )}
 

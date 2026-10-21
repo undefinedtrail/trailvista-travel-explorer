@@ -15,8 +15,8 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
   theme,
   isDark,
   onToggleTheme,
-  title = 'Yātrā',
-  subtitle = 'Explorer',
+  title = 'TrailVista',
+  subtitle = 'Travel Explorer',
 }) => {
   return (
     <View

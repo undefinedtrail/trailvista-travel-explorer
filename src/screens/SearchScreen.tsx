@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import {
   FlatList,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -35,6 +36,13 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
   const [sortOption, setSortOption] = useState<SortOption>('recommended');
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
 
+  // Popular expeditions using stable popularity ranking
+  const popularDestinations = useMemo(() => {
+    return [...MOCK_DESTINATIONS]
+      .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+      .slice(0, 6);
+  }, []);
+
   // Real-time search and filter algorithm
   const filteredDestinations = useMemo(() => {
     let result = MOCK_DESTINATIONS.filter((item) => {
@@ -49,6 +57,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
         item.name.toLowerCase().includes(query) ||
         item.location.toLowerCase().includes(query) ||
         item.state.toLowerCase().includes(query) ||
+        (item.stateKey && item.stateKey.toLowerCase().includes(query)) ||
         item.tags.some((t) => t.toLowerCase().includes(query));
 
       return categoryMatch && queryMatch;
@@ -95,7 +104,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
         ListHeaderComponent={
           <View style={styles.headerSection}>
             <Text style={[styles.title, { color: theme.text }]}>
-              Search
+              Search Expeditions
             </Text>
 
             {/* Real-time Search Input */}
@@ -106,9 +115,112 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
               theme={theme}
             />
 
-            {/* Horizontal Category Chips */}
-            <View style={styles.categorySection}>
+            {/* Popular Expeditions Incorporated Under Search */}
+            <View style={styles.popularSection}>
+              <View style={styles.popularHeaderRow}>
+                <View style={styles.popularTitleWrap}>
+                  <MaterialIcons name="trending-up" size={15} color={theme.primary} />
+                  <Text style={[styles.popularTitle, { color: theme.text }]}>
+                    POPULAR EXPEDITIONS
+                  </Text>
+                </View>
+                <Text style={[styles.popularSubtitle, { color: theme.textMuted }]}>
+                  Curated journeys
+                </Text>
+              </View>
 
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.popularCardsScroll}
+              >
+                {popularDestinations.map((dest) => {
+                  const isSaved = wishlistIds.includes(dest.id);
+                  return (
+                    <TouchableOpacity
+                      key={dest.id}
+                      activeOpacity={0.88}
+                      onPress={() => onSelectDestination(dest)}
+                      style={[
+                        styles.popularCard,
+                        { backgroundColor: theme.card, borderColor: theme.cardBorder },
+                      ]}
+                    >
+                      <Image
+                        source={{ uri: dest.image }}
+                        style={styles.popularCardImage}
+                        resizeMode="cover"
+                      />
+                      {/* Rating Badge */}
+                      <View style={styles.popularRatingBadge}>
+                        <MaterialIcons name="star" size={10.5} color="#FBBF24" />
+                        <Text style={styles.popularRatingText}>
+                          {dest.rating.toFixed(2)}
+                        </Text>
+                      </View>
+
+                      {/* Wishlist Bookmark Button */}
+                      <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => onToggleWishlist(dest.id)}
+                        style={[
+                          styles.popularBookmarkBtn,
+                          {
+                            backgroundColor: isSaved
+                              ? theme.primary
+                              : 'rgba(0, 0, 0, 0.55)',
+                          },
+                        ]}
+                        hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+                      >
+                        <MaterialIcons
+                          name={isSaved ? 'bookmark' : 'bookmark-border'}
+                          size={13}
+                          color="#FFFFFF"
+                        />
+                      </TouchableOpacity>
+
+                      {/* Card Content */}
+                      <View style={styles.popularCardBody}>
+                        <Text
+                          style={[styles.popularCardTitle, { color: theme.text }]}
+                          numberOfLines={1}
+                        >
+                          {dest.name}
+                        </Text>
+                        <Text
+                          style={[styles.popularCardLocation, { color: theme.textMuted }]}
+                          numberOfLines={1}
+                        >
+                          {dest.location}
+                        </Text>
+                        <View style={styles.popularPriceRow}>
+                          <Text
+                            style={[
+                              styles.popularPriceText,
+                              { color: theme.primaryLight },
+                            ]}
+                          >
+                            ₹{dest.pricePerNight.toLocaleString('en-IN')}
+                          </Text>
+                          <Text
+                            style={[
+                              styles.popularDurationText,
+                              { color: theme.textMuted },
+                            ]}
+                          >
+                            • {dest.duration.split(' ')[0]} {dest.duration.split(' ')[1]}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
+              </ScrollView>
+            </View>
+
+            {/* Horizontal Travel Style Category Chips */}
+            <View style={styles.categorySection}>
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -117,7 +229,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
                 {CATEGORIES.map((category) => (
                   <CategoryChip
                     key={category}
-                    label={category === 'All' ? 'All Stays' : category}
+                    label={category === 'All' ? 'All Expeditions' : category}
                     isSelected={selectedCategory === category}
                     onPress={() => setSelectedCategory(category)}
                     theme={theme}
@@ -130,7 +242,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
             <View style={styles.resultsBar}>
               <View style={styles.resultsBadgeRow}>
                 <Text style={[styles.resultsTitle, { color: theme.text }]}>
-                  Curated Stays
+                  {searchQuery ? `Search Results` : `All Expeditions`}
                 </Text>
                 <View
                   style={[
@@ -144,7 +256,8 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
                   <Text
                     style={[styles.resultsPillText, { color: theme.primaryLight }]}
                   >
-                    {filteredDestinations.length} Dispatches
+                    {filteredDestinations.length}{' '}
+                    {filteredDestinations.length === 1 ? 'place' : 'places'}
                   </Text>
                 </View>
               </View>
@@ -183,113 +296,50 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
                   },
                 ]}
               >
-                <TouchableOpacity
-                  onPress={() => {
-                    setSortOption('recommended');
-                    setIsSortDropdownOpen(false);
-                  }}
-                  style={styles.sortOptionItem}
-                >
-                  <Text
+                {(
+                  [
+                    { id: 'recommended', label: 'Recommended' },
+                    { id: 'rating-desc', label: 'Rating: High to Low' },
+                    { id: 'price-asc', label: 'Price: Low to High' },
+                    { id: 'price-desc', label: 'Price: High to Low' },
+                  ] as { id: SortOption; label: string }[]
+                ).map((opt) => (
+                  <TouchableOpacity
+                    key={opt.id}
+                    onPress={() => {
+                      setSortOption(opt.id);
+                      setIsSortDropdownOpen(false);
+                    }}
                     style={[
-                      styles.sortOptionText,
-                      {
-                        color:
-                          sortOption === 'recommended'
-                            ? theme.primaryLight
-                            : theme.text,
-                        fontWeight:
-                          sortOption === 'recommended' ? '700' : '500',
+                      styles.sortOption,
+                      sortOption === opt.id && {
+                        backgroundColor: 'rgba(194, 81, 45, 0.15)',
                       },
                     ]}
                   >
-                    Recommended
-                  </Text>
-                  {sortOption === 'recommended' && (
-                    <MaterialIcons name="check" size={16} color={theme.primaryLight} />
-                  )}
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => {
-                    setSortOption('rating-desc');
-                    setIsSortDropdownOpen(false);
-                  }}
-                  style={styles.sortOptionItem}
-                >
-                  <Text
-                    style={[
-                      styles.sortOptionText,
-                      {
-                        color:
-                          sortOption === 'rating-desc'
-                            ? theme.primaryLight
-                            : theme.text,
-                        fontWeight:
-                          sortOption === 'rating-desc' ? '700' : '500',
-                      },
-                    ]}
-                  >
-                    Rating: High to Low
-                  </Text>
-                  {sortOption === 'rating-desc' && (
-                    <MaterialIcons name="check" size={16} color={theme.primaryLight} />
-                  )}
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => {
-                    setSortOption('price-asc');
-                    setIsSortDropdownOpen(false);
-                  }}
-                  style={styles.sortOptionItem}
-                >
-                  <Text
-                    style={[
-                      styles.sortOptionText,
-                      {
-                        color:
-                          sortOption === 'price-asc'
-                            ? theme.primaryLight
-                            : theme.text,
-                        fontWeight:
-                          sortOption === 'price-asc' ? '700' : '500',
-                      },
-                    ]}
-                  >
-                    Price: Low to High
-                  </Text>
-                  {sortOption === 'price-asc' && (
-                    <MaterialIcons name="check" size={16} color={theme.primaryLight} />
-                  )}
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => {
-                    setSortOption('price-desc');
-                    setIsSortDropdownOpen(false);
-                  }}
-                  style={styles.sortOptionItem}
-                >
-                  <Text
-                    style={[
-                      styles.sortOptionText,
-                      {
-                        color:
-                          sortOption === 'price-desc'
-                            ? theme.primaryLight
-                            : theme.text,
-                        fontWeight:
-                          sortOption === 'price-desc' ? '700' : '500',
-                      },
-                    ]}
-                  >
-                    Price: High to Low
-                  </Text>
-                  {sortOption === 'price-desc' && (
-                    <MaterialIcons name="check" size={16} color={theme.primaryLight} />
-                  )}
-                </TouchableOpacity>
+                    <Text
+                      style={[
+                        styles.sortOptionText,
+                        {
+                          color:
+                            sortOption === opt.id
+                              ? theme.primaryLight
+                              : theme.text,
+                          fontWeight: sortOption === opt.id ? '700' : '400',
+                        },
+                      ]}
+                    >
+                      {opt.label}
+                    </Text>
+                    {sortOption === opt.id && (
+                      <MaterialIcons
+                        name="check"
+                        size={14}
+                        color={theme.primaryLight}
+                      />
+                    )}
+                  </TouchableOpacity>
+                ))}
               </View>
             )}
           </View>
@@ -306,36 +356,34 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
         ListEmptyComponent={
           <View
             style={[
-              styles.emptyStateCard,
+              styles.emptyState,
               {
                 backgroundColor: theme.card,
                 borderColor: theme.cardBorder,
               },
             ]}
           >
-            <View
-              style={[
-                styles.emptyIconCircle,
-                { backgroundColor: 'rgba(194, 81, 45, 0.15)' },
-              ]}
-            >
-              <MaterialIcons
-                name="travel-explore"
-                size={32}
-                color={theme.primaryLight}
-              />
-            </View>
+            <MaterialIcons
+              name="search-off"
+              size={48}
+              color={theme.textMuted}
+            />
             <Text style={[styles.emptyTitle, { color: theme.text }]}>
-              No Stays Found
+              No destinations match your search
             </Text>
-            <Text style={[styles.emptyDescription, { color: theme.textMuted }]}>
-              We couldn't find any destinations matching "{searchQuery}". Try adjusting your keywords or category filter.
+            <Text style={[styles.emptySubtitle, { color: theme.textMuted }]}>
+              {searchQuery
+                ? `No results found for "${searchQuery}". Try searching for another city, state, or style.`
+                : 'No destinations match the selected filters.'}
             </Text>
             <TouchableOpacity
               onPress={handleResetFilters}
-              style={[styles.resetButton, { backgroundColor: theme.primary }]}
+              style={[
+                styles.resetButton,
+                { backgroundColor: theme.primary },
+              ]}
             >
-              <Text style={styles.resetButtonText}>Reset All Filters</Text>
+              <Text style={styles.resetButtonText}>Reset Filters</Text>
             </TouchableOpacity>
           </View>
         }
@@ -351,74 +399,149 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingHorizontal: Spacing.md,
-    paddingTop: Spacing.sm,
+    paddingTop: Spacing.xs,
   },
   headerSection: {
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.xs,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '800',
     letterSpacing: -0.5,
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 12,
-    lineHeight: 17,
-    marginBottom: Spacing.md,
-  },
-  categorySection: {
     marginBottom: Spacing.sm,
+    paddingTop: 2,
   },
-  categoryLabelRow: {
+  popularSection: {
+    marginTop: Spacing.sm,
+    marginBottom: Spacing.xs,
+  },
+  popularHeaderRow: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 4,
     marginBottom: 6,
   },
-  categoryHeaderLabel: {
-    fontSize: 10,
-    fontWeight: '700',
+  popularTitleWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  popularTitle: {
+    fontSize: 10.5,
+    fontWeight: '800',
     letterSpacing: 0.8,
   },
-  chipsRow: {
+  popularSubtitle: {
+    fontSize: 10,
+    fontWeight: '600',
+  },
+  popularCardsScroll: {
+    gap: 10,
+    paddingBottom: 4,
+  },
+  popularCard: {
+    width: 145,
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    overflow: 'hidden',
+  },
+  popularCardImage: {
+    width: '100%',
+    height: 88,
+    backgroundColor: '#1E1E24',
+  },
+  popularRatingBadge: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: 5,
     paddingVertical: 2,
-    paddingBottom: 6,
+    borderRadius: BorderRadius.xs,
+  },
+  popularRatingText: {
+    color: '#FFFFFF',
+    fontSize: 9.5,
+    fontWeight: '700',
+  },
+  popularBookmarkBtn: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  popularCardBody: {
+    padding: 7,
+  },
+  popularCardTitle: {
+    fontSize: 12,
+    fontWeight: '700',
+    marginBottom: 1,
+  },
+  popularCardLocation: {
+    fontSize: 10,
+    marginBottom: 4,
+  },
+  popularPriceRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+  },
+  popularPriceText: {
+    fontSize: 11,
+    fontWeight: '800',
+  },
+  popularDurationText: {
+    fontSize: 9.5,
+    marginLeft: 2,
+  },
+  categorySection: {
+    marginVertical: Spacing.xs + 2,
+  },
+  chipsRow: {
+    gap: 6,
+    paddingBottom: 2,
   },
   resultsBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 6,
-    marginBottom: 10,
+    marginVertical: Spacing.xs + 2,
+    paddingHorizontal: 2,
   },
   resultsBadgeRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 6,
   },
   resultsTitle: {
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: '700',
   },
   resultsPill: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 7,
     paddingVertical: 2,
     borderRadius: BorderRadius.full,
     borderWidth: 1,
   },
   resultsPillText: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '700',
   },
   sortButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    gap: 4,
+    paddingHorizontal: 9,
+    paddingVertical: 5,
     borderRadius: BorderRadius.sm,
     borderWidth: 1,
-    gap: 4,
   },
   sortButtonText: {
     fontSize: 11,
@@ -426,61 +549,48 @@ const styles = StyleSheet.create({
   sortDropdown: {
     borderRadius: BorderRadius.md,
     borderWidth: 1,
-    paddingVertical: 4,
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 4,
+    overflow: 'hidden',
+    marginBottom: Spacing.xs,
   },
-  sortOptionItem: {
+  sortOption: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 14,
+    paddingHorizontal: 12,
     paddingVertical: 10,
   },
   sortOptionText: {
     fontSize: 12,
   },
-  emptyStateCard: {
+  emptyState: {
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: Spacing.xl,
     borderRadius: BorderRadius.lg,
     borderWidth: 1,
-    alignItems: 'center',
-    textAlign: 'center',
-    marginTop: Spacing.md,
-  },
-  emptyIconCircle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: Spacing.md,
+    marginTop: Spacing.lg,
   },
   emptyTitle: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: '700',
-    marginBottom: 6,
-  },
-  emptyDescription: {
-    fontSize: 12,
-    lineHeight: 18,
+    marginTop: Spacing.md,
+    marginBottom: Spacing.xs,
     textAlign: 'center',
-    marginBottom: Spacing.md,
-    maxWidth: 260,
+  },
+  emptySubtitle: {
+    fontSize: 12,
+    textAlign: 'center',
+    marginBottom: Spacing.lg,
+    lineHeight: 18,
   },
   resetButton: {
     paddingHorizontal: 18,
     paddingVertical: 9,
-    borderRadius: BorderRadius.md,
+    borderRadius: BorderRadius.full,
   },
   resetButtonText: {
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '700',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
   },
 });

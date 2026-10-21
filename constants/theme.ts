@@ -1,5 +1,5 @@
 /**
- * Yātrā Warm Editorial Design System Theme Tokens
+ * TrailVista Warm Editorial Design System Theme Tokens
  * Direct implementation of Stitch design tokens and specifications.
  */
 

@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const WISHLIST_STORAGE_KEY = '@yatra_wishlist_ids_v2';
-const THEME_STORAGE_KEY = '@yatra_theme_preference_v1';
+const WISHLIST_STORAGE_KEY = '@trailvista_wishlist_ids_v1';
+const THEME_STORAGE_KEY = '@trailvista_theme_preference_v1';
 
 // In-memory fallback cache (starts empty for all new sessions)
 let inMemoryWishlist: string[] = [];

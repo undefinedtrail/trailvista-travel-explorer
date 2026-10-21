@@ -1,4 +1,4 @@
-# Yātrā (यात्रा) • India Journey Explorer
+# TrailVista • India Journey Explorer
 
 > **Boutique Travel Expedition Planner & Cultural Field Journal**  
 > Built with React Native (Expo SDK 57), TypeScript, and a warm editorial design inspired by traditional Indian aesthetics.
@@ -7,7 +7,7 @@
 
 ## 📖 Project Overview
 
-**Yātrā** is a mobile application designed for travelers who appreciate thoughtful, immersive cultural expeditions across India. Rather than presenting generic travel lists, Yātrā treats each destination as a curated journey—from cobalt glacial lakes in Ladakh (14,000 ft) to the quiet, palm-fringed backwater lagoons of Kerala.
+**TrailVista** is a mobile application designed for travelers who appreciate thoughtful, immersive cultural expeditions across India. Rather than presenting generic travel lists, TrailVista treats each destination as a curated journey—from cobalt glacial lakes in Ladakh (14,000 ft) to the quiet, palm-fringed backwater lagoons of Kerala.
 
 The application blends a contemplative dark-mode visual palette with real-world travel planning utilities: an interactive regional vector map, a dynamic multi-criteria travel matcher, day-by-day itineraries with full morning/afternoon/evening schedules, live weather telemetry, and seamless Google Maps routing.
 
@@ -142,7 +142,7 @@ npx expo-doctor         # Diagnose project dependencies
 ├── tsconfig.json               # TypeScript configuration
 ├── assets/                     # Logos, app icons, and vector map assets
 │   ├── india_map.png           # India state outline vector asset
-│   └── yatra_logo.png          # Yātrā flame emblem
+│   └── trailvista_logo.png          # TrailVista flame emblem
 ├── src/
 │   ├── constants/
 │   │   ├── mockData.ts         # Curated Indian destinations, state pins & metadata

@@ -1,9 +1,6 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
-  Animated,
   Dimensions,
-  Easing,
-  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -11,7 +8,6 @@ import {
 } from 'react-native';
 import Svg, { Path, G } from 'react-native-svg';
 import { MaterialIcons } from '@expo/vector-icons';
-import { STATE_PINS, StatePin } from '../constants/mockData';
 import {
   INDIA_STATE_PATHS,
   INDIA_MAP_VIEWBOX,
@@ -43,40 +39,6 @@ export const IndiaMapExplorer: React.FC<IndiaMapExplorerProps> = ({
   stateCounts = {},
   availableStateIds,
 }) => {
-  // Pulse animation for active pin beacon
-  const pulseAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    const pulseLoop = Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 1,
-          duration: 2000,
-          easing: Easing.out(Easing.ease),
-          useNativeDriver: Platform.OS !== 'web',
-        }),
-        Animated.timing(pulseAnim, {
-          toValue: 0,
-          duration: 0,
-          useNativeDriver: Platform.OS !== 'web',
-        }),
-      ])
-    );
-    pulseLoop.start();
-
-    return () => pulseLoop.stop();
-  }, [pulseAnim]);
-
-  const haloScale = pulseAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0.9, 2.5],
-  });
-
-  const haloOpacity = pulseAnim.interpolate({
-    inputRange: [0, 0.4, 1],
-    outputRange: [0.85, 0.4, 0],
-  });
-
   // Determine which states are available based on destination counts or explicit prop
   const availableSet = useMemo(() => {
     if (availableStateIds && availableStateIds.length > 0) {
@@ -91,16 +53,12 @@ export const IndiaMapExplorer: React.FC<IndiaMapExplorerProps> = ({
     return set;
   }, [availableStateIds, stateCounts]);
 
-  const pinKeys = Object.keys(STATE_PINS);
-
   // Active state display name
-  const activePin = STATE_PINS[selectedState];
   const activeStateName = useMemo(() => {
     if (selectedState === 'all') return 'Showing All';
-    if (activePin) return activePin.name;
     const found = INDIA_STATE_PATHS.find((s) => s.id === selectedState);
-    return found ? found.name : selectedState;
-  }, [selectedState, activePin]);
+    return found ? found.name : selectedState.charAt(0).toUpperCase() + selectedState.slice(1);
+  }, [selectedState]);
 
   // Separate non-selected paths from selected path to render selected path on top
   const { normalPaths, selectedPathData } = useMemo<{
@@ -129,7 +87,7 @@ export const IndiaMapExplorer: React.FC<IndiaMapExplorerProps> = ({
         },
       ]}
     >
-      {/* Map Header with Live Guidance */}
+      {/* Map Header */}
       <View style={styles.headerRow}>
         <View style={styles.headerLeft}>
           <View style={[styles.beaconIndicator, { backgroundColor: theme.primary }]} />
@@ -159,10 +117,9 @@ export const IndiaMapExplorer: React.FC<IndiaMapExplorerProps> = ({
         </TouchableOpacity>
       </View>
 
-      {/* Interactive Vector SVG Map Stage */}
+      {/* Interactive Vector SVG Map Stage (Pure Vector - Zero Dot Pins) */}
       <View style={styles.stageWrapper}>
         <View style={[styles.mapStage, { width: MAP_WIDTH, height: MAP_HEIGHT }]}>
-          {/* Authentic SVG Map using vector paths */}
           <Svg
             viewBox={INDIA_MAP_VIEWBOX}
             width={MAP_WIDTH}
@@ -214,70 +171,6 @@ export const IndiaMapExplorer: React.FC<IndiaMapExplorerProps> = ({
               />
             )}
           </Svg>
-
-          {/* Calibrated Destination Pinpoints */}
-          {pinKeys.map((key) => {
-            const pin: StatePin = STATE_PINS[key];
-            const isSelected = selectedState === key;
-            const isAnySelected = selectedState !== 'all';
-            const pinOpacity = isSelected ? 1 : isAnySelected ? 0.35 : 0.95;
-
-            return (
-              <TouchableOpacity
-                key={pin.id}
-                activeOpacity={0.7}
-                onPress={() => onSelectState(isSelected ? 'all' : pin.id)}
-                style={[
-                  styles.pinTouchable,
-                  {
-                    top: `${pin.top}%`,
-                    left: `${pin.left}%`,
-                    opacity: pinOpacity,
-                  },
-                ]}
-                accessibilityLabel={`Select ${pin.name}`}
-              >
-                {/* Active Pulsing Halo Ring */}
-                {isSelected && (
-                  <Animated.View
-                    style={[
-                      styles.activeHalo,
-                      {
-                        backgroundColor: 'rgba(217, 93, 50, 0.45)',
-                        transform: [{ scale: haloScale }],
-                        opacity: haloOpacity,
-                      },
-                    ]}
-                  />
-                )}
-
-                {/* Pin Dot Beacon */}
-                <View
-                  style={[
-                    styles.pinDot,
-                    isSelected
-                      ? [
-                          styles.pinDotActive,
-                          {
-                            backgroundColor: theme.primary,
-                            borderColor: '#FFFFFF',
-                            shadowColor: theme.primary,
-                          },
-                        ]
-                      : [
-                          styles.pinDotInactive,
-                          {
-                            backgroundColor: theme.primaryDark,
-                            borderColor: isDark ? '#121316' : '#FFFFFF',
-                          },
-                        ],
-                  ]}
-                >
-                  {isSelected && <View style={styles.pinInnerGlow} />}
-                </View>
-              </TouchableOpacity>
-            );
-          })}
         </View>
       </View>
 
@@ -374,51 +267,6 @@ const styles = StyleSheet.create({
   svgContainer: {
     width: '100%',
     height: '100%',
-  },
-  pinTouchable: {
-    position: 'absolute',
-    width: 36,
-    height: 36,
-    marginLeft: -18,
-    marginTop: -18,
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 10,
-  },
-  activeHalo: {
-    position: 'absolute',
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-  },
-  pinDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  pinDotActive: {
-    width: 13,
-    height: 13,
-    borderRadius: 6.5,
-    borderWidth: 2,
-    elevation: 6,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.45,
-    shadowRadius: 4,
-  },
-  pinDotInactive: {
-    width: 9,
-    height: 9,
-    borderRadius: 4.5,
-    borderWidth: 1.5,
-  },
-  pinInnerGlow: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: '#FFFFFF',
   },
   footerRow: {
     flexDirection: 'row',
