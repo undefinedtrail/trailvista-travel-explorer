@@ -5,6 +5,7 @@ import {
   View,
   Animated,
   Platform,
+  BackHandler,
 } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -69,6 +70,27 @@ function MainApp() {
     }
     loadInitialData();
   }, []);
+
+  // System back button & gesture navigation handler
+  useEffect(() => {
+    const handleSystemBack = () => {
+      if (selectedDestination) {
+        setSelectedDestination(null);
+        return true; // Handled, close destination details
+      }
+      if (currentTab !== 'home') {
+        setCurrentTab('home');
+        return true; // Handled, navigate to Home tab
+      }
+      return false; // Allow default system behavior (minimize/exit app)
+    };
+
+    const subscription = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleSystemBack
+    );
+    return () => subscription.remove();
+  }, [selectedDestination, currentTab]);
 
   // Theme toggle handler with persistence
   const handleToggleTheme = async () => {

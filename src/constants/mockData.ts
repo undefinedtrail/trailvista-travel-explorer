@@ -28,18 +28,21 @@ export const CATEGORIES: DestinationCategory[] = [
 export const STATES_LIST = [
   { id: 'all', name: 'All States' },
   { id: 'kerala', name: 'Kerala' },
+  { id: 'telangana', name: 'Telangana' },
+  { id: 'andhra_pradesh', name: 'Andhra Pradesh' },
   { id: 'tamil_nadu', name: 'Tamil Nadu' },
   { id: 'karnataka', name: 'Karnataka' },
   { id: 'maharashtra', name: 'Maharashtra' },
-  { id: 'andhra_pradesh', name: 'Andhra Pradesh' },
   { id: 'ladakh', name: 'Ladakh' },
   { id: 'himachal', name: 'Himachal' },
   { id: 'rajasthan', name: 'Rajasthan' },
   { id: 'uttar_pradesh', name: 'Uttar Pradesh' },
   { id: 'assam', name: 'Assam' },
+  { id: 'andaman', name: 'Andaman & Nicobar' },
 ];
 
 export const STATE_PINS: Record<string, StatePin> = {
+  telangana: { id: 'telangana', name: 'Telangana', top: 66.8, left: 38.0 },
   ladakh: { id: 'ladakh', name: 'Ladakh', top: 14.2, left: 33.8 },
   himachal: { id: 'himachal', name: 'Himachal Pradesh', top: 20.1, left: 35.3 },
   rajasthan: { id: 'rajasthan', name: 'Rajasthan', top: 36.5, left: 13.0 },
@@ -55,6 +58,24 @@ export const STATE_PINS: Record<string, StatePin> = {
 };
 
 export const STATE_DATABASE: Record<string, StateInfo> = {
+  telangana: {
+    id: 'telangana',
+    name: 'Telangana',
+    subtitle: '• Deccan Citadels & Kakatiya Architecture',
+    season: 'Oct – Mar (High Season)',
+    temp: '26°C',
+    sunset: 'Deccan Amber Dusk',
+    desc: 'Majestic acoustic diamond fortresses, royal Nizam palaces, aromatic Old City pearl lanes, and 800-year-old floating-brick UNESCO temples.',
+  },
+  andaman: {
+    id: 'andaman',
+    name: 'Andaman & Nicobar',
+    subtitle: '• Turquoise Coral Reefs & Tropical Archipelagos',
+    season: 'Oct – May (High Season)',
+    temp: '28°C',
+    sunset: 'Radhanagar Golden Dusk',
+    desc: 'Powdery white silica beaches, bioluminescent kayak lagoons, pristine coral atolls, and turquoise Andaman sea waters.',
+  },
   all: {
     id: 'all',
     name: 'Incredible India',
@@ -157,6 +178,121 @@ export const STATE_DATABASE: Record<string, StateInfo> = {
 };
 
 export const MOCK_DESTINATIONS: Destination[] = [
+  // TELANGANA (Heritage & Architecture)
+  {
+    id: 'ts-01',
+    itineraryCode: 'TS 01',
+    name: 'Hyderabad Nizami Palaces, Golconda & Warangal Heritage Trail',
+    location: 'Hyderabad & Warangal, Telangana',
+    state: 'Telangana',
+    stateKey: 'telangana',
+    category: 'Heritage',
+    image: 'https://images.unsplash.com/photo-1605649487212-47bdab064df8?auto=format&fit=crop&w=1200&q=80',
+    rating: 4.51,
+    reviewsCount: 2340,
+    featured: true,
+    popularity: 94,
+    pricePerNight: 4200,
+    badge: 'Nizami Legacy',
+    bestTimeToVisit: 'Oct – Mar (Pleasant Winter Breezes & Cultural Festivals)',
+    duration: '3 Days • 2 Nights',
+    weather: '26°C Clear',
+    sunset: 'Deccan Amber Dusk',
+    subtitle: 'Citadels, Pearls & Kakatiya Wonders',
+    description:
+      'Centuries-old Nizami grandeur blending Indo-Islamic architecture and Kakatiya dynasty craftsmanship. Explore the acoustic wonders of medieval Golconda Fort, aromatic spice and pearl lanes of old Hyderabad, and the UNESCO 800-year floating-brick Ramappa Temple.',
+    curatorTip:
+      'Climb the Bala Hissar pavilion at Golconda Fort just before sunset for a 360-degree twilight panorama of the Deccan plateau, followed by authentic Irani chai and Osmania biscuits near Charminar.',
+    highlights: [
+      'Day 1: Golconda Fort Acoustic Citadel & Qutb Shahi Royal Tombs',
+      'Day 2: Charminar, Chowmahalla Palace & Old City Pearl Ateliers',
+      'Day 3: Warangal Kakatiya Fort & Ramappa Floating-Brick Temple',
+    ],
+    includes: [
+      'Certified Heritage Historian',
+      'Air-Conditioned Private Vehicle',
+      'Authentic Hyderabadi Dum Biryani & Irani Chai Tasting',
+    ],
+    tags: [
+      'Nizami Heritage',
+      'Kakatiya Architecture',
+      'Golconda Citadel',
+      'UNESCO Ramappa',
+      'Old City Pearls',
+    ],
+    attractions: [
+      {
+        id: 'ts-01-1',
+        name: 'Golconda Fort Acoustic Diamond Citadel',
+        image: 'https://images.unsplash.com/photo-1605649487212-47bdab064df8?auto=format&fit=crop&w=800&q=80',
+        tag: 'FORTRESS',
+        timing: '09:00 AM - 05:30 PM',
+        entryFee: '₹25 Entry',
+        description:
+          'Medieval hilltop granite fortress world-renowned for its brilliant acoustic engineering, royal palaces, and historic vault of the Koh-i-Noor diamond.',
+      },
+      {
+        id: 'ts-01-2',
+        name: 'Ramappa Temple UNESCO Floating-Brick Wonder',
+        image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=800&q=80',
+        tag: 'UNESCO TEMPLE',
+        timing: '06:00 AM - 06:00 PM',
+        entryFee: 'Free Entry',
+        description:
+          '13th-century Kakatiya masterpiece built with floating lightweight bricks, intricately carved black basalt pillars, and surviving centuries of earthquakes intact.',
+      },
+      {
+        id: 'ts-01-3',
+        name: 'Charminar & Chowmahalla Royal Nizam Palaces',
+        image: 'https://images.unsplash.com/photo-1572445271230-a78b5944a659?auto=format&fit=crop&w=800&q=80',
+        tag: 'PALACE',
+        timing: '09:30 AM - 05:30 PM',
+        entryFee: '₹100 Entry',
+        description:
+          'The iconic four-minaret landmark surrounded by historic pearl and lacquer bangle bazaars, paired with the opulent neo-classical coronation palace of the Nizams.',
+      },
+    ],
+    itineraryPlan: [
+      {
+        day: 'Day 1',
+        title: 'Golconda Diamond Citadel & Qutb Shahi Tombs',
+        morning:
+          'Depart hotel at 8:30 AM for Golconda Fort. Test the famed clap-echo acoustics at Fateh Darwaza and ascend the 360-step granite stairway to Bala Hissar.',
+        afternoon:
+          'Visit the nearby Ibrahim Bagh Qutb Shahi Tombs, featuring intricate domes combining Persian, Pashtun, and Hindu architectural motifs.',
+        evening:
+          'Experience the sunset over the Deccan plateau from Golconda ramparts followed by authentic dinner at Paradise or Shadab.',
+      },
+      {
+        day: 'Day 2',
+        title: 'Charminar, Laad Bazaar Pearls & Chowmahalla Palace',
+        morning:
+          'Walk through the 1591 Charminar archways at dawn, followed by freshly brewed Irani chai and Osmania biscuits at Nimrah Cafe.',
+        afternoon:
+          'Tour Chowmahalla Palace—the seat of the Asaf Jahi dynasty—inspecting the grand Durbar Hall (Khilwat Mubarak) with 19 Belgian crystal chandeliers.',
+        evening:
+          'Stroll through Laad Bazaar artisan workshops observing traditional stone-studded lacquer bangle and freshwater pearl craftsmanship.',
+      },
+      {
+        day: 'Day 3',
+        title: 'Warangal Kakatiya Gateway & UNESCO Ramappa Temple',
+        morning:
+          'Early morning drive along NH 163 to Warangal (140 km). Inspect the monumental 12th-century Thousand Pillar Temple dedicated to Shiva, Vishnu, and Surya.',
+        afternoon:
+          'Continue to the UNESCO World Heritage Ramappa Temple in Palampet. Marvel at the floating porous bricks and micro-carved sandstone celestial dancers.',
+        evening:
+          'Unwind along the scenic rope bridge of Laknavaram Lake amidst green Govindaraopet hills before return drive to Hyderabad.',
+      },
+    ],
+    fieldNotes: {
+      culinary:
+        'Authentic slow-cooked Kachchi Hyderabadi Dum Biryani paired with Mirchi Ka Salan and double ka meetha. In the mornings, enjoy hot Irani chai with Osmania salt biscuits or Pesarattu with ginger chutney.',
+      logistics:
+        'Rajiv Gandhi International Airport (HYD) connects globally. The Hyderabad Metro and Outer Ring Road (ORR) provide rapid transit across the twin cities. Intercity highway to Warangal is a smooth 4-lane expressway.',
+      gear:
+        'Light breathable cottons year-round. Sturdy walking shoes are essential for climbing Golconda Fort and exploring Kakatiya temple stone courtyards.',
+    },
+  },
   // KERALA (Mountains & Beaches)
   {
     id: 'ker-01',
@@ -1542,7 +1678,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
     name: 'Radhanagar Beach & Havelock Coral Atolls',
     location: 'Havelock, Andaman & Nicobar Islands',
     state: 'Andaman & Nicobar',
-    stateKey: 'all',
+    stateKey: 'andaman',
     category: 'Beaches',
     image: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?auto=format&fit=crop&w=1200&q=80',
     rating: 4.62,

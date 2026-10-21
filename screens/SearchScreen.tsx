@@ -36,6 +36,14 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
   const [sortOption, setSortOption] = useState<SortOption>('recommended');
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
 
+  // Surprise Me: Randomly select an expedition and navigate immediately
+  const handleSurpriseMe = () => {
+    if (MOCK_DESTINATIONS.length === 0) return;
+    const randomIndex = Math.floor(Math.random() * MOCK_DESTINATIONS.length);
+    const randomDest = MOCK_DESTINATIONS[randomIndex];
+    onSelectDestination(randomDest);
+  };
+
   // Popular expeditions using stable popularity ranking
   const popularDestinations = useMemo(() => {
     return [...MOCK_DESTINATIONS]
@@ -114,6 +122,44 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
               onClear={() => setSearchQuery('')}
               theme={theme}
             />
+
+            {/* Surprise Me Feature: Random Expedition Discovery */}
+            <TouchableOpacity
+              activeOpacity={0.82}
+              onPress={handleSurpriseMe}
+              style={[
+                styles.surpriseCard,
+                {
+                  backgroundColor: theme.card,
+                  borderColor: theme.cardBorder,
+                },
+              ]}
+            >
+              <View style={styles.surpriseLeft}>
+                <View style={[styles.surpriseIconCircle, { backgroundColor: theme.primary }]}>
+                  <MaterialIcons name="auto-awesome" size={17} color="#FFFFFF" />
+                </View>
+                <View style={styles.surpriseTextContainer}>
+                  <View style={styles.surpriseTitleRow}>
+                    <Text style={[styles.surpriseTitle, { color: theme.text }]}>
+                      Surprise Me
+                    </Text>
+                    <View style={[styles.surpriseBadge, { backgroundColor: theme.chipIdle }]}>
+                      <MaterialIcons name="casino" size={11} color={theme.primaryLight} />
+                      <Text style={[styles.surpriseBadgeText, { color: theme.primaryLight }]}>
+                        Random Trip
+                      </Text>
+                    </View>
+                  </View>
+                  <Text style={[styles.surpriseSubtitle, { color: theme.textMuted }]}>
+                    Can't decide? Discover a random curated Indian expedition
+                  </Text>
+                </View>
+              </View>
+              <View style={[styles.surpriseActionBtn, { backgroundColor: theme.chipIdle }]}>
+                <MaterialIcons name="arrow-forward" size={16} color={theme.primaryLight} />
+              </View>
+            </TouchableOpacity>
 
             {/* Popular Expeditions Incorporated Under Search */}
             <View style={styles.popularSection}>
@@ -403,6 +449,68 @@ const styles = StyleSheet.create({
   },
   headerSection: {
     marginBottom: Spacing.xs,
+  },
+  surpriseCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: Spacing.sm + 2,
+    borderRadius: BorderRadius.lg,
+    borderWidth: 1,
+    marginTop: Spacing.xs,
+    marginBottom: Spacing.xs + 2,
+  },
+  surpriseLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    marginRight: 10,
+    gap: 10,
+  },
+  surpriseIconCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  surpriseTextContainer: {
+    flex: 1,
+  },
+  surpriseTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+    marginBottom: 2,
+  },
+  surpriseTitle: {
+    fontSize: 13.5,
+    fontWeight: '800',
+    letterSpacing: 0.2,
+  },
+  surpriseBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: BorderRadius.full,
+  },
+  surpriseBadgeText: {
+    fontSize: 9.5,
+    fontWeight: '700',
+    letterSpacing: 0.3,
+  },
+  surpriseSubtitle: {
+    fontSize: 11,
+    lineHeight: 15,
+  },
+  surpriseActionBtn: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 22,

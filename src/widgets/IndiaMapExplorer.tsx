@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Svg, { Path, G } from 'react-native-svg';
+import Svg, { Path, G, Rect } from 'react-native-svg';
 import { MaterialIcons } from '@expo/vector-icons';
 import {
   INDIA_STATE_PATHS,
@@ -176,6 +176,22 @@ export const IndiaMapExplorer: React.FC<IndiaMapExplorerProps> = ({
                 onPress={() => onSelectState('all')}
               />
             )}
+
+            {/* 3. Andaman & Nicobar generous touch hit target: archipelago islands are slender, so this ensures effortless tap detection */}
+            <Rect
+              x={480}
+              y={520}
+              width={80}
+              height={180}
+              fill="transparent"
+              onPress={() => {
+                if (selectedState === 'andaman') {
+                  onSelectState('all');
+                } else if (availableSet.has('andaman')) {
+                  onSelectState('andaman');
+                }
+              }}
+            />
           </Svg>
         </View>
       </View>

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   Image,
   Linking,
+  PanResponder,
   ScrollView,
   StyleSheet,
   Text,
@@ -47,8 +48,33 @@ export const DetailsScreen: React.FC<DetailsScreenProps> = ({
       isMounted = false;
     };
   }, [destination.id, destination.weather]);
+
+  // Gesture back swipe: horizontal rightward swipe seamlessly triggers onGoBack
+  const panResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onMoveShouldSetPanResponder: (_, gestureState) => {
+          // Trigger when swipe is predominantly horizontal from left to right
+          return (
+            gestureState.dx > 25 &&
+            Math.abs(gestureState.dx) > Math.abs(gestureState.dy) * 1.5 &&
+            gestureState.vx > 0.2
+          );
+        },
+        onPanResponderRelease: (_, gestureState) => {
+          if (gestureState.dx > 60 || gestureState.vx > 0.45) {
+            onGoBack();
+          }
+        },
+      }),
+    [onGoBack]
+  );
+
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <View
+      style={[styles.container, { backgroundColor: theme.background }]}
+      {...panResponder.panHandlers}
+    >
       {/* Scrollable Dossier View */}
       <ScrollView
         showsVerticalScrollIndicator={false}
