@@ -103,7 +103,7 @@ export const IndiaMapExplorer: React.FC<IndiaMapExplorerProps> = ({
 
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => onSelectState(selectedState === 'all' ? 'kerala' : 'all')}
+          onPress={() => onSelectState('all')}
           style={[styles.activeStateBadge, { backgroundColor: theme.chipIdle }]}
         >
           <MaterialIcons name="my-location" size={11} color={theme.primary} />

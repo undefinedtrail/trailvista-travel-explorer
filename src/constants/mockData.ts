@@ -38,6 +38,7 @@ export const STATES_LIST = [
   { id: 'rajasthan', name: 'Rajasthan' },
   { id: 'uttar_pradesh', name: 'Uttar Pradesh' },
   { id: 'assam', name: 'Assam' },
+  { id: 'uttarakhand', name: 'Uttarakhand' },
   { id: 'andaman', name: 'Andaman & Nicobar' },
 ];
 
@@ -58,6 +59,15 @@ export const STATE_PINS: Record<string, StatePin> = {
 };
 
 export const STATE_DATABASE: Record<string, StateInfo> = {
+  uttarakhand: {
+    id: 'uttarakhand',
+    name: 'Uttarakhand',
+    subtitle: '• Holy Ganga Rapids & Shivalik Foothills',
+    season: 'Sep – Jun (Prime Rafting)',
+    temp: '22°C',
+    sunset: 'Shivalik Evening',
+    desc: 'Grade IV white water river rafting, cantilever bungee drops over deep Himalayan gorges, and tranquil mountain waterfall hikes.',
+  },
   telangana: {
     id: 'telangana',
     name: 'Telangana',
@@ -187,7 +197,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
     state: 'Telangana',
     stateKey: 'telangana',
     category: 'Heritage',
-    image: 'https://images.unsplash.com/photo-1605649487212-47bdab064df8?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1572445271230-a78b5944a659?auto=format&fit=crop&w=1200&q=80',
     rating: 4.51,
     reviewsCount: 2340,
     featured: true,
@@ -204,9 +214,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Climb the Bala Hissar pavilion at Golconda Fort just before sunset for a 360-degree twilight panorama of the Deccan plateau, followed by authentic Irani chai and Osmania biscuits near Charminar.',
     highlights: [
-      'Day 1: Golconda Fort Acoustic Citadel & Qutb Shahi Royal Tombs',
-      'Day 2: Charminar, Chowmahalla Palace & Old City Pearl Ateliers',
-      'Day 3: Warangal Kakatiya Fort & Ramappa Floating-Brick Temple',
+      'Day 1: Golconda Fort Acoustic Citadel & Qutb Shahi Royal Tombs at Twilight',
+      'Day 2: Charminar Archways, Chowmahalla Palace & Old City Pearl Ateliers',
+      'Day 3: 800-Year UNESCO Floating-Brick Ramappa Temple & Warangal Thousand Pillar Fort',
     ],
     includes: [
       'Certified Heritage Historian',
@@ -234,7 +244,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'ts-01-2',
         name: 'Ramappa Temple UNESCO Floating-Brick Wonder',
-        image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1621847468516-1ed5d0df56fe?auto=format&fit=crop&w=800&q=80',
         tag: 'UNESCO TEMPLE',
         timing: '06:00 AM - 06:00 PM',
         entryFee: 'Free Entry',
@@ -319,9 +329,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Early 6 AM departure to Lockhart Peak avoids cloud cover for the unobstructed valley view.',
     highlights: [
-      'Day 1: Colonial Tea Estate Trek',
-      'Day 2: Lockhart Gap Sunrise & Anamudi',
-      'Day 3: Organic Spice Farm Harvest',
+      'Day 1: Colonial Tea Estate Trek & High-Altitude Tasting at Kolukkumalai (7,900 ft)',
+      'Day 2: Lockhart Gap Sunrise Panoramas & Endangered Nilgiri Tahr Walk at Eravikulam',
+      'Day 3: Organic Spice Farm Harvest, Mattupetty Masonry Dam & Silent Valley Walk',
     ],
     includes: ['Naturalist Guide', '4x4 Mountain Jeep', 'Authentic Sadhya Meals'],
     tags: ['Tea Estates', 'Western Ghats', 'Cloud Valley', 'Waterfalls'],
@@ -339,7 +349,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'ker-01-2',
         name: 'Eravikulam National Park & Anamudi',
-        image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1616036740257-9449ea1f6605?auto=format&fit=crop&w=800&q=80',
         tag: 'WILDLIFE',
         timing: '07:30 AM - 04:00 PM',
         entryFee: '₹200 Entry',
@@ -349,7 +359,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'ker-01-3',
         name: 'Mattupetty Masonry Dam & Lake',
-        image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=800&q=80',
         tag: 'NATURE',
         timing: '09:00 AM - 05:00 PM',
         entryFee: '₹50 Entry',
@@ -411,9 +421,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Opt for the narrower inland canals between Champakulam and Kainakary for zero motorboat traffic.',
     highlights: [
-      'Day 1: Kettuvallam Private Boarding',
-      'Day 2: Vembanad Lake Sunset Cruise',
-      'Day 3: Coir Crafting & Kayaking',
+      'Day 1: Kettuvallam Private Houseboat Boarding & Karumadi Kuttan Canal Cruise',
+      'Day 2: Vembanad Sunset Sanctuary, Lotus Plunge & Traditional Toddy Shop Tasting',
+      'Day 3: Dawn Canoe Gliding through Narrow Kuttanad Coir Crafting Waterways',
     ],
     includes: ['Private Chef on Board', 'Traditional Canoe Safari', 'Fresh Toddy Tasting'],
     tags: ['Houseboat', 'Backwaters', 'Canals', 'Ayurveda'],
@@ -421,7 +431,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'ker-02-1',
         name: 'Vembanad Lake Sunset Sanctuary',
-        image: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80',
         tag: 'LAKE',
         timing: '06:00 AM - 06:30 PM',
         entryFee: 'Boat Cruise',
@@ -431,7 +441,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'ker-02-2',
         name: 'Champakulam Kalloorkad St. Mary Basilica',
-        image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1548625361-16a7f34086ea?auto=format&fit=crop&w=800&q=80',
         tag: 'HERITAGE',
         timing: '07:00 AM - 07:00 PM',
         entryFee: 'Free',
@@ -441,7 +451,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'ker-02-3',
         name: 'Marari Golden Sand Shoreline',
-        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=800&q=80',
         tag: 'BEACH',
         timing: 'Open 24 Hours',
         entryFee: 'Free',
@@ -512,9 +522,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Spend your first 36 hours resting completely in Leh to acclimatize smoothly to the high altitude.',
     highlights: [
-      'Day 1: Khardung La Pass (17,982 ft) Crossing',
-      'Day 2: Diskit Monastery & Hunder Sand Dunes',
-      'Day 3: Pangong Lake Milky Way Glamping',
+      'Day 1: Khardung La Pass (17,982 ft) High-Altitude Crossing into Nubra Valley',
+      'Day 2: Diskit Monastery Maitreya Buddha & Double-Humped Bactrian Camel Ride in Hunder Dunes',
+      'Day 3: Pangong Tso Color-Shifting Glacial Lake & Milky Way Stargazing Camp at 14,000 ft',
     ],
     includes: ['Oxygen-equipped 4x4', 'High-altitude Acclimatization Kit', 'Glamping Domes'],
     tags: ['Trans-Himalayas', 'Glacial Lakes', 'Bactrian Camels', 'Stargazing'],
@@ -522,7 +532,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'lad-01-1',
         name: 'Pangong Tso Endorheic Glacial Lake',
-        image: 'https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?auto=format&fit=crop&w=800&q=80',
         tag: 'LAKE',
         timing: 'Daylight Hours',
         entryFee: 'Permit Required',
@@ -532,7 +542,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'lad-01-2',
         name: 'Diskit Monastery & 32m Maitreya Buddha',
-        image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80',
         tag: 'MONASTERY',
         timing: '06:00 AM - 06:00 PM',
         entryFee: '₹30 Entry',
@@ -610,7 +620,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
     state: 'Himachal Pradesh',
     stateKey: 'himachal',
     category: 'Mountains',
-    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&w=1200&q=80',
     rating: 4.58,
     reviewsCount: 1780,
     featured: true,
@@ -627,9 +637,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Send a physical postcard from Hikkim (14,567 ft) - it takes 2 weeks to reach anywhere worldwide.',
     highlights: [
-      'Day 1: Key Gompa Cliff Monastery blessings',
-      'Day 2: Highest post office mail sending at Hikkim',
-      'Day 3: Chandratal Moon Lake Stargazing Camp',
+      'Day 1: 1,000-Year-Old Key Gompa Cliff Monastery Blessings & Kaza High-Desert Bazaar',
+      'Day 2: World\'s Highest Post Office Mail Sending at Hikkim & Ancient Marine Fossils at Langza',
+      'Day 3: Chandratal Crescent Moon Glacial Lake Trek & Starlit Alpine Glamping',
     ],
     includes: ['Experienced Alpine Driver', 'Spiti Homestay Passes', 'Thermal Sleeping Gear'],
     tags: ['Key Gompa', 'Chandratal', 'Hikkim', 'Cold Desert'],
@@ -637,7 +647,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'hp-01-1',
         name: 'Key Gompa 1,000-Year-Old Fortress',
-        image: 'https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80',
         tag: 'MONASTERY',
         timing: '06:00 AM - 06:00 PM',
         entryFee: 'Free Entry',
@@ -647,7 +657,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'hp-01-2',
         name: 'Chandratal Crescent Moon Glacial Lake',
-        image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1570784332176-fdd73da66f03?auto=format&fit=crop&w=800&q=80',
         tag: 'LAKE',
         timing: 'Daylight Hours',
         entryFee: 'Free',
@@ -735,9 +745,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Request desert camp sites located in the quiet Khuri dunes rather than crowded commercial clusters.',
     highlights: [
-      'Day 1: Living Fort Walk & Havelis',
-      'Day 2: Sunset Camel Ride in Sam Dunes',
-      'Day 3: Manganiyar Folk Night under Stars',
+      'Day 1: Living Golden Fort Walk, 800-Year Jain Temples & Patwon Ki Haveli Filigree Ateliers',
+      'Day 2: Sunset Camel Caravan into Deep Sam Sand Dunes & Starlit Manganiyar Folk Night',
+      'Day 3: Kuldhara Abandoned Ghost Village Exploration & Desert National Park Safari',
     ],
     includes: ['Private Camel Handler', 'Swiss Luxury Desert Tent', 'Rajasthani Dal-Baati Feast'],
     tags: ['Thar Desert', 'Camel Safari', 'Golden Fort', 'Folk Music'],
@@ -810,7 +820,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
     state: 'Rajasthan',
     stateKey: 'rajasthan',
     category: 'Heritage',
-    image: 'https://images.unsplash.com/photo-1664241689244-ea76002ec956?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?auto=format&fit=crop&w=1200&q=80',
     rating: 4.46,
     reviewsCount: 3120,
     featured: true,
@@ -827,9 +837,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Sunset views from Ambrai Ghat give the purest silhouette of City Palace illuminated across the dark waters.',
     highlights: [
-      'Day 1: City Palace Museum Private Tour',
-      'Day 2: Sunset Solar Boat on Lake Pichola',
-      'Day 3: Miniature Painting Masterclass',
+      'Day 1: Mewar Dynasty City Palace Private Tour & Crystal Gallery Exploration',
+      'Day 2: Sunset Solar Boat Cruise on Lake Pichola around Jag Mandir & Taj Lake Palace',
+      'Day 3: Saheliyon Ki Bari Marble Fountains & Traditional Mewari Miniature Painting Studio',
     ],
     includes: ['Heritage Lakefront Suite', 'Private Royal Boat Pass', 'Mewari Dining Experience'],
     tags: ['City Palace', 'Lake Pichola', 'Mewari Cuisine', 'Havelis'],
@@ -847,7 +857,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'raj-02-2',
         name: 'Jag Mandir Island Lake Palace',
-        image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
         tag: 'ISLAND',
         timing: '09:00 AM - 06:00 PM',
         entryFee: 'Boat Pass Required',
@@ -857,7 +867,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'raj-02-3',
         name: 'Saheliyon Ki Bari Royal Fountains',
-        image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=800&q=80',
         tag: 'GARDEN',
         timing: '08:00 AM - 07:00 PM',
         entryFee: '₹20 Entry',
@@ -928,9 +938,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Board your wooden boat at Assi Ghat precisely at 5:15 AM to witness the sun rise directly across the tranquil waters before motorized tour boats arrive.',
     highlights: [
-      'Day 1: Twilight Ganga Maha Aarti at Dashashwamedh',
-      'Day 2: Silent Sunrise Wooden Boat to Manikarnika',
-      'Day 3: Sarnath Stupa & Silk Weaver Alleys',
+      'Day 1: Twilight Ganga Maha Aarti with Fire Pyres at Dashashwamedh Ghat',
+      'Day 2: Silent Dawn Wooden Boat past 84 Historic Ghats & Manikarnika to Assi Ghat',
+      'Day 3: Sacred Sarnath Stupa where Buddha Taught & Old City Kashi Vishwanath Silk Alleys',
     ],
     includes: ['Private Historian Scholar', 'Sunrise Rowboat Pass', 'Banarasi Silk Studio Tour'],
     tags: ['Ghats', 'Vedic Chants', 'Ganga Aarti', 'Sarnath'],
@@ -1022,9 +1032,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Book the Central Kohora Safari range for morning elephant tracking and the Western Bagori range for open wetland rhino herds.',
     highlights: [
-      'Day 1: Dawn Elephant & Open-top 4x4 Safari',
-      'Day 2: Brahmaputra Ferry to Majuli Island',
-      'Day 3: Mask Making & Neo-Vaishnavite Satras',
+      'Day 1: Dawn Elephant-Back & Open-Top 4x4 Safari tracking Greater One-Horned Rhinos',
+      'Day 2: Mighty Brahmaputra River Ferry Crossing to Majuli—World\'s Largest River Island',
+      'Day 3: Traditional Neo-Vaishnavite Satra Mask-Making & Mishing Tribal Organic Feast',
     ],
     includes: ['Certified Forest Naturalist', 'All Forest Permits & Jeeps', 'Majuli Bamboo Cottage'],
     tags: ['One-Horned Rhino', 'Brahmaputra', 'Majuli Island', 'Tea Estates'],
@@ -1042,7 +1052,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'asm-01-2',
         name: 'Majuli Island Cultural Satras',
-        image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80',
         tag: 'CULTURE',
         timing: '08:00 AM - 05:00 PM',
         entryFee: 'Free Entry',
@@ -1052,7 +1062,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'asm-01-3',
         name: 'Brahmaputra River Dolphin Sanctuary',
-        image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
         tag: 'WILDLIFE',
         timing: 'Dawn & Dusk',
         entryFee: 'Boat Fee',
@@ -1106,7 +1116,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
     state: 'Maharashtra',
     stateKey: 'maharashtra',
     category: 'Heritage',
-    image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1608889825103-eb5ed706fc64?auto=format&fit=crop&w=1200&q=80',
     rating: 4.15,
     reviewsCount: 2310,
     featured: true,
@@ -1123,9 +1133,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Kailasa Temple at Ellora Cave 16 looks most surreal during late afternoon amber hour when the sun hits the sculpted court.',
     highlights: [
-      'Day 1: Kailasa Temple Rock Monolith Exploration',
-      'Day 2: Ajanta Frescoes & Horseshoe Canyon',
-      'Day 3: Daulatabad Hill Fortress Ascent',
+      'Day 1: Kailasa Temple (Cave 16) Exploration—World\'s Largest Top-Down Rock Monolith',
+      'Day 2: Ajanta Caves Horseshoe Canyon Walk admiring 2,000-Year Buddhist Frescoes',
+      'Day 3: Daulatabad Hill Fortress Steep Citadel Ascent & Chand Minar Panoramas',
     ],
     includes: ['Sanskrit Art Scholar', 'Private Chauffeur EV', 'Boutique Vineyard Dinner'],
     tags: ['Kailasa Temple', 'Ellora Caves', 'Ajanta Murals', 'Sahyadris'],
@@ -1133,7 +1143,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'mh-01-1',
         name: 'Kailasa Temple Monolith (Cave 16)',
-        image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1608889825103-eb5ed706fc64?auto=format&fit=crop&w=800&q=80',
         tag: 'MONUMENT',
         timing: '06:00 AM - 06:00 PM',
         entryFee: '₹40 Entry',
@@ -1143,7 +1153,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'mh-01-2',
         name: 'Ajanta Caves Horseshoe Canyon Frescoes',
-        image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80',
         tag: 'FRESCOES',
         timing: '09:00 AM - 05:30 PM',
         entryFee: '₹40 Entry',
@@ -1153,7 +1163,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'mh-01-3',
         name: 'Daulatabad Medieval Hill Fortress',
-        image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1605649487212-47bdab064df8?auto=format&fit=crop&w=800&q=80',
         tag: 'FORT',
         timing: '08:00 AM - 06:00 PM',
         entryFee: '₹25 Entry',
@@ -1207,7 +1217,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
     state: 'Andhra Pradesh',
     stateKey: 'andhra_pradesh',
     category: 'Mountains',
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
     rating: 3.94,
     reviewsCount: 1540,
     featured: true,
@@ -1224,9 +1234,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Book the window seat on the morning Vistadome train departing Visakhapatnam for panoramic mountain tunnel views.',
     highlights: [
-      'Day 1: Borra Caves 150-Million-Year Stalactite Walk',
-      'Day 2: Araku Organic Tribal Coffee Cupping',
-      'Day 3: Katiki Waterfalls Jeep Safari',
+      'Day 1: Borra Caves 150-Million-Year Subterranean Stalactites & Ghost River Walk',
+      'Day 2: Araku Organic Shade-Grown Arabica Coffee Cupping & Tribal Museum Tour',
+      'Day 3: Katiki Multi-Tiered Jungle Waterfalls Jeep Trail & Bamboo Chicken Lunch',
     ],
     includes: ['Vistadome Glass-top Train Ticket', 'Tribal Community Host', 'Organic Bamboo Chicken Dinner'],
     tags: ['Borra Caves', 'Araku Coffee', 'Eastern Ghats', 'Waterfalls'],
@@ -1254,7 +1264,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'ap-01-3',
         name: 'Katiki Multi-Tiered Jungle Waterfalls',
-        image: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=800&q=80',
         tag: 'WATERFALL',
         timing: 'Daylight Hours',
         entryFee: 'Free',
@@ -1318,9 +1328,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Climb Matanga Hill by 5:30 AM for a 360-degree panorama of ancient Hampi bathed in morning bronze light.',
     highlights: [
-      'Day 1: Vittala Complex & Musical Pillars',
-      'Day 2: Sunset Bouldering at Matanga Hill',
-      'Day 3: Coracle Boat River Run',
+      'Day 1: Vijaya Vittala Stone Chariot, 56 Musical Pillars & Kings Balance',
+      'Day 2: Sunset Bouldering at Matanga Hill & Traditional Coracle Boat River Run',
+      'Day 3: Sacred Virupaksha Temple & Elephant Stables Royal Enclosure Trek',
     ],
     includes: ['Archaeological Historian', 'Bouldering Gear', 'Riverside Heritage Camp'],
     tags: ['Vijayanagara', 'Stone Chariot', 'Boulders', 'Tungabhadra'],
@@ -1410,9 +1420,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'November brings fragrant white coffee blossoms across the estate hills with sweet jasmine aroma.',
     highlights: [
-      'Day 1: Arabica Berry Picking Experience',
-      'Day 2: Brahmagiri Wildlife Sanctuary Hike',
-      'Day 3: Kodava Cupping & Roasting Masterclass',
+      'Day 1: Arabica & Robusta Berry Picking at Historic Rainforest Coffee Estate',
+      'Day 2: Roaring Abbey Falls Cascade & Namdroling Golden Temple Tibetan Monastery',
+      'Day 3: Raja\'s Seat Sunset Valley Overlook & Authentic Kodava Pandi Curry Masterclass',
     ],
     includes: ['Master Coffee Roaster', 'Estate Cottage Stay', 'Kodava Fireplace Dinner'],
     tags: ['Coorg', 'Coffee Estate', 'Brahmagiri', 'Kodava'],
@@ -1420,7 +1430,7 @@ export const MOCK_DESTINATIONS: Destination[] = [
       {
         id: 'kar-02-1',
         name: 'Abbey Falls Roaring Cascade',
-        image: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=800&q=80',
         tag: 'WATERFALL',
         timing: '09:00 AM - 05:00 PM',
         entryFee: '₹15 Entry',
@@ -1502,9 +1512,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Trek the coastal trail from Kudle to Half Moon Beach at 4:30 PM to catch sunset from the rocky promontory with dolphins surfing the break.',
     highlights: [
-      'Day 1: Kudle to Om Beach Clifftop Hike',
-      'Day 2: Dolphin Kayaking at Sunrise',
-      'Day 3: Paradise Beach Secret Cove Boat Run',
+      'Day 1: Kudle Beach to Sacred Om Beach Rugged Clifftop Headland Hike',
+      'Day 2: Dawn Dolphin Kayaking & Secret Half Moon Cove Snorkel Adventure',
+      'Day 3: Paradise Beach Remote Shoreline Relax & Sunset Cliffside Yoga',
     ],
     includes: ['Ocean Kayak & Lifevest', 'Beachside Bamboo Shack', 'Seafood Grill Dinner'],
     tags: ['Om Beach', 'Coastal Trek', 'Sunsets', 'Cliff Shacks'],
@@ -1596,9 +1606,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Witness the sacred night ceremony at Meenakshi temple at 9:00 PM for deep spiritual immersion.',
     highlights: [
-      'Day 1: Meenakshi Amman Temple Dawn Walk',
-      'Day 2: Athangudi Tile Workshop & Palaces',
-      'Day 3: 7-Course Chettinad Culinary Feast',
+      'Day 1: Meenakshi Amman Temple 14 Sculptured Gopurams & Golden Lotus Tank Dawn Tour',
+      'Day 2: Athangudi Handmade Cement Tile Artisan Studio & 100-Room Merchant Palaces',
+      'Day 3: Celebrated 7-Course Authentic Banana Leaf Chettinad Spice Banquet',
     ],
     includes: ['Temple Architectural Scholar', 'Artisan Studio Entry', 'Heritage Palace Stay'],
     tags: ['Meenakshi Temple', 'Chettinad', 'Athangudi Tiles', 'Heritage Palaces'],
@@ -1697,9 +1707,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Stay until sunset when the sky turns molten copper and swim in the tranquil natural cove at Neils Lagoon.',
     highlights: [
-      'Day 1: Radhanagar Sunset Swim & Lagoon Walk',
-      'Day 2: Elephant Beach Scuba & Coral Reef Dive',
-      'Day 3: Bioluminescent Mangrove Night Kayaking',
+      'Day 1: High-Speed Catamaran Cruise & Sunset Swim at World-Famous Radhanagar Beach',
+      'Day 2: Elephant Beach Scuba & Snorkel Coral Reef Expedition with Sea Turtles',
+      'Day 3: Neil\'s Cove Hidden Lagoon Discovery & Bioluminescent Mangrove Night Kayak',
     ],
     includes: ['Scuba Gear & PADI Instructor', 'Speedboat Transfer', 'Beachfront Villa'],
     tags: ['Turquoise Waters', 'Coral Reef', 'Rainforest', 'Snorkeling'],
@@ -1779,9 +1789,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     name: 'Rishikesh Rapids & Himalayan Foothills',
     location: 'Dehradun, Uttarakhand',
     state: 'Uttarakhand',
-    stateKey: 'all',
+    stateKey: 'uttarakhand',
     category: 'Adventure',
-    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&w=1200&q=80',
     rating: 3.76,
     reviewsCount: 2450,
     featured: false,
@@ -1798,9 +1808,9 @@ export const MOCK_DESTINATIONS: Destination[] = [
     curatorTip:
       'Book the 26km Marine Drive to Shivpuri rafting slot at 08:30 AM when river currents are swift and mountain air is crisp.',
     highlights: [
-      'Day 1: 26km White Water Rafting Expedition',
-      'Day 2: 83m Cantilever Bungee Jump Drop',
-      'Day 3: Neer Garh Multi-Tier Waterfall Hike',
+      'Day 1: 26km Grade IV White-Water Rafting on the Holy Ganga from Marine Drive to Shivpuri',
+      'Day 2: 83m Cantilever Bungee Jump Drop & Giant Canyon Swing over Himalayan Gorge',
+      'Day 3: Neer Garh Multi-Tier Jungle Waterfalls Hike & Triveni Ghat Evening Sandhya Aarti',
     ],
     includes: ['Certified Rafting Master', 'Safety Kayak Escort', 'Riverside Camp Tent'],
     tags: ['White Water Rafting', 'Bungee Jump', 'Himalayas', 'Riverside Camps'],

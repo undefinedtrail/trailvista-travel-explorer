@@ -40,8 +40,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   theme,
   isDark,
 }) => {
-  // State for map selection and travel style category
-  const [selectedState, setSelectedState] = useState<string>('kerala');
+  // State for map selection and travel style category (Default: 'all' to show all India expeditions)
+  const [selectedState, setSelectedState] = useState<string>('all');
   const [selectedCategory, setSelectedCategory] = useState<DestinationCategory>('All');
 
   // Destination counts per state for available state detection and badges

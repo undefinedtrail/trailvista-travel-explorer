@@ -29,6 +29,12 @@ function MainApp() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastAnim] = useState(new Animated.Value(0));
 
+  // First-launch splashscreen state & animations
+  const [isAppReady, setIsAppReady] = useState(false);
+  const splashOpacity = useState(new Animated.Value(1))[0];
+  const splashScale = useState(new Animated.Value(0.94))[0];
+  const pulseAnim = useState(new Animated.Value(0.5))[0];
+
   const theme = themeMode === 'dark' ? DarkTheme : LightTheme;
 
   // Show transient toast alert
@@ -91,6 +97,50 @@ function MainApp() {
     );
     return () => subscription.remove();
   }, [selectedDestination, currentTab]);
+
+  // Splash screen transition on initial launch
+  useEffect(() => {
+    // Pulsing beacon loop
+    const pulseLoop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 650,
+          useNativeDriver: Platform.OS !== 'web',
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 0.45,
+          duration: 650,
+          useNativeDriver: Platform.OS !== 'web',
+        }),
+      ])
+    );
+    pulseLoop.start();
+
+    // Subtle scale in of the splash card
+    Animated.timing(splashScale, {
+      toValue: 1,
+      duration: 800,
+      useNativeDriver: Platform.OS !== 'web',
+    }).start();
+
+    // After 1.6s, smoothly fade out the splash screen
+    const splashTimer = setTimeout(() => {
+      Animated.timing(splashOpacity, {
+        toValue: 0,
+        duration: 450,
+        useNativeDriver: Platform.OS !== 'web',
+      }).start(() => {
+        setIsAppReady(true);
+        pulseLoop.stop();
+      });
+    }, 1600);
+
+    return () => {
+      clearTimeout(splashTimer);
+      pulseLoop.stop();
+    };
+  }, []);
 
   // Theme toggle handler with persistence
   const handleToggleTheme = async () => {
@@ -231,6 +281,61 @@ function MainApp() {
           </Text>
         </Animated.View>
       )}
+
+      {/* Elegant Launch Splash Screen */}
+      {!isAppReady && (
+        <Animated.View
+          style={[
+            styles.splashContainer,
+            {
+              backgroundColor: '#0E0F14',
+              opacity: splashOpacity,
+            },
+          ]}
+          pointerEvents="none"
+        >
+          <Animated.View
+            style={[
+              styles.splashCard,
+              {
+                transform: [{ scale: splashScale }],
+              },
+            ]}
+          >
+            {/* Logo Icon Badge with Ambient Coral Glow */}
+            <View style={styles.splashIconWrapper}>
+              <View style={styles.splashIconBadge}>
+                <MaterialIcons name="explore" size={44} color="#FFFFFF" />
+              </View>
+            </View>
+
+            {/* App Brand Name */}
+            <Text style={styles.splashBrandTitle}>TrailVista</Text>
+
+            {/* Tagline */}
+            <Text style={styles.splashBrandTagline}>TRAVEL EXPLORER</Text>
+
+            <View style={styles.splashBrandDivider} />
+
+            <Text style={styles.splashBrandSubtitle}>
+              Discover places worth remembering
+            </Text>
+
+            {/* Status Pulse Beacon */}
+            <View style={styles.splashStatusRow}>
+              <Animated.View
+                style={[
+                  styles.splashBeaconDot,
+                  {
+                    opacity: pulseAnim,
+                  },
+                ]}
+              />
+              <Text style={styles.splashStatusText}>Curating Indian expeditions...</Text>
+            </View>
+          </Animated.View>
+        </Animated.View>
+      )}
     </SafeAreaView>
   );
 }
@@ -279,5 +384,78 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 0.3,
+  },
+  splashContainer: {
+    ...StyleSheet.absoluteFill,
+    zIndex: 99999,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  splashCard: {
+    alignItems: 'center',
+    paddingHorizontal: 32,
+  },
+  splashIconWrapper: {
+    marginBottom: 20,
+    shadowColor: '#E06D46',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 14,
+  },
+  splashIconBadge: {
+    width: 86,
+    height: 86,
+    borderRadius: 28,
+    backgroundColor: '#E06D46',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.25)',
+  },
+  splashBrandTitle: {
+    fontSize: 34,
+    fontWeight: '900',
+    color: '#FFFFFF',
+    letterSpacing: 0.8,
+  },
+  splashBrandTagline: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#E06D46',
+    letterSpacing: 3.5,
+    marginTop: 5,
+  },
+  splashBrandDivider: {
+    width: 52,
+    height: 2.5,
+    backgroundColor: 'rgba(224, 109, 70, 0.45)',
+    marginVertical: 15,
+    borderRadius: 2,
+  },
+  splashBrandSubtitle: {
+    fontSize: 13,
+    color: '#9CA3AF',
+    textAlign: 'center',
+    fontWeight: '500',
+    letterSpacing: 0.3,
+  },
+  splashStatusRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 38,
+  },
+  splashBeaconDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#E06D46',
+  },
+  splashStatusText: {
+    fontSize: 12,
+    color: '#6B7280',
+    fontWeight: '600',
+    letterSpacing: 0.5,
   },
 });
