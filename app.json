@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "TrailVista",
-    "slug": "trailvista",
+    "slug": "trailvista-travel-explorer",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,6 +11,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.undefinedtrail.trailvista",
       "adaptiveIcon": {
         "backgroundColor": "#C2512D",
         "foregroundImage": "./assets/android-icon-foreground.png",
