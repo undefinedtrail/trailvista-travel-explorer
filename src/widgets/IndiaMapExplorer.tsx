@@ -126,7 +126,7 @@ export const IndiaMapExplorer: React.FC<IndiaMapExplorerProps> = ({
             height={MAP_HEIGHT}
             style={styles.svgContainer}
           >
-            {/* 1. Base Non-selected States with Completely Uniform Borders & Pure Transparent Interior */}
+            {/* 1. Base Non-selected States: Available states darker interior, clean subtle outlines */}
             <G>
               {normalPaths.map((state) => {
                 const isAvailable = availableSet.has(state.id);
@@ -134,9 +134,23 @@ export const IndiaMapExplorer: React.FC<IndiaMapExplorerProps> = ({
                   <Path
                     key={state.id}
                     d={state.d}
-                    fill="rgba(0, 0, 0, 0.001)"
-                    stroke={isDark ? '#505466' : '#9CA3AF'}
-                    strokeWidth={0.9}
+                    fill={
+                      isAvailable
+                        ? isDark
+                          ? 'rgba(10, 11, 15, 0.88)'
+                          : 'rgba(232, 227, 218, 0.85)'
+                        : 'transparent'
+                    }
+                    stroke={
+                      isAvailable
+                        ? isDark
+                          ? '#565A6E'
+                          : '#8A8E9E'
+                        : isDark
+                        ? '#262835'
+                        : '#D0D4DF'
+                    }
+                    strokeWidth={isAvailable ? 1.05 : 0.65}
                     strokeLinejoin="round"
                     strokeLinecap="round"
                     onPress={() => {

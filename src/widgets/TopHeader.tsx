@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { ThemeColors, BorderRadius, Spacing } from '../constants/theme';
+import { ThemeColors, Spacing } from '../constants/theme';
 
 interface TopHeaderProps {
   theme: ThemeColors;
@@ -16,7 +16,6 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
   isDark,
   onToggleTheme,
   title = 'TrailVista',
-  subtitle = 'Travel Explorer',
 }) => {
   return (
     <View
@@ -50,51 +49,53 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
         </View>
       </View>
 
-      {/* Right Controls: Futuristic Sun & Moon Theme Toggle (No Profile Icon) */}
+      {/* Right Controls: 100% Rounded Sun & Moon Capsule Switch (No Profile Icon) */}
       <View style={styles.rightControls}>
         <TouchableOpacity
-          activeOpacity={0.8}
+          activeOpacity={0.85}
           onPress={onToggleTheme}
           style={[
-            styles.futuristicToggle,
+            styles.roundedSwitchTrack,
             {
-              backgroundColor: isDark ? '#1C1D26' : '#EDE8DC',
+              backgroundColor: isDark ? '#181922' : '#EDE8DC',
               borderColor: isDark ? '#2E3142' : '#D6CFBF',
             },
           ]}
           accessibilityLabel={`Switch to ${isDark ? 'light' : 'dark'} mode`}
         >
-          {/* Sun Slot */}
-          <View
-            style={[
-              styles.toggleIconSlot,
-              !isDark && [
-                styles.toggleActiveSlot,
-                { backgroundColor: '#FFFFFF', shadowColor: '#D97706' },
-              ],
-            ]}
-          >
+          {/* Background Sun Icon on Track */}
+          <View style={styles.trackIconSlot}>
             <MaterialIcons
               name="wb-sunny"
-              size={13.5}
-              color={!isDark ? '#D97706' : isDark ? '#52556A' : '#8A8D9B'}
+              size={13}
+              color={!isDark ? 'transparent' : '#55586D'}
             />
           </View>
 
-          {/* Moon Slot */}
+          {/* Background Moon Icon on Track */}
+          <View style={styles.trackIconSlot}>
+            <MaterialIcons
+              name="nights-stay"
+              size={12}
+              color={isDark ? 'transparent' : '#8A8D9B'}
+            />
+          </View>
+
+          {/* Floating Perfectly Circular Thumb Knob */}
           <View
             style={[
-              styles.toggleIconSlot,
-              isDark && [
-                styles.toggleActiveSlot,
-                { backgroundColor: theme.primary, shadowColor: theme.primary },
-              ],
+              styles.circularKnob,
+              isDark ? styles.knobRight : styles.knobLeft,
+              {
+                backgroundColor: isDark ? theme.primary : '#FFFFFF',
+                shadowColor: isDark ? theme.primary : '#000',
+              },
             ]}
           >
             <MaterialIcons
-              name="nights-stay"
+              name={isDark ? 'nights-stay' : 'wb-sunny'}
               size={13}
-              color={isDark ? '#FFFFFF' : '#8A8D9B'}
+              color={isDark ? '#FFFFFF' : '#D97706'}
             />
           </View>
         </TouchableOpacity>
@@ -143,25 +144,42 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  futuristicToggle: {
+  roundedSwitchTrack: {
+    width: 58,
+    height: 30,
+    borderRadius: 15,
+    borderWidth: 1.5,
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 3,
-    borderRadius: BorderRadius.full,
-    borderWidth: 1,
-    gap: 3,
+    justifyContent: 'space-between',
+    paddingHorizontal: 5,
+    position: 'relative',
+    overflow: 'hidden',
   },
-  toggleIconSlot: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+  trackIconSlot: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  toggleActiveSlot: {
-    elevation: 3,
-    shadowOffset: { width: 0, height: 1 },
+  circularKnob: {
+    position: 'absolute',
+    top: 2,
+    width: 23,
+    height: 23,
+    borderRadius: 11.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 4,
+    shadowOffset: { width: 0, height: 1.5 },
     shadowOpacity: 0.35,
-    shadowRadius: 3,
+    shadowRadius: 2.5,
+  },
+  knobLeft: {
+    left: 3,
+  },
+  knobRight: {
+    right: 3,
   },
 });
