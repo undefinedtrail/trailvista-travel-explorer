@@ -16,7 +16,7 @@ import { SearchBar } from '../widgets/SearchBar';
 import { CategoryChip } from '../widgets/CategoryChip';
 import { DestinationCard } from '../widgets/DestinationCard';
 
-type SortOption = 'recommended' | 'rating-desc' | 'price-asc' | 'price-desc';
+type SortOption = 'recommended' | 'rating-desc' | 'popularity-desc' | 'duration-asc';
 
 interface SearchScreenProps {
   onSelectDestination: (destination: Destination) => void;
@@ -74,10 +74,14 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
     // Apply sorting
     if (sortOption === 'rating-desc') {
       result = [...result].sort((a, b) => b.rating - a.rating);
-    } else if (sortOption === 'price-asc') {
-      result = [...result].sort((a, b) => a.pricePerNight - b.pricePerNight);
-    } else if (sortOption === 'price-desc') {
-      result = [...result].sort((a, b) => b.pricePerNight - a.pricePerNight);
+    } else if (sortOption === 'popularity-desc') {
+      result = [...result].sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+    } else if (sortOption === 'duration-asc') {
+      result = [...result].sort((a, b) => {
+        const da = parseInt(a.duration.split(' ')[0], 10) || 3;
+        const db = parseInt(b.duration.split(' ')[0], 10) || 3;
+        return da - db;
+      });
     }
 
     return result;
@@ -93,10 +97,10 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
     switch (sortOption) {
       case 'rating-desc':
         return 'Rating: High to Low';
-      case 'price-asc':
-        return 'Price: Low to High';
-      case 'price-desc':
-        return 'Price: High to Low';
+      case 'popularity-desc':
+        return 'Most Popular';
+      case 'duration-asc':
+        return 'Short Trips First';
       default:
         return 'Recommended';
     }
@@ -240,22 +244,15 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
                         >
                           {dest.location}
                         </Text>
-                        <View style={styles.popularPriceRow}>
-                          <Text
-                            style={[
-                              styles.popularPriceText,
-                              { color: theme.primaryLight },
-                            ]}
-                          >
-                            ₹{dest.pricePerNight.toLocaleString('en-IN')}
-                          </Text>
+                        <View style={styles.popularDurationRow}>
+                          <MaterialIcons name="schedule" size={10} color={theme.primary} />
                           <Text
                             style={[
                               styles.popularDurationText,
-                              { color: theme.textMuted },
+                              { color: theme.primaryLight },
                             ]}
                           >
-                            • {dest.duration.split(' ')[0]} {dest.duration.split(' ')[1]}
+                            {dest.duration}
                           </Text>
                         </View>
                       </View>
@@ -346,8 +343,8 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
                   [
                     { id: 'recommended', label: 'Recommended' },
                     { id: 'rating-desc', label: 'Rating: High to Low' },
-                    { id: 'price-asc', label: 'Price: Low to High' },
-                    { id: 'price-desc', label: 'Price: High to Low' },
+                    { id: 'popularity-desc', label: 'Most Popular' },
+                    { id: 'duration-asc', label: 'Short Trips First' },
                   ] as { id: SortOption; label: string }[]
                 ).map((opt) => (
                   <TouchableOpacity
@@ -597,17 +594,14 @@ const styles = StyleSheet.create({
     fontSize: 10,
     marginBottom: 4,
   },
-  popularPriceRow: {
+  popularDurationRow: {
     flexDirection: 'row',
-    alignItems: 'baseline',
-  },
-  popularPriceText: {
-    fontSize: 11,
-    fontWeight: '800',
+    alignItems: 'center',
+    gap: 3,
   },
   popularDurationText: {
-    fontSize: 9.5,
-    marginLeft: 2,
+    fontSize: 10,
+    fontWeight: '700',
   },
   categorySection: {
     marginVertical: Spacing.xs + 2,

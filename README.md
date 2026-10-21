@@ -37,9 +37,9 @@ The application blends a contemplative dark-mode visual palette with real-world 
 ### 2. 🎯 Smart Destination Matcher ("Find My Trip")
 * **Interactive Preferences**:
   * **Travel Style**: Mountains, Beach, Heritage, Adventure, Nature, Culture
-  * **Budget Tier**: Budget, Moderate, Premium
+  * **Travel Pace**: Relaxed (Scenic & Serene), Curated (Balanced Highlights), Immersive (Trails & Expeditions)
   * **Duration**: 1–2 days, 3–4 days, 5+ days
-* **Dynamic Ranking Engine**: Calculates multi-weighted compatibility scores (e.g., *"Munnar — 96% Match"*, *"Pangong Tso — 94% Match"*) based on category correlation, tag semantics, budget proximity, duration alignment, and user rating.
+* **Dynamic Ranking Engine**: Calculates multi-weighted compatibility scores (e.g., *"Munnar — 96% Match"*, *"Pangong Tso — 94% Match"*) based on category correlation, tag semantics, exploration pace alignment, duration compatibility, and user rating.
 * **Instant Navigation**: Tapping any ranked match card opens its comprehensive Details screen.
 
 ### 3. 🎲 "Surprise Me" Itinerary Discovery

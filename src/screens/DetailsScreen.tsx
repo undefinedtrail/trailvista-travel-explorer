@@ -568,55 +568,50 @@ export const DetailsScreen: React.FC<DetailsScreenProps> = ({
           },
         ]}
       >
-        <View style={styles.priceColumn}>
-          <View style={styles.bottomPriceRow}>
-            <Text style={[styles.bottomCurrency, { color: theme.text }]}>₹</Text>
-            <Text style={[styles.bottomAmount, { color: theme.text }]}>
-              {destination.pricePerNight.toLocaleString('en-IN')}
-            </Text>
-            <Text style={[styles.bottomUnit, { color: theme.textMuted }]}>
-              / night
-            </Text>
-          </View>
+        <View style={styles.explorationInfoColumn}>
+          <Text style={[styles.bottomDurationText, { color: theme.text }]}>
+            {destination.duration}
+          </Text>
           <View style={styles.stayBadgeRow}>
-            <View style={[styles.greenDot, { backgroundColor: '#10B981' }]} />
-            <Text style={styles.stayBadgeText}>Heritage Stay Included</Text>
+            <MaterialIcons name="explore" size={12} color={theme.primary} />
+            <Text style={[styles.explorationBadgeText, { color: theme.textMuted }]}>
+              {destination.state} • {destination.category}
+            </Text>
           </View>
         </View>
 
-        <View style={styles.actionButtonsRow}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={onToggleWishlist}
+        <TouchableOpacity
+          activeOpacity={0.85}
+          onPress={() => {
+            onToggleWishlist();
+            onShowToast(
+              isSaved
+                ? `Removed ${destination.name} from your travel wishlist.`
+                : `Saved ${destination.name} to your travel wishlist!`
+            );
+          }}
+          style={[
+            styles.wishlistCtaButton,
+            {
+              backgroundColor: isSaved ? theme.card : theme.primary,
+              borderColor: isSaved ? theme.cardBorder : theme.primary,
+            },
+          ]}
+        >
+          <MaterialIcons
+            name={isSaved ? 'bookmark' : 'bookmark-border'}
+            size={18}
+            color={isSaved ? theme.primaryLight : '#FFFFFF'}
+          />
+          <Text
             style={[
-              styles.wishlistBarButton,
-              {
-                backgroundColor: theme.card,
-                borderColor: theme.cardBorder,
-              },
+              styles.wishlistCtaText,
+              { color: isSaved ? theme.text : '#FFFFFF' },
             ]}
-            accessibilityLabel="Toggle wishlist"
           >
-            <MaterialIcons
-              name={isSaved ? 'favorite' : 'favorite-border'}
-              size={22}
-              color={isSaved ? '#E06D46' : theme.text}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            activeOpacity={0.85}
-            onPress={() =>
-              onShowToast(
-                `Journey reserved for ${destination.name}! Booking details saved.`
-              )
-            }
-            style={[styles.bookButton, { backgroundColor: theme.primary }]}
-          >
-            <MaterialIcons name="flight-takeoff" size={16} color="#FFFFFF" />
-            <Text style={styles.bookButtonText}>Book Expedition</Text>
-          </TouchableOpacity>
-        </View>
+            {isSaved ? 'Saved to Wishlist' : 'Save Expedition'}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -985,26 +980,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  priceColumn: {
+  explorationInfoColumn: {
     justifyContent: 'center',
   },
-  bottomPriceRow: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-  },
-  bottomCurrency: {
-    fontSize: 13,
-    fontWeight: '700',
-    marginRight: 1,
-  },
-  bottomAmount: {
-    fontSize: 20,
+  bottomDurationText: {
+    fontSize: 16,
     fontWeight: '800',
-    letterSpacing: -0.5,
-  },
-  bottomUnit: {
-    fontSize: 11,
-    marginLeft: 2,
+    letterSpacing: -0.2,
   },
   stayBadgeRow: {
     flexDirection: 'row',
@@ -1012,45 +994,26 @@ const styles = StyleSheet.create({
     gap: 4,
     marginTop: 2,
   },
-  greenDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
+  explorationBadgeText: {
+    fontSize: 11,
+    fontWeight: '500',
   },
-  stayBadgeText: {
-    color: '#34D399',
-    fontSize: 10,
-    fontWeight: '600',
-  },
-  actionButtonsRow: {
+  wishlistCtaButton: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-  },
-  wishlistBarButton: {
-    width: 44,
-    height: 44,
-    borderRadius: BorderRadius.md,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  bookButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
     paddingHorizontal: 18,
     height: 44,
     borderRadius: BorderRadius.md,
+    borderWidth: 1,
     shadowColor: '#C2512D',
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.25,
     shadowRadius: 6,
   },
-  bookButtonText: {
-    color: '#FFFFFF',
+  wishlistCtaText: {
     fontSize: 13,
     fontWeight: '700',
-    letterSpacing: 0.4,
+    letterSpacing: 0.3,
   },
   itinerarySection: {
     marginBottom: Spacing.md,

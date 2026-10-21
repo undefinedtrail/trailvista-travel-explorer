@@ -201,12 +201,10 @@ export const WishlistScreen: React.FC<WishlistScreenProps> = ({
                     </Text>
                   </View>
                 </View>
-                <View style={styles.cardPriceBox}>
-                  <Text style={[styles.cardPriceNumber, { color: theme.primaryLight }]}>
-                    ₹{item.pricePerNight.toLocaleString('en-IN')}
-                  </Text>
-                  <Text style={[styles.cardPriceUnit, { color: theme.textMuted }]}>
-                    / night
+                <View style={[styles.cardDurationBadge, { backgroundColor: theme.chipIdle }]}>
+                  <MaterialIcons name="schedule" size={11} color={theme.primary} />
+                  <Text style={[styles.cardDurationText, { color: theme.text }]}>
+                    {item.duration}
                   </Text>
                 </View>
               </View>
@@ -471,15 +469,18 @@ const styles = StyleSheet.create({
     fontSize: 11,
     marginLeft: 2,
   },
-  cardPriceBox: {
-    alignItems: 'flex-end',
+  cardDurationBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 7,
+    paddingVertical: 3.5,
+    borderRadius: BorderRadius.xs,
   },
-  cardPriceNumber: {
-    fontSize: 16,
-    fontWeight: '800',
-  },
-  cardPriceUnit: {
-    fontSize: 9,
+  cardDurationText: {
+    fontSize: 10.5,
+    fontWeight: '700',
+    letterSpacing: 0.2,
   },
   cardExcerpt: {
     fontSize: 12,

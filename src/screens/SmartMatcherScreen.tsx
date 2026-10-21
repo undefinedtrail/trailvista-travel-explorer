@@ -29,10 +29,10 @@ const TRAVEL_STYLES = [
   'Culture',
 ];
 
-const BUDGET_OPTIONS = [
-  { id: 'Budget', label: 'Budget', sub: 'Under ₹2.2k' },
-  { id: 'Moderate', label: 'Moderate', sub: '₹2.2k – ₹3.2k' },
-  { id: 'Premium', label: 'Premium', sub: '₹3.2k+' },
+const PACE_OPTIONS = [
+  { id: 'Relaxed', label: 'Relaxed', sub: 'Scenic & Serene' },
+  { id: 'Curated', label: 'Curated', sub: 'Balanced Highlights' },
+  { id: 'Immersive', label: 'Immersive', sub: 'Trails & Expeditions' },
 ];
 
 const DURATION_OPTIONS = ['1–2 days', '3–4 days', '5+ days'];
@@ -44,7 +44,7 @@ export const SmartMatcherScreen: React.FC<SmartMatcherScreenProps> = ({
   theme,
 }) => {
   const [selectedStyle, setSelectedStyle] = useState<string>('Mountains');
-  const [selectedBudget, setSelectedBudget] = useState<string>('Moderate');
+  const [selectedPace, setSelectedPace] = useState<string>('Curated');
   const [selectedDuration, setSelectedDuration] = useState<string>('3–4 days');
 
   // Dynamically compute ranked matches
@@ -80,31 +80,38 @@ export const SmartMatcherScreen: React.FC<SmartMatcherScreenProps> = ({
         score += 15;
       }
 
-      // 2. Budget Scoring (up to 30 pts)
-      if (selectedBudget === 'Budget') {
-        if (dest.pricePerNight <= 2200) {
+      // 2. Pace & Experience Scoring (up to 30 pts)
+      if (selectedPace === 'Relaxed') {
+        if (
+          dest.category === 'Beaches' ||
+          dest.tags.some((t) =>
+            ['Backwaters', 'Tea Plantations', 'Lakes', 'Spiritual'].includes(t)
+          )
+        ) {
           score += 30;
-          reasons.push('Budget Match');
-        } else if (dest.pricePerNight <= 2800) {
-          score += 20;
+          reasons.push('Relaxed Pace');
         } else {
-          score += 10;
+          score += 15;
         }
-      } else if (selectedBudget === 'Moderate') {
-        if (dest.pricePerNight >= 2000 && dest.pricePerNight <= 3400) {
+      } else if (selectedPace === 'Curated') {
+        if (dest.category === 'Heritage' || dest.rating >= 4.7) {
           score += 30;
-          reasons.push('Budget Fit');
+          reasons.push('Curated Highlights');
         } else {
           score += 20;
         }
-      } else if (selectedBudget === 'Premium') {
-        if (dest.pricePerNight >= 3200) {
+      } else if (selectedPace === 'Immersive') {
+        if (
+          dest.category === 'Adventure' ||
+          dest.category === 'Mountains' ||
+          dest.tags.some((t) =>
+            ['High Passes', 'Safaris', 'Caving', 'White Water'].includes(t)
+          )
+        ) {
           score += 30;
-          reasons.push('Premium Tier');
-        } else if (dest.pricePerNight >= 2500) {
-          score += 20;
+          reasons.push('Expedition Match');
         } else {
-          score += 10;
+          score += 15;
         }
       }
 
@@ -150,7 +157,7 @@ export const SmartMatcherScreen: React.FC<SmartMatcherScreenProps> = ({
 
     // Sort descending by match score
     return list.sort((a, b) => b.matchPercent - a.matchPercent);
-  }, [selectedStyle, selectedBudget, selectedDuration]);
+  }, [selectedStyle, selectedPace, selectedDuration]);
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -213,19 +220,19 @@ export const SmartMatcherScreen: React.FC<SmartMatcherScreenProps> = ({
               </ScrollView>
             </View>
 
-            {/* Budget Selector */}
+            {/* Travel Pace Selector */}
             <View style={styles.controlGroup}>
               <Text style={[styles.groupLabel, { color: theme.textSecondary }]}>
-                BUDGET
+                TRAVEL PACE
               </Text>
               <View style={styles.budgetRow}>
-                {BUDGET_OPTIONS.map((item) => {
-                  const isSelected = selectedBudget === item.id;
+                {PACE_OPTIONS.map((item) => {
+                  const isSelected = selectedPace === item.id;
                   return (
                     <TouchableOpacity
                       key={item.id}
                       activeOpacity={0.7}
-                      onPress={() => setSelectedBudget(item.id)}
+                      onPress={() => setSelectedPace(item.id)}
                       style={[
                         styles.budgetCard,
                         {
@@ -384,17 +391,17 @@ export const SmartMatcherScreen: React.FC<SmartMatcherScreenProps> = ({
                 {/* Metadata Row */}
                 <View style={styles.metaRow}>
                   <View style={styles.metaLeft}>
-                    <Text style={[styles.metaPrice, { color: theme.text }]}>
-                      ₹{dest.pricePerNight.toLocaleString('en-IN')}
+                    <Text style={[styles.metaDuration, { color: theme.text }]}>
+                      {dest.duration}
                     </Text>
-                    <Text style={[styles.metaPriceSub, { color: theme.textMuted }]}>
-                      / night • {dest.duration}
+                    <Text style={[styles.metaDurationSub, { color: theme.textMuted }]}>
+                      • {dest.state}
                     </Text>
                   </View>
 
                   <View style={styles.viewLink}>
                     <Text style={[styles.viewLinkText, { color: theme.primaryLight }]}>
-                      View Itinerary
+                      Explore Itinerary
                     </Text>
                     <MaterialIcons name="arrow-forward" size={14} color={theme.primaryLight} />
                   </View>
@@ -619,11 +626,11 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     gap: 4,
   },
-  metaPrice: {
-    fontSize: 15,
+  metaDuration: {
+    fontSize: 14,
     fontWeight: '800',
   },
-  metaPriceSub: {
+  metaDurationSub: {
     fontSize: 11,
   },
   viewLink: {

@@ -128,15 +128,12 @@ export const DestinationCard: React.FC<DestinationCardProps> = ({
             </Text>
           </View>
 
-          {/* Price */}
-          <View style={styles.priceContainer}>
-            <View style={styles.priceRow}>
-              <Text style={[styles.currencySymbol, { color: theme.primaryLight }]}>₹</Text>
-              <Text style={[styles.priceAmount, { color: theme.primaryLight }]}>
-                {destination.pricePerNight.toLocaleString('en-IN')}
-              </Text>
-            </View>
-            <Text style={[styles.priceUnit, { color: theme.textMuted }]}>/ night</Text>
+          {/* Duration Badge */}
+          <View style={[styles.durationBadge, { backgroundColor: theme.chipIdle }]}>
+            <MaterialIcons name="schedule" size={12} color={theme.primary} />
+            <Text style={[styles.durationBadgeText, { color: theme.text }]}>
+              {destination.duration}
+            </Text>
           </View>
         </View>
 
@@ -363,26 +360,18 @@ const styles = StyleSheet.create({
     letterSpacing: -0.3,
     lineHeight: 21,
   },
-  priceContainer: {
-    alignItems: 'flex-end',
-  },
-  priceRow: {
+  durationBadge: {
     flexDirection: 'row',
-    alignItems: 'baseline',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: BorderRadius.xs,
   },
-  currencySymbol: {
-    fontSize: 13,
+  durationBadgeText: {
+    fontSize: 11,
     fontWeight: '700',
-    marginRight: 1,
-  },
-  priceAmount: {
-    fontSize: 17,
-    fontWeight: '800',
-    letterSpacing: -0.3,
-  },
-  priceUnit: {
-    fontSize: 9.5,
-    fontWeight: '500',
+    letterSpacing: 0.2,
   },
   description: {
     fontSize: 12,
