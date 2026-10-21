@@ -30,9 +30,9 @@ const TRAVEL_STYLES = [
 ];
 
 const BUDGET_OPTIONS = [
-  { id: 'Budget', label: 'Budget', sub: 'Under ₹4.5k' },
-  { id: 'Moderate', label: 'Moderate', sub: '₹4.5k – ₹6k' },
-  { id: 'Premium', label: 'Premium', sub: '₹6k+' },
+  { id: 'Budget', label: 'Budget', sub: 'Under ₹2.2k' },
+  { id: 'Moderate', label: 'Moderate', sub: '₹2.2k – ₹3.2k' },
+  { id: 'Premium', label: 'Premium', sub: '₹3.2k+' },
 ];
 
 const DURATION_OPTIONS = ['1–2 days', '3–4 days', '5+ days'];
@@ -82,26 +82,26 @@ export const SmartMatcherScreen: React.FC<SmartMatcherScreenProps> = ({
 
       // 2. Budget Scoring (up to 30 pts)
       if (selectedBudget === 'Budget') {
-        if (dest.pricePerNight <= 4500) {
+        if (dest.pricePerNight <= 2200) {
           score += 30;
           reasons.push('Budget Match');
-        } else if (dest.pricePerNight <= 5400) {
+        } else if (dest.pricePerNight <= 2800) {
           score += 20;
         } else {
           score += 10;
         }
       } else if (selectedBudget === 'Moderate') {
-        if (dest.pricePerNight >= 4200 && dest.pricePerNight <= 6000) {
+        if (dest.pricePerNight >= 2000 && dest.pricePerNight <= 3400) {
           score += 30;
           reasons.push('Budget Fit');
         } else {
           score += 20;
         }
       } else if (selectedBudget === 'Premium') {
-        if (dest.pricePerNight >= 5800) {
+        if (dest.pricePerNight >= 3200) {
           score += 30;
           reasons.push('Premium Tier');
-        } else if (dest.pricePerNight >= 4500) {
+        } else if (dest.pricePerNight >= 2500) {
           score += 20;
         } else {
           score += 10;
