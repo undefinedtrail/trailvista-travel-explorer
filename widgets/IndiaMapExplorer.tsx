@@ -95,7 +95,11 @@ export const IndiaMapExplorer: React.FC<IndiaMapExplorerProps> = ({
           style={[styles.activeStateBadge, { backgroundColor: theme.chipIdle }]}
         >
           <MaterialIcons name="my-location" size={11} color={theme.primary} />
-          <Text style={[styles.activeStateBadgeText, { color: theme.primaryLight }]}>
+          <Text
+            style={[styles.activeStateBadgeText, { color: theme.primaryLight }]}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
             {selectedState === 'all'
               ? 'Showing All'
               : STATE_PINS[selectedState]?.name || 'State View'}

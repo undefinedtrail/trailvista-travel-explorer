@@ -86,45 +86,34 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
           <View style={styles.headerArea}>
-            {/* Top Field Repositories Row */}
-            <View style={styles.topDispatchRow}>
-              <View style={styles.dispatchPill}>
-                <View style={[styles.pulseDot, { backgroundColor: theme.primary }]} />
-                <Text style={[styles.dispatchText, { color: theme.primaryLight }]}>
-                  YĀTRĀ • INDIA EXPEDITION NOTEBOOK
-                </Text>
+            {/* Top Saved Shortcut */}
+            {wishlistIds.length > 0 && (
+              <View style={styles.topDispatchRow}>
+                <View style={{ flex: 1 }} />
+                <TouchableOpacity
+                  onPress={onNavigateToWishlist}
+                  style={[
+                    styles.savedHeaderChip,
+                    {
+                      backgroundColor: theme.chipIdle,
+                      borderColor: theme.cardBorder,
+                    },
+                  ]}
+                >
+                  <MaterialIcons name="bookmark" size={13} color={theme.gold} />
+                  <Text style={[styles.savedHeaderText, { color: theme.textSecondary }]}>
+                    {wishlistIds.length} Saved
+                  </Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                onPress={onNavigateToWishlist}
-                style={[
-                  styles.savedHeaderChip,
-                  {
-                    backgroundColor: theme.chipIdle,
-                    borderColor: theme.cardBorder,
-                  },
-                ]}
-              >
-                <MaterialIcons name="bookmark" size={13} color={theme.gold} />
-                <Text style={[styles.savedHeaderText, { color: theme.textSecondary }]}>
-                  {wishlistIds.length} Saved
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* Main Editorial Headline */}
-            <Text style={[styles.mainHeadline, { color: theme.text }]}>
-              India Journey Explorer
-            </Text>
-            <Text style={[styles.subHeadline, { color: theme.textMuted }]}>
-              Interactive vector map discovery across high Himalayan passes, sacred ghats, and coastal lagoons.
-            </Text>
+            )}
 
             {/* Horizontal State Chips Navigation Bar */}
             <View style={styles.sectionHeaderRow}>
               <View style={styles.sectionTitleWrap}>
                 <MaterialIcons name="place" size={14} color={theme.primary} />
                 <Text style={[styles.sectionTitle, { color: theme.textMuted }]}>
-                  SELECT REGION ({STATES_LIST.length - 1} STATES)
+                  REGIONS
                 </Text>
               </View>
               {selectedState !== 'all' && (
@@ -133,7 +122,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                   style={styles.resetLink}
                 >
                   <Text style={[styles.resetLinkText, { color: theme.primaryLight }]}>
-                    View All States
+                    View All
                   </Text>
                 </TouchableOpacity>
               )}

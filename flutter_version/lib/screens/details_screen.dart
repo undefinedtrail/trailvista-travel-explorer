@@ -77,29 +77,7 @@ class DetailsScreen extends StatelessWidget {
                                 child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
                               ),
                             ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              decoration: BoxDecoration(
-                                color: Colors.black54,
-                                borderRadius: BorderRadius.circular(9999),
-                                border: Border.all(color: Colors.white24),
-                              ),
-                              child: const Row(
-                                children: [
-                                  CircleAvatar(radius: 3, backgroundColor: AppTheme.primary),
-                                  SizedBox(width: 6),
-                                  Text(
-                                    'EXPEDITION DOSSIER',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.w800,
-                                      letterSpacing: 0.8,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            const SizedBox.shrink(),
                             GestureDetector(
                               onTap: onToggleWishlist,
                               child: Container(

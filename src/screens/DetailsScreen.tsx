@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Image,
+  Linking,
   ScrollView,
   StyleSheet,
   Text,
@@ -59,12 +60,7 @@ export const DetailsScreen: React.FC<DetailsScreenProps> = ({
               <MaterialIcons name="arrow-back" size={20} color="#FFFFFF" />
             </TouchableOpacity>
 
-            <View style={styles.heroTopBadges}>
-              <View style={styles.dispatchPill}>
-                <View style={[styles.pulseDot, { backgroundColor: theme.primary }]} />
-                <Text style={styles.dispatchText}>EXPEDITION DOSSIER</Text>
-              </View>
-            </View>
+            <View style={{ flex: 1 }} />
 
             <TouchableOpacity
               activeOpacity={0.8}
@@ -181,6 +177,37 @@ export const DetailsScreen: React.FC<DetailsScreenProps> = ({
             </View>
           </View>
 
+          {/* Interactive Google Maps Navigation Card */}
+          <TouchableOpacity
+            style={[
+              styles.googleMapsCard,
+              {
+                backgroundColor: theme.card,
+                borderColor: theme.cardBorder,
+              },
+            ]}
+            activeOpacity={0.7}
+            onPress={() => {
+              const query = encodeURIComponent(`${destination.name}, ${destination.location}`);
+              Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${query}`);
+            }}
+          >
+            <View style={styles.googleMapsLeft}>
+              <View style={[styles.mapIconCircle, { backgroundColor: 'rgba(194, 81, 45, 0.15)' }]}>
+                <MaterialIcons name="map" size={18} color={theme.primary} />
+              </View>
+              <View style={styles.googleMapsTextCol}>
+                <Text style={[styles.googleMapsTitle, { color: theme.text }]}>
+                  Open in Google Maps
+                </Text>
+                <Text style={[styles.googleMapsSubtitle, { color: theme.textMuted }]} numberOfLines={1}>
+                  {destination.location}
+                </Text>
+              </View>
+            </View>
+            <MaterialIcons name="open-in-new" size={16} color={theme.primaryLight} />
+          </TouchableOpacity>
+
           {/* Overview Description Section */}
           <View
             style={[
@@ -196,7 +223,7 @@ export const DetailsScreen: React.FC<DetailsScreenProps> = ({
                 style={[styles.sectionIndicator, { backgroundColor: theme.primary }]}
               />
               <Text style={[styles.sectionTitle, { color: theme.text }]}>
-                EXPEDITION OVERVIEW
+                OVERVIEW
               </Text>
             </View>
             <Text
@@ -290,7 +317,7 @@ export const DetailsScreen: React.FC<DetailsScreenProps> = ({
               <View style={styles.sectionHeaderRow}>
                 <View style={[styles.sectionIndicator, { backgroundColor: theme.primary }]} />
                 <Text style={[styles.sectionTitle, { color: theme.text }]}>
-                  EXPEDITION BLUEPRINT ({destination.duration.toUpperCase()})
+                  ITINERARY ({destination.duration.toUpperCase()})
                 </Text>
               </View>
 
@@ -369,7 +396,7 @@ export const DetailsScreen: React.FC<DetailsScreenProps> = ({
               <View style={styles.sectionHeaderRow}>
                 <View style={[styles.sectionIndicator, { backgroundColor: '#F59E0B' }]} />
                 <Text style={[styles.sectionTitle, { color: theme.text }]}>
-                  CURATOR'S FIELD DOSSIER
+                  LOCAL INSIGHTS & GUIDE
                 </Text>
               </View>
 
@@ -493,7 +520,7 @@ export const DetailsScreen: React.FC<DetailsScreenProps> = ({
             activeOpacity={0.85}
             onPress={() =>
               onShowToast(
-                `Expedition reserved for ${destination.name}! Booking dossier saved.`
+                `Journey reserved for ${destination.name}! Booking details saved.`
               )
             }
             style={[styles.bookButton, { backgroundColor: theme.primary }]}
@@ -665,6 +692,40 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '700',
     marginTop: 2,
+  },
+  googleMapsCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: Spacing.sm + 2,
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    marginBottom: Spacing.md,
+  },
+  googleMapsLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    flex: 1,
+    marginRight: 8,
+  },
+  mapIconCircle: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  googleMapsTextCol: {
+    flex: 1,
+  },
+  googleMapsTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  googleMapsSubtitle: {
+    fontSize: 11,
+    marginTop: 1,
   },
   overviewCard: {
     padding: Spacing.md,

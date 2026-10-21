@@ -81,22 +81,15 @@ export const WishlistScreen: React.FC<WishlistScreenProps> = ({
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
           <View style={styles.headerSection}>
-            <View style={styles.topLabelRow}>
-              <MaterialIcons name="bookmarks" size={14} color={theme.gold} />
-              <Text style={[styles.topLabel, { color: theme.primaryLight }]}>
-                FIELD REPOSITORY & ARCHIVES
+            <View style={styles.headerTitleRow}>
+              <Text style={[styles.mainTitle, { color: theme.text }]}>
+                Saved Journeys
               </Text>
-            </View>
-
-            <Text style={[styles.mainTitle, { color: theme.text }]}>
-              Saved Journeys
-            </Text>
-
-            <View style={styles.statusIndicatorRow}>
-              <View style={[styles.activeDot, { backgroundColor: theme.primary }]} />
-              <Text style={[styles.statusText, { color: theme.textMuted }]}>
-                {savedDestinations.length} destinations persisted via local storage (AsyncStorage)
-              </Text>
+              <View style={[styles.savedCountBadge, { backgroundColor: theme.chipIdle }]}>
+                <Text style={[styles.savedCountText, { color: theme.primaryLight }]}>
+                  {savedDestinations.length}
+                </Text>
+              </View>
             </View>
 
             {/* Category Filter Chips */}
@@ -223,7 +216,7 @@ export const WishlistScreen: React.FC<WishlistScreenProps> = ({
                   <Text
                     style={[styles.viewDossierText, { color: theme.primaryLight }]}
                   >
-                    View Dossier
+                    View Details
                   </Text>
                   <MaterialIcons
                     name="arrow-forward"
@@ -319,36 +312,25 @@ const styles = StyleSheet.create({
   headerSection: {
     marginBottom: Spacing.md,
   },
-  topLabelRow: {
+  headerTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    marginBottom: 4,
+    gap: 8,
+    marginBottom: Spacing.xs,
   },
-  topLabel: {
-    fontSize: 10,
-    fontWeight: '800',
-    letterSpacing: 1,
+  savedCountBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: BorderRadius.full,
+  },
+  savedCountText: {
+    fontSize: 12,
+    fontWeight: '700',
   },
   mainTitle: {
     fontSize: 26,
     fontWeight: '800',
     letterSpacing: -0.6,
-    marginBottom: 4,
-  },
-  statusIndicatorRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginBottom: Spacing.sm,
-  },
-  activeDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-  },
-  statusText: {
-    fontSize: 11,
   },
   filterChipsRow: {
     paddingVertical: 6,

@@ -1,5 +1,12 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Attraction } from '../models/Attraction';
 import { ThemeColors, BorderRadius, Spacing } from '../constants/theme';
@@ -33,6 +40,17 @@ export const AttractionCard: React.FC<AttractionCardProps> = ({ attraction, them
           <View style={[styles.tagBadge, { backgroundColor: theme.primary }]}>
             <Text style={styles.tagBadgeText}>{attraction.tag}</Text>
           </View>
+          <TouchableOpacity
+            style={styles.mapPill}
+            activeOpacity={0.7}
+            onPress={() => {
+              const q = encodeURIComponent(attraction.name);
+              Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${q}`);
+            }}
+          >
+            <MaterialIcons name="directions" size={12} color="#FFFFFF" style={{ marginRight: 2 }} />
+            <Text style={styles.mapPillText}>Maps</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Bottom Metadata inside Image */}
@@ -92,7 +110,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     left: 8,
+    right: 8,
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  mapPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: BorderRadius.xs,
+  },
+  mapPillText: {
+    color: '#FFFFFF',
+    fontSize: 9,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
   tagBadge: {
     paddingHorizontal: 8,

@@ -95,10 +95,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
         ListHeaderComponent={
           <View style={styles.headerSection}>
             <Text style={[styles.title, { color: theme.text }]}>
-              Search & Filter
-            </Text>
-            <Text style={[styles.subtitle, { color: theme.textMuted }]}>
-              Instant real-time search across destinations, states, and curated categories.
+              Search
             </Text>
 
             {/* Real-time Search Input */}
@@ -111,12 +108,6 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
 
             {/* Horizontal Category Chips */}
             <View style={styles.categorySection}>
-              <View style={styles.categoryLabelRow}>
-                <MaterialIcons name="filter-list" size={13} color={theme.primaryLight} />
-                <Text style={[styles.categoryHeaderLabel, { color: theme.textMuted }]}>
-                  CATEGORY FILTER:
-                </Text>
-              </View>
 
               <ScrollView
                 horizontal

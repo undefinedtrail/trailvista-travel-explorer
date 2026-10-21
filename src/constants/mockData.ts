@@ -40,16 +40,16 @@ export const STATES_LIST = [
 ];
 
 export const STATE_PINS: Record<string, StatePin> = {
-  ladakh: { id: 'ladakh', name: 'Ladakh', top: 13, left: 42 },
-  himachal: { id: 'himachal', name: 'Himachal Pradesh', top: 18, left: 32 },
-  rajasthan: { id: 'rajasthan', name: 'Rajasthan', top: 35, left: 21 },
-  uttar_pradesh: { id: 'uttar_pradesh', name: 'Uttar Pradesh', top: 34, left: 45 },
-  assam: { id: 'assam', name: 'Assam', top: 34, left: 78 },
-  maharashtra: { id: 'maharashtra', name: 'Maharashtra', top: 60, left: 26 },
-  andhra_pradesh: { id: 'andhra_pradesh', name: 'Andhra Pradesh', top: 76, left: 46 },
-  karnataka: { id: 'karnataka', name: 'Karnataka', top: 74, left: 26 },
-  kerala: { id: 'kerala', name: 'Kerala', top: 84, left: 27 },
-  tamil_nadu: { id: 'tamil_nadu', name: 'Tamil Nadu', top: 89, left: 35 },
+  ladakh: { id: 'ladakh', name: 'Ladakh', top: 11, left: 38 },
+  himachal: { id: 'himachal', name: 'Himachal Pradesh', top: 20, left: 33 },
+  rajasthan: { id: 'rajasthan', name: 'Rajasthan', top: 34, left: 23 },
+  uttar_pradesh: { id: 'uttar_pradesh', name: 'Uttar Pradesh', top: 36, left: 46 },
+  assam: { id: 'assam', name: 'Assam', top: 35, left: 83 },
+  maharashtra: { id: 'maharashtra', name: 'Maharashtra', top: 56, left: 30 },
+  andhra_pradesh: { id: 'andhra_pradesh', name: 'Andhra Pradesh', top: 67, left: 45 },
+  karnataka: { id: 'karnataka', name: 'Karnataka', top: 70, left: 29 },
+  kerala: { id: 'kerala', name: 'Kerala', top: 85, left: 28 },
+  tamil_nadu: { id: 'tamil_nadu', name: 'Tamil Nadu', top: 86, left: 36 },
 };
 
 export const STATE_DATABASE: Record<string, StateInfo> = {
@@ -308,27 +308,34 @@ export const MOCK_DESTINATIONS: Destination[] = [
       },
     ],
     itineraryPlan: [
-      {
-            "day": "Day 1",
-            "title": "Kettuvallam Boarding & Palm Waterways",
-            "morning": "11:30 AM: Welcome coconut drink aboard private handcrafted eco-luxury Kettuvallam at Punnamada jetty. Houseboat sets sail along Vembanad Lake.",
-            "afternoon": "01:30 PM: Traditional lunch prepared by private onboard chef featuring fresh pearl spot fish (Karimeen) and Kerala red rice.",
-            "evening": "05:30 PM: Anchor near Champakulam village. Walking tour of 427 CE St. Mary Basilica and peaceful palm-fringed village paths."
-      },
-      {
-            "day": "Day 2",
-            "title": "Narrow Canal Canoe Safari & Coir Crafts",
-            "morning": "06:00 AM: Silent wooden canoe safari gliding through narrow inland waterways inaccessible to large boats. Birdwatching at dawn.",
-            "afternoon": "02:00 PM: Visit traditional cottage coir-spinning units and watch skilled artisans weaving coconut fiber into ropes and mats.",
-            "evening": "05:45 PM: Sunset cruise across the wide open waters of Vembanad Lake, followed by candlelit dinner on the open boat deck."
-      },
-      {
-            "day": "Day 3",
-            "title": "Arabian Shoreline & Artisan Farewell",
-            "morning": "08:30 AM: Disembark at jetty. Drive 30 minutes to Marari Beach for a peaceful morning walk along golden sands and coconut groves.",
-            "afternoon": "12:30 PM: Fresh seafood lunch at beachside shack before visiting Alleppey lighthouse museum.",
-            "evening": "04:00 PM: Transfer to Kochi Airport or Alappuzha railway station for onward departure."
-      }
+  {
+    "day": "Day 1",
+    "title": "Kettuvallam Boarding & Palm Waterways",
+    "morning": "11:30 AM: Welcome coconut drink aboard private handcrafted eco-luxury Kettuvallam at Punnamada jetty. Houseboat sets sail along Vembanad Lake.",
+    "afternoon": "01:30 PM: Traditional lunch prepared by private onboard chef featuring fresh pearl spot fish (Karimeen) and Kerala red rice.",
+    "evening": "05:30 PM: Anchor near Champakulam village. Walking tour of 427 CE St. Mary Basilica and peaceful palm-fringed village paths."
+  },
+  {
+    "day": "Day 2",
+    "title": "Narrow Canal Canoe Safari & Coir Crafts",
+    "morning": "06:00 AM: Silent wooden canoe safari gliding through narrow inland waterways inaccessible to large boats. Birdwatching at dawn.",
+    "afternoon": "02:00 PM: Visit traditional cottage coir-spinning units and watch skilled artisans weaving coconut fiber into ropes and mats.",
+    "evening": "05:45 PM: Sunset cruise across the wide open waters of Vembanad Lake, followed by candlelit dinner on the open boat deck."
+  },
+  {
+    "day": "Day 3",
+    "title": "Kumarakom Sanctuary & Sub-Sea Level Paddy Fields",
+    "morning": "06:30 AM: Sunrise excursion across to Kumarakom Bird Sanctuary on the eastern lake bank to spot migratory Siberian storks, herons, and kingfishers.",
+    "afternoon": "01:00 PM: Drift through Kuttanad, the 'Rice Bowl of Kerala', where farming is uniquely conducted 4 to 10 feet below sea level.",
+    "evening": "06:00 PM: Twilight Ayurvedic herbal relaxation session aboard the houseboat, accompanied by live flute melodies on deck."
+  },
+  {
+    "day": "Day 4",
+    "title": "Arabian Shoreline & Artisan Farewell",
+    "morning": "08:30 AM: Disembark at jetty. Drive 30 minutes to Marari Beach for a peaceful morning walk along golden sands and coconut groves.",
+    "afternoon": "12:30 PM: Fresh seafood lunch at beachside shack before visiting Alleppey lighthouse museum.",
+    "evening": "04:00 PM: Transfer to Kochi Airport or Alappuzha railway station for onward departure."
+  }
 ],
     fieldNotes: {
       "culinary": "Must try: Karimeen Pollichathu wrapped and roasted in banana leaf, duck roast with appams, and fresh sweet toddy tapped from coconut palms.",
@@ -400,27 +407,48 @@ export const MOCK_DESTINATIONS: Destination[] = [
       },
     ],
     itineraryPlan: [
-      {
-            "day": "Day 1",
-            "title": "High Altitude Acclimatization & Leh Bazaar",
-            "morning": "09:00 AM: Arrival at Leh Airport (11,500 ft). Transfer to boutique solar-heated hotel. Mandatory complete physical rest for 24 hours.",
-            "afternoon": "03:00 PM: Gentle walk through historic Leh Old Town and organic bakeries. Sip warming Kashmiri Kahwa and herbal butter tea.",
-            "evening": "05:30 PM: Sunset meditation at whitewashed Shanti Stupa overlooking the Stok Kangri mountain range."
-      },
-      {
-            "day": "Day 2",
-            "title": "Khardung La Pass & Nubra Sand Dunes",
-            "morning": "07:30 AM: Ascend to Khardung La (17,982 ft), one of the worlds highest motorable passes with panoramic Karakoram views.",
-            "afternoon": "02:00 PM: Descend into Nubra Valley. Explore 14th-century Diskit Monastery and the majestic 32-meter golden Maitreya Buddha statue.",
-            "evening": "05:00 PM: Double-humped Bactrian camel safari among the white sand dunes of Hunder against snowcapped peaks. Night in luxury dome tents."
-      },
-      {
-            "day": "Day 3",
-            "title": "Pangong Tso Cobalt Waters & Milky Way",
-            "morning": "08:00 AM: Scenic expedition along the Shyok River route to Pangong Tso (14,270 ft), the legendary high-altitude endorheic lake.",
-            "afternoon": "01:30 PM: Lakeside lunch watching the water shift shades from turquoise to deep cobalt under dramatic passing clouds.",
-            "evening": "08:00 PM: World-class stargazing and Milky Way astrophotography session under crystal-clear alpine night skies."
-      }
+  {
+    "day": "Day 1",
+    "title": "High Altitude Acclimatization & Leh Bazaar",
+    "morning": "09:00 AM: Arrival at Leh Airport (11,500 ft). Transfer to boutique solar-heated hotel. Mandatory complete physical rest for 24 hours.",
+    "afternoon": "03:00 PM: Gentle walk through historic Leh Old Town and organic bakeries. Sip warming Kashmiri Kahwa and herbal butter tea.",
+    "evening": "05:30 PM: Sunset meditation at whitewashed Shanti Stupa overlooking the Stok Kangri mountain range."
+  },
+  {
+    "day": "Day 2",
+    "title": "Indus Valley Monasteries & Shey Palace",
+    "morning": "08:00 AM: Visit Hemis Monastery, the largest and wealthiest monastery in Ladakh, with its copper-gilded Buddha and sacred museum relics.",
+    "afternoon": "01:30 PM: Tour the 12-storey Thiksey Monastery, architecturally resembling Potala Palace, and witness monastic chanting rituals.",
+    "evening": "05:30 PM: Sunset over the ruins of Shey Palace and its giant copper-gold seated Shakyamuni Buddha statue."
+  },
+  {
+    "day": "Day 3",
+    "title": "Khardung La Pass & Nubra Sand Dunes",
+    "morning": "07:30 AM: Ascend to Khardung La (17,982 ft), one of the worlds highest motorable passes with panoramic Karakoram views.",
+    "afternoon": "02:00 PM: Descend into Nubra Valley. Explore 14th-century Diskit Monastery and the majestic 32-meter golden Maitreya Buddha statue.",
+    "evening": "05:00 PM: Double-humped Bactrian camel safari among the white sand dunes of Hunder against snowcapped peaks. Night in luxury dome tents."
+  },
+  {
+    "day": "Day 4",
+    "title": "Turtuk Village & Baltic Border Culture",
+    "morning": "07:30 AM: Journey along the turquoise Shyok river to Turtuk, a picturesque village nestled 12 km from the border, opened to travelers in 2010.",
+    "afternoon": "01:00 PM: Walk among ancient apricot and walnut orchards, wooden Balti heritage houses, and taste traditional buckwheat kisir crepes.",
+    "evening": "05:30 PM: Return to Hunder camp for traditional Ladakhi cultural folk dances around a warm bonfire under starlit skies."
+  },
+  {
+    "day": "Day 5",
+    "title": "Pangong Tso Cobalt Waters & Milky Way",
+    "morning": "08:00 AM: Scenic high-altitude drive via Agham-Shyok route to Pangong Tso (14,270 ft), the legendary 134 km long endorheic lake.",
+    "afternoon": "01:30 PM: Lakeside picnic lunch watching the crystal waters shift shades from turquoise to deep royal cobalt under passing alpine clouds.",
+    "evening": "08:00 PM: World-class stargazing and Milky Way astrophotography session under crystal-clear alpine night skies."
+  },
+  {
+    "day": "Day 6",
+    "title": "Chang La Pass Crossing & Leh Departure",
+    "morning": "06:30 AM: Golden sunrise reflection across Pangong Lake waters, followed by hot Ladakhi breakfast and butter tea.",
+    "afternoon": "01:00 PM: Cross Chang La Pass (17,590 ft), stopping at Tangste for steaming noodle soup before descending into Leh valley.",
+    "evening": "05:30 PM: Farewell dinner at an organic Leh terrace cafe; transfer to Leh airport next morning for onward flight."
+  }
 ],
     fieldNotes: {
       "culinary": "Must try: Steaming bowls of vegetable Thukpa, hand-folded mutton Momos, Tingmo steamed bread with dal, and wild Ladakh sea buckthorn juice.",
@@ -492,27 +520,41 @@ export const MOCK_DESTINATIONS: Destination[] = [
       },
     ],
     itineraryPlan: [
-      {
-            "day": "Day 1",
-            "title": "Valley of the Gods & Key Gompa Cliff",
-            "morning": "09:00 AM: Scenic high-altitude drive into Kaza. Check-in to traditional Spitian mud-brick homestay.",
-            "afternoon": "01:30 PM: Visit 1,000-year-old Key Monastery perched fortress-like on a sheer conical hill. Explore ancient thangka paintings and prayer halls.",
-            "evening": "05:30 PM: Traditional butter tea session with resident lamas while overlooking the wide gravel bed of the Spiti River."
-      },
-      {
-            "day": "Day 2",
-            "title": "Worlds Highest Post Office & Fossil Trails",
-            "morning": "08:30 AM: Drive to Hikkim (14,567 ft) to post handwritten letters with authentic postal stamps from the worlds highest post office.",
-            "afternoon": "01:00 PM: Visit Komic village (highest motorable village) and search for marine fossils in Langza village beneath Chau Chau Kang Nilda peak.",
-            "evening": "06:00 PM: Warm Spitian dinner around the central bukhari fireplace tasting homemade tsampa and barley bread."
-      },
-      {
-            "day": "Day 3",
-            "title": "Chandratal Moon Lake Stargazing Camp",
-            "morning": "07:30 AM: Traverse Kunzum Pass (14,931 ft) with colorful Buddhist prayer flags fluttering in the mountain wind.",
-            "afternoon": "01:00 PM: 2km trek to the crescent-shaped sacred Chandratal Lake reflecting snowcapped Chandra Bhaga peaks.",
-            "evening": "07:00 PM: Stargazing camp dinner at designated lakeside glamping ground with hot vegetable stew."
-      }
+  {
+    "day": "Day 1",
+    "title": "Key Gompa Cliff Monastery & Kaza Town",
+    "morning": "09:00 AM: Base camp orientation in Kaza (12,000 ft). Acclimatization tea with sea buckthorn honey.",
+    "afternoon": "02:00 PM: Ascend to the 1,000-year-old Key Gompa fortress monastery perched on a conical hill; tour ancient prayer halls and butter lamps.",
+    "evening": "06:00 PM: Traditional Spitian thukpa and momo tasting with local monks at the monastery refectory."
+  },
+  {
+    "day": "Day 2",
+    "title": "Highest Inhabited Villages (Hikkim & Komic)",
+    "morning": "08:30 AM: Drive to Hikkim (14,567 ft) to post hand-written physical letters from the highest post office in the world.",
+    "afternoon": "01:30 PM: Continue to Komic (15,027 ft), the highest motorable village in Asia, visiting Tangyud Gompa.",
+    "evening": "05:30 PM: Fossil hunting walk through Langza village under the watchful eye of the giant golden hilltop Buddha statue."
+  },
+  {
+    "day": "Day 3",
+    "title": "Dhankar Fortress & High Alpine Lake Hike",
+    "morning": "08:00 AM: Explore Dhankar Monastery, dramatic cliff-hanging citadel that served as the ancient capital of the Spiti Kingdom.",
+    "afternoon": "01:30 PM: Moderate 1-hour ridge hike up to pristine Dhankar Lake for breathtaking 360-degree views of the Spiti and Pin River confluence.",
+    "evening": "06:30 PM: Warm homestay dinner featuring local roasted barley Tsampa and organic potato stew in a traditional mud brick home."
+  },
+  {
+    "day": "Day 4",
+    "title": "Kunzum Pass & Chandratal Moon Lake Camp",
+    "morning": "07:30 AM: High-pass drive across windy Kunzum La (15,060 ft) with prayer flag circumambulation at Kunzum Mata Temple.",
+    "afternoon": "02:00 PM: Hike along the crescent-shaped shores of turquoise Chandratal Lake (Moon Lake) at 14,100 ft amidst alpine wildflowers.",
+    "evening": "07:30 PM: High-altitude luxury tent glamping with panoramic celestial astrophotography under Bortle-1 dark night skies."
+  },
+  {
+    "day": "Day 5",
+    "title": "Chandra River Trail & Manali Descent",
+    "morning": "07:00 AM: Early breakfast at Chandratal camp; embark on the rugged off-road drive along the Chandra river bed via Batal and Chhatru.",
+    "afternoon": "01:30 PM: Cross the engineering marvel Atal Tunnel (9.02 km) emerging from cold desert into lush green Kullu Valley.",
+    "evening": "05:00 PM: Arrival in Manali for hot sulfur bath relaxation and onward Himalayan highway connection."
+  }
 ],
     fieldNotes: {
       "culinary": "Must try: Siddu (steamed fermented wheat bread with walnut-poppy seed filling and ghee), hot Spitian barley soup, and Seabuckthorn tea.",
@@ -674,27 +716,34 @@ export const MOCK_DESTINATIONS: Destination[] = [
       },
     ],
     itineraryPlan: [
-      {
-            "day": "Day 1",
-            "title": "Lake Pichola & City Palace Grandeur",
-            "morning": "09:30 AM: Private tour of Udaipur City Palace complex. Admire peacock mosaics of Mor Chowk and royal armor galleries.",
-            "afternoon": "01:30 PM: Lakeside lunch at Ambrai overlooking the white marble palaces. Stroll through Jagdish temple courtyards.",
-            "evening": "05:00 PM: Solar boat cruise across Lake Pichola visiting Jag Mandir island palace with carved stone elephants."
-      },
-      {
-            "day": "Day 2",
-            "title": "Royal Fountains & Sunset Monsoon Palace",
-            "morning": "09:00 AM: Walk through Saheliyon Ki Bari ornamental gardens featuring marble elephant fountains and lotus pools.",
-            "afternoon": "02:00 PM: Miniature painting atelier masterclass with local Mewari artisans using squirrel-hair brushes and natural stone pigments.",
-            "evening": "05:30 PM: Drive up to Sajjangarh (Monsoon Palace) perched atop Bansdara peak for sunset over the Aravalli hills."
-      },
-      {
-            "day": "Day 3",
-            "title": "Fateh Sagar Promenade & Heritage Haveli Farewell",
-            "morning": "08:30 AM: Morning cycle ride along Fateh Sagar Lake and solar observatory island promenade.",
-            "afternoon": "12:00 PM: Traditional Mewari Thali lunch featuring Gatte ki Khichdi and Malpua sweets.",
-            "evening": "04:00 PM: Heritage shopping for hand-block printed Dabu fabrics and silver jewelry before departure."
-      }
+  {
+    "day": "Day 1",
+    "title": "City Palace & Sunset Lake Cruise",
+    "morning": "10:00 AM: Check-in to 18th-century lakefront haveli with intricate jharokha balconies. Royal floral welcome.",
+    "afternoon": "02:00 PM: Guided private tour of Udaipur City Palace complex, peacock courtyards, and mirror work halls.",
+    "evening": "05:30 PM: Private wooden boat cruise on Lake Pichola past Jag Mandir and the illuminated Lake Palace at twilight."
+  },
+  {
+    "day": "Day 2",
+    "title": "Jagdish Temple & Saheliyon-ki-Bari",
+    "morning": "08:30 AM: Walk through the historic old city alleys to the 1651 CE intricately carved stone Jagdish Temple.",
+    "afternoon": "01:30 PM: Stroll through the marble fountains and lotus pools of Saheliyon-ki-Bari (Courtyard of Maidens).",
+    "evening": "06:30 PM: Traditional Mewari royal thali dinner with Laal Maas and Bajra roti at a candlelit terrace overlooking the water."
+  },
+  {
+    "day": "Day 3",
+    "title": "Monsoon Palace & Shilpgram Artisans",
+    "morning": "09:00 AM: Scenic winding drive up the Aravalli hills to Sajjangarh (Monsoon Palace) for birds-eye views across Udaipurs lakes.",
+    "afternoon": "02:00 PM: Explore Shilpgram rural arts and crafts village; witness live pottery, leather mojari making, and miniature Rajasthani painting.",
+    "evening": "07:00 PM: Mesmerizing Rajasthani folk dance and puppet show at Bagore-ki-Haveli on Gangaur Ghat."
+  },
+  {
+    "day": "Day 4",
+    "title": "Kumbhalgarh Great Wall & Departure",
+    "morning": "08:00 AM: Excursion to Kumbhalgarh Fort, boasting the second-longest continuous stone wall in the world (36 km).",
+    "afternoon": "02:00 PM: Traditional lunch at an Aravalli farm retreat tasting Dal Baati Churma and Ker Sangri.",
+    "evening": "05:30 PM: Transfer to Maharana Pratap Airport (UDR) or Udaipur City railway station for onward departure."
+  }
 ],
     fieldNotes: {
       "culinary": "Must try: Laal Maas slow-cooked with fiery Mathania red chilies, Mewari Gatte ki Sabzi, and hot rabri-soaked Malpua near Jagdish Temple.",
@@ -858,27 +907,34 @@ export const MOCK_DESTINATIONS: Destination[] = [
       },
     ],
     itineraryPlan: [
-      {
-            "day": "Day 1",
-            "title": "Brahmaputra Foothills & Tea Garden Haven",
-            "morning": "10:30 AM: Scenic drive from Guwahati across the lush Brahmaputra floodplains. Check-in to colonial tea estate eco-resort.",
-            "afternoon": "02:30 PM: Walking tour through organic tea gardens with estate naturalist. Tea tasting session sampling golden tippy Assam black teas.",
-            "evening": "06:00 PM: Traditional Assamese Bihu dance performance around garden bonfire with seasonal rice beer (Rohi) tasting."
-      },
-      {
-            "day": "Day 2",
-            "title": "Rhino Corridors & Dual Safari Expeditions",
-            "morning": "05:30 AM: Dawn elephant safari in Central Kohora range for close encounters with great one-horned rhinoceroses in tall elephant grass.",
-            "afternoon": "02:00 PM: Open-top 4x4 jeep safari through Western Bagori range spotting wild water buffalo, swamp deer, and crested serpent eagles.",
-            "evening": "06:30 PM: Wildlife conservation presentation by park ranger followed by traditional Assamese fish curry dinner."
-      },
-      {
-            "day": "Day 3",
-            "title": "Majuli River Island & Mask Making Satras",
-            "morning": "07:30 AM: Ferry crossing across the mighty Brahmaputra to Majuli, the worlds largest river island.",
-            "afternoon": "01:00 PM: Visit Chamaguri Satra to witness 500-year-old traditional bamboo-and-clay mask making for religious dramas.",
-            "evening": "05:00 PM: Watch freshwater Ganges river dolphins surfacing at sunset near the river confluence before departure."
-      }
+  {
+    "day": "Day 1",
+    "title": "Kaziranga Arrival & Orchid Sanctuary",
+    "morning": "10:00 AM: Drive from Guwahati through lush tea gardens of Assam to Kaziranga National Park eco-resort.",
+    "afternoon": "02:30 PM: Visit Kaziranga National Orchid and Biodiversity Park featuring over 500 species of native Himalayan orchids.",
+    "evening": "06:30 PM: Traditional Assamese Bihu cultural folk dance performance accompanied by indigenous dhol and buffalo horn pipes."
+  },
+  {
+    "day": "Day 2",
+    "title": "Central & Western Range Wildlife Safaris",
+    "morning": "06:00 AM: Dawn elephant-back safari in the Central Kohora Range to observe Indian greater one-horned rhinos grazing in morning mist.",
+    "afternoon": "02:00 PM: Open-top 4x4 safari through Western Bagori Range to spot Asiatic water buffaloes, swamp deer, and wild elephants.",
+    "evening": "07:00 PM: Bonfire dinner featuring bamboo hollow roasted fish and Joha scented rice at the jungle lodge."
+  },
+  {
+    "day": "Day 3",
+    "title": "Majuli River Island Voyage & Monasteries",
+    "morning": "07:30 AM: Scenic country ferry across the mighty Brahmaputra river to Majuli, the worlds largest river island.",
+    "afternoon": "01:30 PM: Visit Uttar Kamalabari Satra and Auniati Satra to witness 15th-century Vaishnavite monastic chanting and mask-making craft.",
+    "evening": "05:30 PM: Sunset over the Brahmaputra wetlands, spotting migratory river birds and endangered Gangetic river dolphins."
+  },
+  {
+    "day": "Day 4",
+    "title": "Mishing Tribal Village & Silk Weaving",
+    "morning": "08:30 AM: Guided walk through a stilt-house Mishing tribal village; observe traditional handloom silk weaving (Muga & Eri silk).",
+    "afternoon": "01:00 PM: Organic tribal feast cooked with wild ferns, herbs, and steamed rice in banana leaves.",
+    "evening": "05:00 PM: Return ferry to Jorhat or Guwahati airport for outbound connections."
+  }
 ],
     fieldNotes: {
       "culinary": "Must try: Assamese Thali with fragrant Joha rice, Maasor Tenga (tangy river fish curry cooked with tomatoes and elephant apple), and duck cooked with ash gourd.",
@@ -950,27 +1006,34 @@ export const MOCK_DESTINATIONS: Destination[] = [
       },
     ],
     itineraryPlan: [
-      {
-            "day": "Day 1",
-            "title": "Ellora Monolith & Kailasa Temple Wonder",
-            "morning": "09:00 AM: Arrive at Ellora Caves. Stand before Cave 16 (Kailasa Temple), the worlds largest monolithic rock sculpture carved top-to-bottom from a single cliff.",
-            "afternoon": "01:30 PM: Traditional Maharashtrian lunch of spicy Pitla Bhakri. Explore Buddhist multi-storey viharas and Jain Indra Sabha caves.",
-            "evening": "05:30 PM: Sunset walk along the basalt canyon rim with sweeping views of the Deccan volcanic plateau."
-      },
-      {
-            "day": "Day 2",
-            "title": "Ajanta Horseshoe Gorge & Ancient Murals",
-            "morning": "07:30 AM: 2-hour drive through cotton fields to Ajanta Caves. Enter the dramatic horseshoe canyon above Waghora River.",
-            "afternoon": "01:00 PM: Walk inside Caves 1, 2, 17, and 26 to inspect 2,000-year-old Buddhist frescoes, Padmapani murals, and the colossal Reclining Buddha.",
-            "evening": "05:30 PM: Return drive stopping at local handloom weavers to admire authentic Paithani silk sarees with pure gold zari borders."
-      },
-      {
-            "day": "Day 3",
-            "title": "Daulatabad Hill Citadel & Mughal Echoes",
-            "morning": "08:30 AM: Hike up the medieval hill fortress of Daulatabad. Navigate the pitch-dark underground labyrinth (Andhari) and view Chand Minar.",
-            "afternoon": "01:30 PM: Visit Bibi Ka Maqbara (Deccan Taj Mahal) built in 1668 with white marble screens and Mughal garden charbagh.",
-            "evening": "04:30 PM: Savor local Naan Qalia (rich spiced lamb curry) before transfer to Chhatrapati Sambhajinagar airport or railway station."
-      }
+  {
+    "day": "Day 1",
+    "title": "Aurangabad Arrival & Bibi Ka Maqbara",
+    "morning": "10:30 AM: Arrival in Aurangabad (Chhatrapati Sambhaji Nagar). Check-in to heritage boutique hotel.",
+    "afternoon": "02:00 PM: Explore the 17th-century Bibi Ka Maqbara ('Taj of the Deccan') and the medieval water mill hydraulic system at Panchakki.",
+    "evening": "06:30 PM: Dinner featuring authentic local Naan Qalia and visit to traditional Himroo and Paithani silk handloom weavers."
+  },
+  {
+    "day": "Day 2",
+    "title": "Ajanta Frescoes & Horseshoe Canyon",
+    "morning": "07:30 AM: Scenic 2-hour drive through Deccan plains to the UNESCO World Heritage Ajanta Caves nestled in a dramatic volcanic gorge.",
+    "afternoon": "12:00 PM: Inspect 2nd-century BCE Buddhist rock murals in Caves 1, 2, 17, and the 29-meter Reclining Buddha in Cave 26.",
+    "evening": "05:30 PM: Stop at Ajanta Viewpoint overlooking the entire horseshoe canyon where British officer John Smith rediscovered the caves in 1819."
+  },
+  {
+    "day": "Day 3",
+    "title": "Ellora Caves & Kailasa Monolith",
+    "morning": "08:30 AM: Tour Ellora Caves, highlighting Cave 16 (Kailasa Temple), the largest monolithic rock excavation in the world carved top-down.",
+    "afternoon": "02:00 PM: Walk through the intricately multi-tiered Buddhist caves (Caves 10-12) and the ornate Jain cave complexes (Indra Sabha).",
+    "evening": "05:30 PM: Sunset visit to the impregnable medieval hill fortress of Daulatabad (Devagiri) with its deceptive maze corridor (Bhulbhulaiya)."
+  },
+  {
+    "day": "Day 4",
+    "title": "Grishneshwar Jyotirlinga & Sahyadri Farewell",
+    "morning": "08:30 AM: Visit the historic red-rock Grishneshwar Temple, one of the 12 sacred Jyotirlingas, rebuilt by Queen Ahilyabai Holkar.",
+    "afternoon": "01:00 PM: Authentic Maharashtrian lunch featuring Pithla Bhakri, Thecha, and fresh Solkadhi.",
+    "evening": "04:30 PM: Transfer to Aurangabad airport or railway station for onward departure."
+  }
 ],
     fieldNotes: {
       "culinary": "Must try: Naan Qalia (slow-simmered spiced mutton with tandoor-baked naan), spicy Saoji cuisine, and sweet puran poli with hot milk.",
@@ -1406,27 +1469,34 @@ export const MOCK_DESTINATIONS: Destination[] = [
       },
     ],
     itineraryPlan: [
-      {
-            "day": "Day 1",
-            "title": "Meenakshi Gopurams & Sacred Night Procession",
-            "morning": "09:00 AM: Walk through Meenakshi Amman Temple complex. Marvel at 14 towering gopurams adorned with thousands of colorful sculpted deities.",
-            "afternoon": "01:30 PM: Authentic South Indian meal at Murugan Idli Shop tasting soft steamed idlis with four varieties of coconut chutneys.",
-            "evening": "08:45 PM: Witness the sacred 9:00 PM Palliarai night ceremony where deity idols are carried in silver palanquins with chanting and nadaswaram pipes."
-      },
-      {
-            "day": "Day 2",
-            "title": "Chettinad Mansions & Athangudi Tile Art",
-            "morning": "08:30 AM: 1.5-hour drive to Karaikudi, capital of the Chettinad merchant empire. Tour 100-room heritage mansions with Burmese teak pillars and Belgian mirrors.",
-            "afternoon": "01:00 PM: World-famous 7-course Chettinad culinary banquet on banana leaf featuring freshly ground black pepper and aromatic spices.",
-            "evening": "04:30 PM: Visit Athangudi handmade tile atelier to watch artisans pour colored cement into geometric glass molds to produce heritage tiles."
-      },
-      {
-            "day": "Day 3",
-            "title": "Thirumalai Palace & Jigarthanda Coolers",
-            "morning": "09:00 AM: Tour Thirumalai Nayakkar Mahal with towering 82-foot stucco pillars and painted domed ceilings.",
-            "afternoon": "01:00 PM: Refresh with famous Madurai Famous Jigarthanda (almond gum, condensed milk, nannari syrup, and ice cream).",
-            "evening": "04:30 PM: Shopping for Chungidi cotton sarees and brass lamps in the temple bazaar before departure."
-      }
+  {
+    "day": "Day 1",
+    "title": "Meenakshi Amman Temple & Madurai Heritage",
+    "morning": "09:30 AM: Check-in to heritage courtyard hotel in Madurai.",
+    "afternoon": "02:30 PM: Tour the grand Thirumalai Nayakkar Palace featuring giant stucco pillars and Indo-Saracenic ceiling carvings.",
+    "evening": "06:00 PM: Evening entrance to Meenakshi Amman Temple to witness the ornate 14 gopurams and the sacred night procession ceremony."
+  },
+  {
+    "day": "Day 2",
+    "title": "Chettinad Palatial Mansions & Antiques",
+    "morning": "08:00 AM: Drive 1.5 hours to the Chettinad heritage cluster (Kanadukathan & Karaikudi).",
+    "afternoon": "01:00 PM: Traditional 18-course Chettinad feast served on fresh banana leaf, featuring Kuzhi Paniyaram, Pepper Chicken, and Milagu Rasam.",
+    "evening": "04:30 PM: Tour 19th-century Chettiar merchant palaces with Belgian crystal mirrors, Italian marble, and Burmese teak pillars."
+  },
+  {
+    "day": "Day 3",
+    "title": "Athangudi Tile Workshops & Handlooms",
+    "morning": "08:30 AM: Visit Athangudi village to watch master craftsmen handmade geometric cement tiles using local sand and natural dyes.",
+    "afternoon": "02:00 PM: Explore the famous Chettinad antique markets and witness master weavers producing vibrant Kandangi cotton sarees.",
+    "evening": "06:00 PM: Sunset walk through the quiet village tank temples with towering terracotta Ayyanar horses."
+  },
+  {
+    "day": "Day 4",
+    "title": "Pillayarpatti Cave Temple & Departure",
+    "morning": "08:30 AM: Visit the 1,600-year-old rock-cut Karpaka Vinayakar temple in Pillayarpatti carved inside a natural hill cave.",
+    "afternoon": "01:00 PM: Traditional south Indian filter coffee tasting and lunch at a restored heritage mansion.",
+    "evening": "04:30 PM: Transfer to Madurai International Airport (IXM) or Madurai Junction for return journey."
+  }
 ],
     fieldNotes: {
       "culinary": "Must try: Chettinad Chicken/Mushroom Chukka, Kozhi Biryani, crispy Kuzhi Paniyaram, Jigarthanda beverage, and piping-hot Madurai filter coffee.",
@@ -1498,27 +1568,34 @@ export const MOCK_DESTINATIONS: Destination[] = [
       },
     ],
     itineraryPlan: [
-      {
-            "day": "Day 1",
-            "title": "Havelock Arrival & Radhanagar Molten Copper Sunset",
-            "morning": "08:30 AM: High-speed catamaran ferry from Port Blair to Havelock (Swaraj Dweep). Transfer to beachfront villa nestled in mahua rainforest.",
-            "afternoon": "02:00 PM: Relax in beachfront hammock with fresh coconut water. Stroll along soft powdery white sand shoreline.",
-            "evening": "05:00 PM: Swim in the tranquil turquoise waters of Radhanagar Beach (voted Asias best beach) as the sky turns molten copper at sunset."
-      },
-      {
-            "day": "Day 2",
-            "title": "Elephant Beach Reef Scuba & Snorkel",
-            "morning": "07:30 AM: Speedboat transfer to Elephant Beach. Guided PADI scuba dive and snorkeling session exploring fringing living coral reefs.",
-            "afternoon": "01:30 PM: Grilled lobster and fresh tiger prawn lunch at beachfront seaside cafe.",
-            "evening": "07:00 PM: Night kayaking expedition through bioluminescent mangrove channels where glowing plankton illuminates each paddle stroke."
-      },
-      {
-            "day": "Day 3",
-            "title": "Neils Hidden Cove & Ocean Departure",
-            "morning": "07:00 AM: Morning walk to Neils Cove, a secluded natural swimming lagoon tucked behind black limestone rocks.",
-            "afternoon": "12:30 PM: Tropical lunch and checkout before boarding catamaran ferry back to Port Blair.",
-            "evening": "05:30 PM: Cellular Jail sound & light memorial show in Port Blair before departure."
-      }
+  {
+    "day": "Day 1",
+    "title": "Port Blair to Havelock Catamaran Cruise",
+    "morning": "08:00 AM: High-speed luxury catamaran cruise from Port Blair Phoenix Bay jetty across cobalt Andaman waters to Havelock Island (Swaraj Dweep).",
+    "afternoon": "01:30 PM: Check-in to beachfront timber eco-villa set beneath coconut palm canopies. Fresh tender coconut welcome drink.",
+    "evening": "04:30 PM: Witness the legendary Radhanagar Beach sunset (rated among Asias best beaches) with powdery white sands and turquoise surf."
+  },
+  {
+    "day": "Day 2",
+    "title": "Elephant Beach Snorkel & Coral Reefs",
+    "morning": "07:30 AM: Speedboat transfer through mangrove channels to Elephant Beach for guided snorkeling among live brain coral and clownfish.",
+    "afternoon": "01:30 PM: Seafood lunch at beachside cafe featuring grilled red snapper, butter garlic tiger prawns, and tropical fruit smoothies.",
+    "evening": "05:30 PM: Twilight sea-kayaking through bioluminescent mangrove lagoons where microscopic plankton glitter with every paddle stroke."
+  },
+  {
+    "day": "Day 3",
+    "title": "Scuba Diving at South Button & Kalapathar",
+    "morning": "06:30 AM: PADI certified discovery boat dive at South Button reef; encounter sea turtles, manta rays, and vibrant reef sharks.",
+    "afternoon": "02:00 PM: Motorbike or jeep exploration along the eastern coastline to Kalapathar Beach, famous for black volcanic rocks against aquamarine waves.",
+    "evening": "06:30 PM: Candlelit beach barbeque dinner with fresh catch under the starlit equatorial sky."
+  },
+  {
+    "day": "Day 4",
+    "title": "Return Catamaran & Historic Memorial",
+    "morning": "09:00 AM: Catamaran cruise back to Port Blair; panoramic views of uninhabited forested islands.",
+    "afternoon": "02:00 PM: Historical tour of the British colonial Cellular Jail (Kala Pani) and freedom fighter galleries.",
+    "evening": "05:30 PM: Transfer to Veer Savarkar International Airport (IXZ) for evening flight."
+  }
 ],
     fieldNotes: {
       "culinary": "Must try: Fresh grilled Red Snapper with garlic butter, coastal Andaman coconut crab curry, and fresh tropical passionfruit smoothies.",

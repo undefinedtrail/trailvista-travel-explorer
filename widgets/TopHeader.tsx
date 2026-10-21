@@ -46,25 +46,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
           />
         </View>
         <View style={styles.titleColumn}>
-          <View style={styles.titleRow}>
-            <Text style={[styles.title, { color: theme.text }]}>{title}</Text>
-            <View
-              style={[
-                styles.badge,
-                {
-                  backgroundColor: 'rgba(194, 81, 45, 0.15)',
-                  borderColor: 'rgba(194, 81, 45, 0.4)',
-                },
-              ]}
-            >
-              <Text style={[styles.badgeText, { color: theme.primaryLight }]}>
-                {subtitle}
-              </Text>
-            </View>
-          </View>
-          <Text style={[styles.tagline, { color: theme.textMuted }]}>
-            India Journey Explorer
-          </Text>
+          <Text style={[styles.title, { color: theme.text }]}>{title}</Text>
         </View>
       </View>
 
