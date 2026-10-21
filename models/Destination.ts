@@ -40,6 +40,8 @@ export interface Destination {
   includes?: string[];
   sunset?: string;
   subtitle?: string;
+  featured?: boolean;
+  popularity?: number;
   itineraryPlan?: ItineraryDay[];
   fieldNotes?: FieldNotes;
 }

@@ -1,10 +1,11 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   FlatList,
   Image,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -13,13 +14,11 @@ import { Destination, DestinationCategory } from '../models/Destination';
 import {
   CATEGORIES,
   MOCK_DESTINATIONS,
-  STATES_LIST,
   STATE_DATABASE,
-  StateInfo,
+  STATE_PINS,
 } from '../constants/mockData';
 import { ThemeColors, Spacing, BorderRadius } from '../constants/theme';
 import { IndiaMapExplorer } from '../widgets/IndiaMapExplorer';
-import { StateTelemetryCard } from '../widgets/StateTelemetryCard';
 import { DestinationCard } from '../widgets/DestinationCard';
 import { CategoryChip } from '../widgets/CategoryChip';
 
@@ -42,47 +41,77 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   theme,
   isDark,
 }) => {
-  // Initialize with Kerala active as per the Stitch design
+  // State for map selection, category, and inline search query
   const [selectedState, setSelectedState] = useState<string>('kerala');
   const [selectedCategory, setSelectedCategory] = useState<DestinationCategory>('All');
-  const stateChipsScrollRef = useRef<any>(null);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
-  // Calculate destination counts per state for badges
+  // Destination counts per state for available state detection and badges
   const stateCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     MOCK_DESTINATIONS.forEach((d) => {
-      if (d.stateKey) {
+      if (d.stateKey && d.stateKey !== 'all') {
         counts[d.stateKey] = (counts[d.stateKey] || 0) + 1;
       }
     });
     return counts;
   }, []);
 
-  // Filtered destinations based on selected state and category
-  const filteredDestinations = useMemo(() => {
-    return MOCK_DESTINATIONS.filter((d) => {
-      const matchesState =
-        selectedState === 'all' || d.stateKey === selectedState;
-      const matchesCategory =
-        selectedCategory === 'All' || d.category === selectedCategory;
-      return matchesState && matchesCategory;
-    });
-  }, [selectedState, selectedCategory]);
+  // Set of available state keys that contain at least one destination
+  const availableStateIds = useMemo(() => {
+    return Object.keys(stateCounts).filter((k) => stateCounts[k] > 0);
+  }, [stateCounts]);
 
-  // Current active state info
-  const activeStateInfo: StateInfo =
-    STATE_DATABASE[selectedState] || STATE_DATABASE['all'];
-
-  // Trending / popular expeditions (highest rated destinations)
-  const trendingDestinations = useMemo(() => {
+  // Popular expeditions using stable popularity ranking
+  const popularDestinations = useMemo(() => {
     return [...MOCK_DESTINATIONS]
-      .sort((a, b) => b.rating - a.rating)
-      .slice(0, 5);
+      .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+      .slice(0, 6);
   }, []);
 
-  // Handle state change with smooth scroll
-  const handleSelectState = (stateId: string) => {
-    setSelectedState(stateId);
+  // Combined filtering: Map State + Search Query + Travel Style Category
+  const filteredDestinations = useMemo(() => {
+    return MOCK_DESTINATIONS.filter((d) => {
+      // 1. Map State Filter
+      const matchesState =
+        selectedState === 'all' ||
+        (d.stateKey && d.stateKey.toLowerCase() === selectedState.toLowerCase());
+
+      // 2. Travel Style Category Filter
+      const matchesCategory =
+        selectedCategory === 'All' || d.category === selectedCategory;
+
+      // 3. Search Query Filter (name, city, state, category, tags)
+      if (!searchQuery.trim()) {
+        return matchesState && matchesCategory;
+      }
+
+      const q = searchQuery.toLowerCase().trim();
+      const matchesSearch =
+        d.name.toLowerCase().includes(q) ||
+        d.location.toLowerCase().includes(q) ||
+        d.state.toLowerCase().includes(q) ||
+        d.category.toLowerCase().includes(q) ||
+        (d.tags && d.tags.some((t) => t.toLowerCase().includes(q)));
+
+      return matchesState && matchesCategory && matchesSearch;
+    });
+  }, [selectedState, selectedCategory, searchQuery]);
+
+  // Selected state display name
+  const activeStateName = useMemo(() => {
+    if (selectedState === 'all') return 'All India';
+    const pin = STATE_PINS[selectedState];
+    if (pin) return pin.name;
+    const db = STATE_DATABASE[selectedState];
+    return db ? db.name : selectedState.charAt(0).toUpperCase() + selectedState.slice(1);
+  }, [selectedState]);
+
+  // Reset all active filters
+  const handleResetFilters = () => {
+    setSelectedState('all');
+    setSelectedCategory('All');
+    setSearchQuery('');
   };
 
   return (
@@ -94,260 +123,255 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
           <View style={styles.headerArea}>
-            {/* Compact Editorial Hero */}
-            <View style={styles.compactHero}>
-              <View style={styles.heroTopRow}>
-                <View style={{ flex: 1 }}>
-                  <Text style={[styles.heroEyebrow, { color: theme.primaryLight }]}>
-                    EXPLORE INDIA
-                  </Text>
-                  <Text style={[styles.heroHeadline, { color: theme.text }]}>
-                    Discover places worth remembering.
-                  </Text>
-                </View>
-                {wishlistIds.length > 0 && (
-                  <TouchableOpacity
-                    onPress={onNavigateToWishlist}
-                    style={[
-                      styles.savedHeaderChip,
-                      {
-                        backgroundColor: theme.chipIdle,
-                        borderColor: theme.cardBorder,
-                      },
-                    ]}
-                  >
-                    <MaterialIcons name="bookmark" size={13} color={theme.gold} />
-                    <Text style={[styles.savedHeaderText, { color: theme.textSecondary }]}>
-                      {wishlistIds.length} Saved
-                    </Text>
-                  </TouchableOpacity>
-                )}
+            {/* 1. Clean Header */}
+            <View style={styles.headerTop}>
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.heroEyebrow, { color: theme.primaryLight }]}>
+                  EXPLORE INDIA
+                </Text>
+                <Text style={[styles.heroHeadline, { color: theme.text }]}>
+                  Discover places worth remembering.
+                </Text>
               </View>
 
-              {/* Obvious Search Bar Entry Point */}
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={onNavigateToSearch}
-                style={[
-                  styles.heroSearchBar,
-                  { backgroundColor: theme.card, borderColor: theme.cardBorder },
-                ]}
-              >
-                <MaterialIcons name="search" size={18} color={theme.primary} />
-                <Text style={[styles.heroSearchPlaceholder, { color: theme.textMuted }]}>
-                  Search destinations, states, or styles...
-                </Text>
-                <MaterialIcons name="tune" size={16} color={theme.primaryLight} />
-              </TouchableOpacity>
+              {wishlistIds.length > 0 && (
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={onNavigateToWishlist}
+                  style={[
+                    styles.savedHeaderChip,
+                    {
+                      backgroundColor: theme.chipIdle,
+                      borderColor: theme.cardBorder,
+                    },
+                  ]}
+                >
+                  <MaterialIcons name="bookmark" size={13} color={theme.gold} />
+                  <Text style={[styles.savedHeaderText, { color: theme.textSecondary }]}>
+                    {wishlistIds.length} Saved
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
 
-            {/* Trending Destinations Carousel */}
-            <View style={styles.trendingSection}>
-              <View style={styles.trendingHeaderRow}>
+            {/* 2. Fast Inline Search Bar */}
+            <View
+              style={[
+                styles.searchBarContainer,
+                { backgroundColor: theme.card, borderColor: theme.cardBorder },
+              ]}
+            >
+              <MaterialIcons name="search" size={19} color={theme.primary} />
+              <TextInput
+                style={[styles.searchInput, { color: theme.text }]}
+                placeholder="Search destinations, states, experiences..."
+                placeholderTextColor={theme.textMuted}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                returnKeyType="search"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+              {searchQuery.length > 0 ? (
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => setSearchQuery('')}
+                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                >
+                  <MaterialIcons name="close" size={17} color={theme.textMuted} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={onNavigateToSearch}
+                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                >
+                  <MaterialIcons name="tune" size={16} color={theme.primaryLight} />
+                </TouchableOpacity>
+              )}
+            </View>
+
+            {/* 3. Popular Expeditions & Travel Styles Discovery */}
+            <View style={styles.discoverySection}>
+              <View style={styles.sectionHeaderRow}>
                 <View style={styles.sectionTitleWrap}>
                   <MaterialIcons name="trending-up" size={15} color={theme.primary} />
                   <Text style={[styles.sectionTitle, { color: theme.text }]}>
                     POPULAR EXPEDITIONS
                   </Text>
                 </View>
-                <Text style={[styles.trendingSub, { color: theme.textMuted }]}>
-                  Top-rated journeys
+                <Text style={[styles.sectionSubtitle, { color: theme.textMuted }]}>
+                  Curated journeys
                 </Text>
               </View>
 
+              {/* Compact Travel Style Filter Chips */}
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.trendingScrollContent}
+                contentContainerStyle={styles.categoryScrollContent}
               >
-                {trendingDestinations.map((dest) => (
-                  <TouchableOpacity
-                    key={dest.id}
-                    activeOpacity={0.88}
-                    onPress={() => onSelectDestination(dest)}
-                    style={[
-                      styles.trendingCard,
-                      { backgroundColor: theme.card, borderColor: theme.cardBorder },
-                    ]}
-                  >
-                    <Image
-                      source={{ uri: dest.image }}
-                      style={styles.trendingImage}
-                      resizeMode="cover"
-                    />
-                    <View style={styles.trendingRatingBadge}>
-                      <MaterialIcons name="star" size={11} color="#FBBF24" />
-                      <Text style={styles.trendingRatingText}>
-                        {dest.rating.toFixed(2)}
-                      </Text>
-                    </View>
-                    <View style={styles.trendingCardBody}>
-                      <Text style={[styles.trendingCardTitle, { color: theme.text }]} numberOfLines={1}>
-                        {dest.name}
-                      </Text>
-                      <Text style={[styles.trendingCardLocation, { color: theme.textMuted }]} numberOfLines={1}>
-                        {dest.location}
-                      </Text>
-                      <View style={styles.trendingPriceRow}>
-                        <Text style={[styles.trendingPriceText, { color: theme.primaryLight }]}>
-                          ₹{dest.pricePerNight.toLocaleString('en-IN')}
-                        </Text>
-                        <Text style={[styles.trendingDurationText, { color: theme.textMuted }]}>
-                          • {dest.duration.split(' ')[0]} {dest.duration.split(' ')[1]}
+                {CATEGORIES.map((cat) => (
+                  <CategoryChip
+                    key={cat}
+                    label={cat === 'All' ? 'All Expeditions' : cat}
+                    isSelected={selectedCategory === cat}
+                    onPress={() => setSelectedCategory(cat)}
+                    theme={theme}
+                    iconName={
+                      cat === 'Heritage'
+                        ? 'account-balance'
+                        : cat === 'Mountains'
+                        ? 'terrain'
+                        : cat === 'Beaches'
+                        ? 'beach-access'
+                        : cat === 'Adventure'
+                        ? 'kayaking'
+                        : 'explore'
+                    }
+                  />
+                ))}
+              </ScrollView>
+
+              {/* Horizontal Row of Real Featured Expeditions */}
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.popularCardsScroll}
+              >
+                {popularDestinations.map((dest) => {
+                  const isSaved = wishlistIds.includes(dest.id);
+                  return (
+                    <TouchableOpacity
+                      key={dest.id}
+                      activeOpacity={0.88}
+                      onPress={() => onSelectDestination(dest)}
+                      style={[
+                        styles.popularCard,
+                        { backgroundColor: theme.card, borderColor: theme.cardBorder },
+                      ]}
+                    >
+                      <Image
+                        source={{ uri: dest.image }}
+                        style={styles.popularCardImage}
+                        resizeMode="cover"
+                      />
+                      {/* Rating Badge */}
+                      <View style={styles.popularRatingBadge}>
+                        <MaterialIcons name="star" size={10.5} color="#FBBF24" />
+                        <Text style={styles.popularRatingText}>
+                          {dest.rating.toFixed(2)}
                         </Text>
                       </View>
-                    </View>
-                  </TouchableOpacity>
-                ))}
+
+                      {/* Wishlist Bookmark Button */}
+                      <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => onToggleWishlist(dest.id)}
+                        style={[
+                          styles.popularBookmarkBtn,
+                          {
+                            backgroundColor: isSaved
+                              ? theme.primary
+                              : 'rgba(0, 0, 0, 0.55)',
+                          },
+                        ]}
+                        hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+                      >
+                        <MaterialIcons
+                          name={isSaved ? 'bookmark' : 'bookmark-border'}
+                          size={13}
+                          color="#FFFFFF"
+                        />
+                      </TouchableOpacity>
+
+                      {/* Card Content */}
+                      <View style={styles.popularCardBody}>
+                        <Text
+                          style={[styles.popularCardTitle, { color: theme.text }]}
+                          numberOfLines={1}
+                        >
+                          {dest.name}
+                        </Text>
+                        <Text
+                          style={[styles.popularCardLocation, { color: theme.textMuted }]}
+                          numberOfLines={1}
+                        >
+                          {dest.location}
+                        </Text>
+                        <View style={styles.popularPriceRow}>
+                          <Text
+                            style={[
+                              styles.popularPriceText,
+                              { color: theme.primaryLight },
+                            ]}
+                          >
+                            ₹{dest.pricePerNight.toLocaleString('en-IN')}
+                          </Text>
+                          <Text
+                            style={[
+                              styles.popularDurationText,
+                              { color: theme.textMuted },
+                            ]}
+                          >
+                            • {dest.duration.split(' ')[0]} {dest.duration.split(' ')[1]}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
               </ScrollView>
             </View>
 
-            {/* Horizontal State Chips Navigation Bar */}
-            <View style={styles.sectionHeaderRow}>
-              <View style={styles.sectionTitleWrap}>
-                <MaterialIcons name="place" size={14} color={theme.primary} />
-                <Text style={[styles.sectionTitle, { color: theme.textMuted }]}>
-                  REGIONS
+            {/* 4. Interactive Regional SVG Map Section */}
+            <IndiaMapExplorer
+              selectedState={selectedState}
+              onSelectState={setSelectedState}
+              theme={theme}
+              isDark={isDark}
+              stateCounts={stateCounts}
+              availableStateIds={availableStateIds}
+            />
+
+            {/* 5. Destination Results Section Header */}
+            <View style={styles.resultsHeaderRow}>
+              <View style={styles.resultsTitleWrap}>
+                <MaterialIcons name="place" size={15} color={theme.primary} />
+                <Text style={[styles.resultsTitle, { color: theme.text }]}>
+                  {selectedState === 'all'
+                    ? searchQuery
+                      ? `Search Results`
+                      : `All Expeditions`
+                    : `${activeStateName}`}
                 </Text>
-              </View>
-              {selectedState !== 'all' && (
-                <TouchableOpacity
-                  onPress={() => setSelectedState('all')}
-                  style={styles.resetLink}
+                <View
+                  style={[
+                    styles.resultsCountBadge,
+                    { backgroundColor: theme.chipIdle, borderColor: theme.cardBorder },
+                  ]}
                 >
-                  <Text style={[styles.resetLinkText, { color: theme.primaryLight }]}>
-                    View All
+                  <Text style={[styles.resultsCountText, { color: theme.primaryLight }]}>
+                    {filteredDestinations.length}{' '}
+                    {filteredDestinations.length === 1 ? 'place' : 'places'}
+                  </Text>
+                </View>
+              </View>
+
+              {(selectedState !== 'all' ||
+                selectedCategory !== 'All' ||
+                searchQuery.length > 0) && (
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={handleResetFilters}
+                  style={styles.resetFilterButton}
+                >
+                  <Text style={[styles.resetFilterText, { color: theme.primaryLight }]}>
+                    Clear Filter
                   </Text>
                 </TouchableOpacity>
               )}
             </View>
-
-            <ScrollView
-              ref={stateChipsScrollRef}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.stateChipsScrollContent}
-            >
-              {STATES_LIST.map((st) => {
-                const isSelected = selectedState === st.id;
-                return (
-                  <TouchableOpacity
-                    key={st.id}
-                    activeOpacity={0.8}
-                    onPress={() => handleSelectState(st.id)}
-                    style={[
-                      styles.stateChip,
-                      isSelected
-                        ? [
-                            styles.stateChipActive,
-                            {
-                              backgroundColor: theme.primary,
-                              borderColor: theme.primary,
-                              shadowColor: theme.primary,
-                            },
-                          ]
-                        : [
-                            styles.stateChipInactive,
-                            {
-                              backgroundColor: theme.chipIdle,
-                              borderColor: theme.cardBorder,
-                            },
-                          ],
-                    ]}
-                  >
-                    <Text
-                      style={[
-                        styles.stateChipText,
-                        {
-                          color: isSelected ? '#FFFFFF' : theme.chipText,
-                          fontWeight: isSelected ? '700' : '500',
-                        },
-                      ]}
-                    >
-                      {st.name}
-                    </Text>
-                    {st.id !== 'all' && stateCounts[st.id] ? (
-                      <View
-                        style={[
-                          styles.stateCountCircle,
-                          {
-                            backgroundColor: isSelected
-                              ? 'rgba(255, 255, 255, 0.25)'
-                              : 'rgba(194, 81, 45, 0.15)',
-                          },
-                        ]}
-                      >
-                        <Text
-                          style={[
-                            styles.stateCountText,
-                            { color: isSelected ? '#FFFFFF' : theme.primaryLight },
-                          ]}
-                        >
-                          {stateCounts[st.id]}
-                        </Text>
-                      </View>
-                    ) : null}
-                  </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
-
-            {/* Interactive Vector Map Canvas */}
-            <IndiaMapExplorer
-              selectedState={selectedState}
-              onSelectState={handleSelectState}
-              theme={theme}
-              isDark={isDark}
-              stateCounts={stateCounts}
-            />
-
-            {/* Selected State Telemetry HUD Card */}
-            <StateTelemetryCard
-              stateInfo={activeStateInfo}
-              expeditionsCount={filteredDestinations.length}
-              theme={theme}
-              isDark={isDark}
-            />
-
-            {/* Category Filter Chips Section */}
-            <View style={styles.categoryHeaderRow}>
-              <View style={styles.categoryTitleWrap}>
-                <MaterialIcons name="filter-alt" size={14} color={theme.primary} />
-                <Text style={[styles.categorySectionTitle, { color: theme.textMuted }]}>
-                  TRAVEL STYLES
-                </Text>
-              </View>
-              <Text style={[styles.categoryCountLabel, { color: theme.primaryLight }]}>
-                {filteredDestinations.length} {filteredDestinations.length === 1 ? 'Stay' : 'Stays'}
-              </Text>
-            </View>
-
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.chipsScrollContent}
-            >
-              {CATEGORIES.map((cat) => (
-                <CategoryChip
-                  key={cat}
-                  label={cat === 'All' ? 'All Expeditions' : cat}
-                  isSelected={selectedCategory === cat}
-                  onPress={() => setSelectedCategory(cat)}
-                  theme={theme}
-                  iconName={
-                    cat === 'Heritage'
-                      ? 'account-balance'
-                      : cat === 'Mountains'
-                      ? 'terrain'
-                      : cat === 'Beaches'
-                      ? 'beach-access'
-                      : cat === 'Adventure'
-                      ? 'kayaking'
-                      : 'explore'
-                  }
-                />
-              ))}
-            </ScrollView>
           </View>
         }
         renderItem={({ item }) => (
@@ -361,21 +385,21 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         )}
         ListEmptyComponent={
           <View style={[styles.emptyContainer, { borderColor: theme.cardBorder }]}>
-            <MaterialIcons name="travel-explore" size={44} color={theme.textMuted} />
+            <MaterialIcons name="travel-explore" size={42} color={theme.textMuted} />
             <Text style={[styles.emptyTitle, { color: theme.text }]}>
-              No Expeditions in this Category
+              No Expeditions Found
             </Text>
             <Text style={[styles.emptySubtitle, { color: theme.textMuted }]}>
-              Try switching the travel category or selecting another state beacon.
+              {selectedState !== 'all'
+                ? `No current itineraries match "${searchQuery || selectedCategory}" in ${activeStateName}.`
+                : 'Try adjusting your search terms or selecting another state on the map.'}
             </Text>
             <TouchableOpacity
-              onPress={() => {
-                setSelectedCategory('All');
-                setSelectedState('all');
-              }}
+              activeOpacity={0.8}
+              onPress={handleResetFilters}
               style={[styles.emptyResetBtn, { backgroundColor: theme.primary }]}
             >
-              <Text style={styles.emptyResetBtnText}>Show All Expeditions</Text>
+              <Text style={styles.emptyResetBtnText}>Reset All Filters</Text>
             </TouchableOpacity>
           </View>
         }
@@ -396,15 +420,12 @@ const styles = StyleSheet.create({
   headerArea: {
     marginBottom: Spacing.xs,
   },
-  compactHero: {
-    marginBottom: Spacing.sm,
-    paddingTop: 2,
-  },
-  heroTopRow: {
+  headerTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     marginBottom: 10,
+    paddingTop: 2,
   },
   heroEyebrow: {
     fontSize: 10,
@@ -416,110 +437,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '800',
     letterSpacing: -0.4,
-  },
-  heroSearchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 9,
-    borderRadius: BorderRadius.md,
-    borderWidth: 1,
-    gap: 8,
-  },
-  heroSearchPlaceholder: {
-    flex: 1,
-    fontSize: 12,
-  },
-  trendingSection: {
-    marginBottom: Spacing.sm + 2,
-  },
-  trendingHeaderRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  trendingSub: {
-    fontSize: 10,
-    fontWeight: '600',
-  },
-  trendingScrollContent: {
-    gap: 10,
-    paddingBottom: 2,
-  },
-  trendingCard: {
-    width: 140,
-    borderRadius: BorderRadius.md,
-    borderWidth: 1,
-    overflow: 'hidden',
-  },
-  trendingImage: {
-    width: '100%',
-    height: 85,
-    backgroundColor: '#1E1E24',
-  },
-  trendingRatingBadge: {
-    position: 'absolute',
-    top: 6,
-    right: 6,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 2,
-    backgroundColor: 'rgba(0,0,0,0.65)',
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-    borderRadius: BorderRadius.xs,
-  },
-  trendingRatingText: {
-    color: '#FFFFFF',
-    fontSize: 9.5,
-    fontWeight: '700',
-  },
-  trendingCardBody: {
-    padding: 7,
-  },
-  trendingCardTitle: {
-    fontSize: 12,
-    fontWeight: '700',
-    marginBottom: 1,
-  },
-  trendingCardLocation: {
-    fontSize: 10,
-    marginBottom: 4,
-  },
-  trendingPriceRow: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-  },
-  trendingPriceText: {
-    fontSize: 11,
-    fontWeight: '800',
-  },
-  trendingDurationText: {
-    fontSize: 9.5,
-    marginLeft: 2,
-  },
-  topDispatchRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 6,
-    marginTop: 4,
-  },
-  dispatchPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  pulseDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-  },
-  dispatchText: {
-    fontSize: 9.5,
-    fontWeight: '800',
-    letterSpacing: 0.8,
   },
   savedHeaderChip: {
     flexDirection: 'row',
@@ -534,16 +451,23 @@ const styles = StyleSheet.create({
     fontSize: 10.5,
     fontWeight: '700',
   },
-  mainHeadline: {
-    fontSize: 24,
-    fontWeight: '800',
-    letterSpacing: -0.6,
-    marginBottom: 3,
-  },
-  subHeadline: {
-    fontSize: 12.5,
-    lineHeight: 17,
+  searchBarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    gap: 8,
     marginBottom: Spacing.sm + 2,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 12.5,
+    paddingVertical: 0,
+  },
+  discoverySection: {
+    marginBottom: Spacing.sm,
   },
   sectionHeaderRow: {
     flexDirection: 'row',
@@ -557,73 +481,119 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   sectionTitle: {
-    fontSize: 10,
+    fontSize: 10.5,
     fontWeight: '800',
     letterSpacing: 0.8,
   },
-  resetLink: {
-    paddingVertical: 2,
+  sectionSubtitle: {
+    fontSize: 10,
+    fontWeight: '600',
   },
-  resetLinkText: {
-    fontSize: 10.5,
-    fontWeight: '700',
-  },
-  stateChipsScrollContent: {
+  categoryScrollContent: {
     gap: 6,
-    paddingBottom: 6,
+    paddingBottom: 8,
   },
-  stateChip: {
+  popularCardsScroll: {
+    gap: 10,
+    paddingBottom: 2,
+  },
+  popularCard: {
+    width: 145,
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    overflow: 'hidden',
+  },
+  popularCardImage: {
+    width: '100%',
+    height: 88,
+    backgroundColor: '#1E1E24',
+  },
+  popularRatingBadge: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
-    paddingHorizontal: 11,
-    paddingVertical: 6,
-    borderRadius: BorderRadius.full,
-    borderWidth: 1,
-  },
-  stateChipActive: {
-    elevation: 3,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.35,
-    shadowRadius: 4,
-  },
-  stateChipInactive: {},
-  stateChipText: {
-    fontSize: 11.5,
-  },
-  stateCountCircle: {
+    gap: 2,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     paddingHorizontal: 5,
-    paddingVertical: 1,
-    borderRadius: BorderRadius.full,
+    paddingVertical: 2,
+    borderRadius: BorderRadius.xs,
   },
-  stateCountText: {
+  popularRatingText: {
+    color: '#FFFFFF',
     fontSize: 9.5,
+    fontWeight: '700',
+  },
+  popularBookmarkBtn: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  popularCardBody: {
+    padding: 7,
+  },
+  popularCardTitle: {
+    fontSize: 12,
+    fontWeight: '700',
+    marginBottom: 1,
+  },
+  popularCardLocation: {
+    fontSize: 10,
+    marginBottom: 4,
+  },
+  popularPriceRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+  },
+  popularPriceText: {
+    fontSize: 11,
     fontWeight: '800',
   },
-  categoryHeaderRow: {
+  popularDurationText: {
+    fontSize: 9.5,
+    marginLeft: 2,
+  },
+  resultsHeaderRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 4,
-    marginBottom: 6,
+    marginTop: 10,
+    marginBottom: 8,
+    paddingHorizontal: 2,
   },
-  categoryTitleWrap: {
+  resultsTitleWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 6,
   },
-  categorySectionTitle: {
-    fontSize: 10,
+  resultsTitle: {
+    fontSize: 14,
     fontWeight: '800',
-    letterSpacing: 0.8,
+    letterSpacing: -0.2,
   },
-  categoryCountLabel: {
-    fontSize: 10.5,
+  resultsCountBadge: {
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+    borderRadius: BorderRadius.full,
+    borderWidth: 1,
+  },
+  resultsCountText: {
+    fontSize: 10,
     fontWeight: '700',
   },
-  chipsScrollContent: {
-    gap: 6,
-    paddingBottom: Spacing.sm,
+  resetFilterButton: {
+    paddingVertical: 3,
+    paddingHorizontal: 6,
+  },
+  resetFilterText: {
+    fontSize: 11,
+    fontWeight: '700',
   },
   emptyContainer: {
     alignItems: 'center',
@@ -644,6 +614,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
     marginBottom: Spacing.md,
+    lineHeight: 17,
   },
   emptyResetBtn: {
     paddingHorizontal: 16,
