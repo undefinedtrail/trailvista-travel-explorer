@@ -1,27 +1,23 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const WISHLIST_STORAGE_KEY = '@yatra_wishlist_ids_v1';
+const WISHLIST_STORAGE_KEY = '@yatra_wishlist_ids_v2';
 const THEME_STORAGE_KEY = '@yatra_theme_preference_v1';
 
-// In-memory fallback cache
-let inMemoryWishlist: string[] = ['varanasi', 'munnar'];
+// In-memory fallback cache (starts empty for all new sessions)
+let inMemoryWishlist: string[] = [];
 let inMemoryTheme: 'dark' | 'light' = 'dark';
 
 export const StorageService = {
   /**
    * Retrieves all saved destination IDs from AsyncStorage with in-memory fallback.
+   * New users start with an empty wishlist.
    */
   async getWishlist(): Promise<string[]> {
     try {
       const data = await AsyncStorage.getItem(WISHLIST_STORAGE_KEY);
       if (!data) {
-        // Default initial items for rich preview (Varanasi and Munnar)
-        const initial = ['varanasi', 'munnar'];
-        inMemoryWishlist = initial;
-        try {
-          await AsyncStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(initial));
-        } catch (_) {}
-        return initial;
+        inMemoryWishlist = [];
+        return [];
       }
       const parsed = JSON.parse(data);
       if (Array.isArray(parsed)) {

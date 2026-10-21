@@ -18,6 +18,7 @@ import { HomeScreen } from './src/screens/HomeScreen';
 import { DetailsScreen } from './src/screens/DetailsScreen';
 import { SearchScreen } from './src/screens/SearchScreen';
 import { WishlistScreen } from './src/screens/WishlistScreen';
+import { SmartMatcherScreen } from './src/screens/SmartMatcherScreen';
 
 function MainApp() {
   const [currentTab, setCurrentTab] = useState<TabType>('home');
@@ -143,6 +144,13 @@ function MainApp() {
           />
         ) : currentTab === 'search' ? (
           <SearchScreen
+            onSelectDestination={(dest) => setSelectedDestination(dest)}
+            wishlistIds={wishlistIds}
+            onToggleWishlist={handleToggleWishlist}
+            theme={theme}
+          />
+        ) : currentTab === 'matcher' ? (
+          <SmartMatcherScreen
             onSelectDestination={(dest) => setSelectedDestination(dest)}
             wishlistIds={wishlistIds}
             onToggleWishlist={handleToggleWishlist}

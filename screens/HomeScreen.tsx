@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import {
   FlatList,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -72,6 +73,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   const activeStateInfo: StateInfo =
     STATE_DATABASE[selectedState] || STATE_DATABASE['all'];
 
+  // Trending / popular expeditions (highest rated destinations)
+  const trendingDestinations = useMemo(() => {
+    return [...MOCK_DESTINATIONS]
+      .sort((a, b) => b.rating - a.rating)
+      .slice(0, 5);
+  }, []);
+
   // Handle state change with smooth scroll
   const handleSelectState = (stateId: string) => {
     setSelectedState(stateId);
@@ -86,27 +94,113 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
           <View style={styles.headerArea}>
-            {/* Top Saved Shortcut */}
-            {wishlistIds.length > 0 && (
-              <View style={styles.topDispatchRow}>
-                <View style={{ flex: 1 }} />
-                <TouchableOpacity
-                  onPress={onNavigateToWishlist}
-                  style={[
-                    styles.savedHeaderChip,
-                    {
-                      backgroundColor: theme.chipIdle,
-                      borderColor: theme.cardBorder,
-                    },
-                  ]}
-                >
-                  <MaterialIcons name="bookmark" size={13} color={theme.gold} />
-                  <Text style={[styles.savedHeaderText, { color: theme.textSecondary }]}>
-                    {wishlistIds.length} Saved
+            {/* Compact Editorial Hero */}
+            <View style={styles.compactHero}>
+              <View style={styles.heroTopRow}>
+                <View style={{ flex: 1 }}>
+                  <Text style={[styles.heroEyebrow, { color: theme.primaryLight }]}>
+                    EXPLORE INDIA
                   </Text>
-                </TouchableOpacity>
+                  <Text style={[styles.heroHeadline, { color: theme.text }]}>
+                    Discover places worth remembering.
+                  </Text>
+                </View>
+                {wishlistIds.length > 0 && (
+                  <TouchableOpacity
+                    onPress={onNavigateToWishlist}
+                    style={[
+                      styles.savedHeaderChip,
+                      {
+                        backgroundColor: theme.chipIdle,
+                        borderColor: theme.cardBorder,
+                      },
+                    ]}
+                  >
+                    <MaterialIcons name="bookmark" size={13} color={theme.gold} />
+                    <Text style={[styles.savedHeaderText, { color: theme.textSecondary }]}>
+                      {wishlistIds.length} Saved
+                    </Text>
+                  </TouchableOpacity>
+                )}
               </View>
-            )}
+
+              {/* Obvious Search Bar Entry Point */}
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={onNavigateToSearch}
+                style={[
+                  styles.heroSearchBar,
+                  { backgroundColor: theme.card, borderColor: theme.cardBorder },
+                ]}
+              >
+                <MaterialIcons name="search" size={18} color={theme.primary} />
+                <Text style={[styles.heroSearchPlaceholder, { color: theme.textMuted }]}>
+                  Search destinations, states, or styles...
+                </Text>
+                <MaterialIcons name="tune" size={16} color={theme.primaryLight} />
+              </TouchableOpacity>
+            </View>
+
+            {/* Trending Destinations Carousel */}
+            <View style={styles.trendingSection}>
+              <View style={styles.trendingHeaderRow}>
+                <View style={styles.sectionTitleWrap}>
+                  <MaterialIcons name="trending-up" size={15} color={theme.primary} />
+                  <Text style={[styles.sectionTitle, { color: theme.text }]}>
+                    POPULAR EXPEDITIONS
+                  </Text>
+                </View>
+                <Text style={[styles.trendingSub, { color: theme.textMuted }]}>
+                  Top-rated journeys
+                </Text>
+              </View>
+
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.trendingScrollContent}
+              >
+                {trendingDestinations.map((dest) => (
+                  <TouchableOpacity
+                    key={dest.id}
+                    activeOpacity={0.88}
+                    onPress={() => onSelectDestination(dest)}
+                    style={[
+                      styles.trendingCard,
+                      { backgroundColor: theme.card, borderColor: theme.cardBorder },
+                    ]}
+                  >
+                    <Image
+                      source={{ uri: dest.image }}
+                      style={styles.trendingImage}
+                      resizeMode="cover"
+                    />
+                    <View style={styles.trendingRatingBadge}>
+                      <MaterialIcons name="star" size={11} color="#FBBF24" />
+                      <Text style={styles.trendingRatingText}>
+                        {dest.rating.toFixed(2)}
+                      </Text>
+                    </View>
+                    <View style={styles.trendingCardBody}>
+                      <Text style={[styles.trendingCardTitle, { color: theme.text }]} numberOfLines={1}>
+                        {dest.name}
+                      </Text>
+                      <Text style={[styles.trendingCardLocation, { color: theme.textMuted }]} numberOfLines={1}>
+                        {dest.location}
+                      </Text>
+                      <View style={styles.trendingPriceRow}>
+                        <Text style={[styles.trendingPriceText, { color: theme.primaryLight }]}>
+                          ₹{dest.pricePerNight.toLocaleString('en-IN')}
+                        </Text>
+                        <Text style={[styles.trendingDurationText, { color: theme.textMuted }]}>
+                          • {dest.duration.split(' ')[0]} {dest.duration.split(' ')[1]}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
 
             {/* Horizontal State Chips Navigation Bar */}
             <View style={styles.sectionHeaderRow}>
@@ -301,6 +395,109 @@ const styles = StyleSheet.create({
   },
   headerArea: {
     marginBottom: Spacing.xs,
+  },
+  compactHero: {
+    marginBottom: Spacing.sm,
+    paddingTop: 2,
+  },
+  heroTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 10,
+  },
+  heroEyebrow: {
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 1.2,
+    marginBottom: 2,
+  },
+  heroHeadline: {
+    fontSize: 18,
+    fontWeight: '800',
+    letterSpacing: -0.4,
+  },
+  heroSearchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    gap: 8,
+  },
+  heroSearchPlaceholder: {
+    flex: 1,
+    fontSize: 12,
+  },
+  trendingSection: {
+    marginBottom: Spacing.sm + 2,
+  },
+  trendingHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  trendingSub: {
+    fontSize: 10,
+    fontWeight: '600',
+  },
+  trendingScrollContent: {
+    gap: 10,
+    paddingBottom: 2,
+  },
+  trendingCard: {
+    width: 140,
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    overflow: 'hidden',
+  },
+  trendingImage: {
+    width: '100%',
+    height: 85,
+    backgroundColor: '#1E1E24',
+  },
+  trendingRatingBadge: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    backgroundColor: 'rgba(0,0,0,0.65)',
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    borderRadius: BorderRadius.xs,
+  },
+  trendingRatingText: {
+    color: '#FFFFFF',
+    fontSize: 9.5,
+    fontWeight: '700',
+  },
+  trendingCardBody: {
+    padding: 7,
+  },
+  trendingCardTitle: {
+    fontSize: 12,
+    fontWeight: '700',
+    marginBottom: 1,
+  },
+  trendingCardLocation: {
+    fontSize: 10,
+    marginBottom: 4,
+  },
+  trendingPriceRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+  },
+  trendingPriceText: {
+    fontSize: 11,
+    fontWeight: '800',
+  },
+  trendingDurationText: {
+    fontSize: 9.5,
+    marginLeft: 2,
   },
   topDispatchRow: {
     flexDirection: 'row',

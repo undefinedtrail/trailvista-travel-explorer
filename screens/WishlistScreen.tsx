@@ -56,8 +56,8 @@ export const WishlistScreen: React.FC<WishlistScreenProps> = ({
 
   const handlePromptClear = () => {
     Alert.alert(
-      'Clear Saved Journeys',
-      'Are you sure you want to remove all saved destinations from your local storage wishlist?',
+      'Clear All Saved Journeys',
+      'Are you sure you want to remove all saved destinations from your wishlist?',
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -65,7 +65,7 @@ export const WishlistScreen: React.FC<WishlistScreenProps> = ({
           style: 'destructive',
           onPress: () => {
             onClearWishlist();
-            onShowToast('Wishlist emptied from storage.');
+            onShowToast('Wishlist cleared.');
           },
         },
       ]
@@ -82,14 +82,27 @@ export const WishlistScreen: React.FC<WishlistScreenProps> = ({
         ListHeaderComponent={
           <View style={styles.headerSection}>
             <View style={styles.headerTitleRow}>
-              <Text style={[styles.mainTitle, { color: theme.text }]}>
-                Saved Journeys
-              </Text>
-              <View style={[styles.savedCountBadge, { backgroundColor: theme.chipIdle }]}>
-                <Text style={[styles.savedCountText, { color: theme.primaryLight }]}>
-                  {savedDestinations.length}
+              <View style={styles.headerTitleLeft}>
+                <Text style={[styles.mainTitle, { color: theme.text }]}>
+                  Saved Journeys
                 </Text>
+                <View style={[styles.savedCountBadge, { backgroundColor: theme.chipIdle }]}>
+                  <Text style={[styles.savedCountText, { color: theme.primaryLight }]}>
+                    {savedDestinations.length}
+                  </Text>
+                </View>
               </View>
+
+              {savedDestinations.length > 0 && (
+                <TouchableOpacity
+                  onPress={handlePromptClear}
+                  style={styles.clearHeaderBtn}
+                  activeOpacity={0.7}
+                >
+                  <MaterialIcons name="delete-outline" size={15} color="#EF4444" />
+                  <Text style={styles.clearHeaderBtnText}>Clear All</Text>
+                </TouchableOpacity>
+              )}
             </View>
 
             {/* Category Filter Chips */}
@@ -251,12 +264,12 @@ export const WishlistScreen: React.FC<WishlistScreenProps> = ({
               />
             </View>
             <Text style={[styles.emptyNotebookTitle, { color: theme.text }]}>
-              Your Field Notebook is Empty
+              Your Wishlist is Empty
             </Text>
             <Text
               style={[styles.emptyNotebookDesc, { color: theme.textMuted }]}
             >
-              No saved destinations match your filter. Tap the heart icon on any destination card to bookmark expeditions for offline review.
+              Save journeys from Explore or Search to plan your adventures here. Tap the heart or bookmark icon on any destination card to add it to your wishlist.
             </Text>
             <TouchableOpacity
               onPress={onNavigateToHome}
@@ -315,8 +328,26 @@ const styles = StyleSheet.create({
   headerTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'space-between',
     marginBottom: Spacing.xs,
+  },
+  headerTitleLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  clearHeaderBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: BorderRadius.xs,
+  },
+  clearHeaderBtnText: {
+    color: '#EF4444',
+    fontSize: 12,
+    fontWeight: '700',
   },
   savedCountBadge: {
     paddingHorizontal: 8,

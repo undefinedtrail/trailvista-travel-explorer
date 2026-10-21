@@ -40,15 +40,15 @@ export const STATES_LIST = [
 ];
 
 export const STATE_PINS: Record<string, StatePin> = {
-  ladakh: { id: 'ladakh', name: 'Ladakh', top: 11, left: 38 },
-  himachal: { id: 'himachal', name: 'Himachal Pradesh', top: 20, left: 33 },
+  ladakh: { id: 'ladakh', name: 'Ladakh', top: 12, left: 38 },
+  himachal: { id: 'himachal', name: 'Himachal Pradesh', top: 21, left: 33 },
   rajasthan: { id: 'rajasthan', name: 'Rajasthan', top: 34, left: 23 },
-  uttar_pradesh: { id: 'uttar_pradesh', name: 'Uttar Pradesh', top: 36, left: 46 },
-  assam: { id: 'assam', name: 'Assam', top: 35, left: 83 },
+  uttar_pradesh: { id: 'uttar_pradesh', name: 'Uttar Pradesh', top: 35, left: 45 },
+  assam: { id: 'assam', name: 'Assam', top: 38, left: 81 },
   maharashtra: { id: 'maharashtra', name: 'Maharashtra', top: 56, left: 30 },
-  andhra_pradesh: { id: 'andhra_pradesh', name: 'Andhra Pradesh', top: 67, left: 45 },
-  karnataka: { id: 'karnataka', name: 'Karnataka', top: 70, left: 29 },
-  kerala: { id: 'kerala', name: 'Kerala', top: 85, left: 28 },
+  andhra_pradesh: { id: 'andhra_pradesh', name: 'Andhra Pradesh', top: 68, left: 44 },
+  karnataka: { id: 'karnataka', name: 'Karnataka', top: 71, left: 29 },
+  kerala: { id: 'kerala', name: 'Kerala', top: 82, left: 26 },
   tamil_nadu: { id: 'tamil_nadu', name: 'Tamil Nadu', top: 86, left: 36 },
 };
 

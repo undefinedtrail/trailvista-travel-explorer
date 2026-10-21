@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ThemeColors, BorderRadius, Spacing } from '../constants/theme';
 
-export type TabType = 'home' | 'search' | 'wishlist';
+export type TabType = 'home' | 'search' | 'matcher' | 'wishlist';
 
 interface BottomNavBarProps {
   currentTab: TabType;
@@ -70,6 +70,28 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
           />
           {currentTab === 'search' && (
             <Text style={styles.activeTabText}>Search</Text>
+          )}
+        </TouchableOpacity>
+
+        {/* Find My Trip / Smart Matcher Tab */}
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => onSelectTab('matcher')}
+          style={[
+            styles.tabItem,
+            currentTab === 'matcher' && [
+              styles.activeTabItem,
+              { backgroundColor: theme.primary },
+            ],
+          ]}
+        >
+          <MaterialIcons
+            name="auto-awesome"
+            size={17}
+            color={currentTab === 'matcher' ? '#FFFFFF' : theme.textMuted}
+          />
+          {currentTab === 'matcher' && (
+            <Text style={styles.activeTabText}>Match</Text>
           )}
         </TouchableOpacity>
 

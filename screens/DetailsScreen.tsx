@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   Linking,
@@ -12,6 +12,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Destination } from '../models/Destination';
 import { ThemeColors, Spacing, BorderRadius } from '../constants/theme';
 import { AttractionCard } from '../widgets/AttractionCard';
+import { WeatherService, WeatherData } from '../services/weatherService';
 
 interface DetailsScreenProps {
   destination: Destination;
@@ -30,6 +31,22 @@ export const DetailsScreen: React.FC<DetailsScreenProps> = ({
   theme,
   onShowToast,
 }) => {
+  const [weatherData, setWeatherData] = useState<WeatherData>({
+    temperature: destination.weather.split(' ')[0] || '24°C',
+    condition: destination.weather,
+    iconName: 'wb-sunny',
+    isLive: false,
+  });
+
+  useEffect(() => {
+    let isMounted = true;
+    WeatherService.getLiveWeather(destination.id, destination.weather).then((res) => {
+      if (isMounted) setWeatherData(res);
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [destination.id, destination.weather]);
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       {/* Scrollable Dossier View */}
@@ -142,15 +159,15 @@ export const DetailsScreen: React.FC<DetailsScreenProps> = ({
               ]}
             >
               <MaterialIcons
-                name="wb-sunny"
+                name={(weatherData.iconName as any) || 'wb-sunny'}
                 size={20}
-                color={theme.gold}
+                color={weatherData.isLive ? '#10B981' : theme.gold}
               />
               <Text style={[styles.factLabel, { color: theme.textMuted }]}>
-                WEATHER
+                {weatherData.isLive ? 'WEATHER • LIVE' : 'WEATHER'}
               </Text>
               <Text style={[styles.factValue, { color: theme.text }]}>
-                {destination.weather.split(' ')[0]}
+                {weatherData.temperature}
               </Text>
             </View>
 
@@ -177,35 +194,80 @@ export const DetailsScreen: React.FC<DetailsScreenProps> = ({
             </View>
           </View>
 
-          {/* Interactive Google Maps Navigation Card */}
+          {/* Live Weather Indicator Bar */}
+          {weatherData.isLive && (
+            <View
+              style={[
+                styles.liveWeatherBanner,
+                {
+                  backgroundColor: theme.card,
+                  borderColor: theme.cardBorder,
+                },
+              ]}
+            >
+              <View style={styles.liveWeatherLeft}>
+                <View style={[styles.liveWeatherDot, { backgroundColor: '#10B981' }]} />
+                <Text style={[styles.liveWeatherCondition, { color: theme.textSecondary }]}>
+                  {weatherData.condition}
+                </Text>
+              </View>
+              <View style={styles.liveWeatherMetrics}>
+                {weatherData.humidity && (
+                  <View style={styles.liveMetricPill}>
+                    <MaterialIcons name="water-drop" size={11} color="#60A5FA" />
+                    <Text style={[styles.liveMetricText, { color: theme.textMuted }]}>
+                      {weatherData.humidity}
+                    </Text>
+                  </View>
+                )}
+                {weatherData.windSpeed && (
+                  <View style={styles.liveMetricPill}>
+                    <MaterialIcons name="air" size={11} color="#34D399" />
+                    <Text style={[styles.liveMetricText, { color: theme.textMuted }]}>
+                      {weatherData.windSpeed}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </View>
+          )}
+
+          {/* Prominent Google Maps Navigation Card */}
           <TouchableOpacity
             style={[
               styles.googleMapsCard,
               {
                 backgroundColor: theme.card,
-                borderColor: theme.cardBorder,
+                borderColor: theme.primary,
               },
             ]}
-            activeOpacity={0.7}
+            activeOpacity={0.75}
             onPress={() => {
               const query = encodeURIComponent(`${destination.name}, ${destination.location}`);
               Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${query}`);
             }}
           >
             <View style={styles.googleMapsLeft}>
-              <View style={[styles.mapIconCircle, { backgroundColor: 'rgba(194, 81, 45, 0.15)' }]}>
-                <MaterialIcons name="map" size={18} color={theme.primary} />
+              <View style={[styles.mapIconCircle, { backgroundColor: theme.primary }]}>
+                <MaterialIcons name="navigation" size={20} color="#FFFFFF" />
               </View>
               <View style={styles.googleMapsTextCol}>
-                <Text style={[styles.googleMapsTitle, { color: theme.text }]}>
-                  Open in Google Maps
-                </Text>
+                <View style={styles.googleMapsTitleRow}>
+                  <Text style={[styles.googleMapsTitle, { color: theme.text }]}>
+                    Open in Google Maps
+                  </Text>
+                  <View style={[styles.navPillBadge, { backgroundColor: 'rgba(194, 81, 45, 0.18)' }]}>
+                    <Text style={[styles.navPillBadgeText, { color: theme.primaryLight }]}>
+                      LIVE ROUTE
+                    </Text>
+                  </View>
+                </View>
                 <Text style={[styles.googleMapsSubtitle, { color: theme.textMuted }]} numberOfLines={1}>
-                  {destination.location}
+                  {destination.name} • {destination.location}
                 </Text>
               </View>
             </View>
-            <MaterialIcons name="open-in-new" size={16} color={theme.primaryLight} />
+            <MaterialIcons name="open-in-new" size={18} color={theme.primary} />
           </TouchableOpacity>
 
           {/* Overview Description Section */}
@@ -693,6 +755,44 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginTop: 2,
   },
+  liveWeatherBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    marginBottom: Spacing.sm,
+  },
+  liveWeatherLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  liveWeatherDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
+  liveWeatherCondition: {
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  liveWeatherMetrics: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  liveMetricPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+  },
+  liveMetricText: {
+    fontSize: 10,
+    fontWeight: '600',
+  },
   googleMapsCard: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -722,6 +822,21 @@ const styles = StyleSheet.create({
   googleMapsTitle: {
     fontSize: 13,
     fontWeight: '700',
+  },
+  googleMapsTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  navPillBadge: {
+    paddingHorizontal: 6,
+    paddingVertical: 1.5,
+    borderRadius: BorderRadius.xs,
+  },
+  navPillBadgeText: {
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 0.6,
   },
   googleMapsSubtitle: {
     fontSize: 11,
