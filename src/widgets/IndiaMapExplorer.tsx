@@ -137,20 +137,22 @@ export const IndiaMapExplorer: React.FC<IndiaMapExplorerProps> = ({
                     fill={
                       isAvailable
                         ? isDark
-                          ? 'rgba(10, 11, 15, 0.88)'
-                          : 'rgba(232, 227, 218, 0.85)'
+                          ? '#1E212D'
+                          : '#EBE7DE'
+                        : isDark
+                        ? '#14151C'
                         : 'transparent'
                     }
                     stroke={
                       isAvailable
                         ? isDark
-                          ? '#565A6E'
-                          : '#8A8E9E'
+                          ? '#8E98B4'
+                          : '#4E5568'
                         : isDark
-                        ? '#1B1C26'
-                        : '#BCC0CD'
+                        ? '#4E556E'
+                        : '#CAD0DE'
                     }
-                    strokeWidth={isAvailable ? 1.05 : 0.6}
+                    strokeWidth={isAvailable ? 1.2 : 0.85}
                     strokeLinejoin="round"
                     strokeLinecap="round"
                     onPress={() => {
