@@ -4,7 +4,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -41,10 +40,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   theme,
   isDark,
 }) => {
-  // State for map selection, category, and inline search query
+  // State for map selection and travel style category
   const [selectedState, setSelectedState] = useState<string>('kerala');
   const [selectedCategory, setSelectedCategory] = useState<DestinationCategory>('All');
-  const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Destination counts per state for available state detection and badges
   const stateCounts = useMemo(() => {
@@ -62,7 +60,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     return Object.keys(stateCounts).filter((k) => stateCounts[k] > 0);
   }, [stateCounts]);
 
-  // Combined filtering: Map State + Search Query + Travel Style Category
+  // Combined filtering: Map State + Travel Style Category
   const filteredDestinations = useMemo(() => {
     return MOCK_DESTINATIONS.filter((d) => {
       // 1. Map State Filter
@@ -74,26 +72,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       const matchesCategory =
         selectedCategory === 'All' || d.category === selectedCategory;
 
-      // 3. Search Query Filter (name, city, state, category, tags)
-      if (!searchQuery.trim()) {
-        return matchesState && matchesCategory;
-      }
-
-      const q = searchQuery.toLowerCase().trim();
-      const matchesSearch =
-        d.name.toLowerCase().includes(q) ||
-        d.location.toLowerCase().includes(q) ||
-        d.state.toLowerCase().includes(q) ||
-        d.category.toLowerCase().includes(q) ||
-        (d.tags && d.tags.some((t) => t.toLowerCase().includes(q)));
-
-      return matchesState && matchesCategory && matchesSearch;
+      return matchesState && matchesCategory;
     });
-  }, [selectedState, selectedCategory, searchQuery]);
+  }, [selectedState, selectedCategory]);
 
   // Selected state display name
   const activeStateName = useMemo(() => {
-    if (selectedState === 'all') return 'All India';
+    if (selectedState === 'all') return 'All States Selected';
     const pin = STATE_PINS[selectedState];
     if (pin) return pin.name;
     const db = STATE_DATABASE[selectedState];
@@ -104,7 +89,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   const handleResetFilters = () => {
     setSelectedState('all');
     setSelectedCategory('All');
-    setSearchQuery('');
   };
 
   return (
@@ -116,75 +100,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
           <View style={styles.headerArea}>
-            {/* 1. Header */}
-            <View style={styles.headerTop}>
-              <View style={{ flex: 1 }}>
-                <Text style={[styles.heroEyebrow, { color: theme.primaryLight }]}>
-                  EXPLORE INDIA
-                </Text>
-                <Text style={[styles.heroHeadline, { color: theme.text }]}>
-                  Discover places worth remembering.
-                </Text>
-              </View>
-
-              {wishlistIds.length > 0 && (
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={onNavigateToWishlist}
-                  style={[
-                    styles.savedHeaderChip,
-                    {
-                      backgroundColor: theme.chipIdle,
-                      borderColor: theme.cardBorder,
-                    },
-                  ]}
-                >
-                  <MaterialIcons name="bookmark" size={13} color={theme.gold} />
-                  <Text style={[styles.savedHeaderText, { color: theme.textSecondary }]}>
-                    {wishlistIds.length} Saved
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
-
-            {/* 2. Fast Inline Search Bar */}
-            <View
-              style={[
-                styles.searchBarContainer,
-                { backgroundColor: theme.card, borderColor: theme.cardBorder },
-              ]}
-            >
-              <MaterialIcons name="search" size={19} color={theme.primary} />
-              <TextInput
-                style={[styles.searchInput, { color: theme.text }]}
-                placeholder="Search destinations, states, experiences..."
-                placeholderTextColor={theme.textMuted}
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-                returnKeyType="search"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
-              {searchQuery.length > 0 ? (
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={() => setSearchQuery('')}
-                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-                >
-                  <MaterialIcons name="close" size={17} color={theme.textMuted} />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={onNavigateToSearch}
-                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-                >
-                  <MaterialIcons name="tune" size={16} color={theme.primaryLight} />
-                </TouchableOpacity>
-              )}
-            </View>
-
-            {/* 3. States Banner & Quick Selection Bar (Above Regional Map) */}
+            {/* 1. States Banner & Quick Selection Bar (Above Regional Map) */}
             <View
               style={[
                 styles.stateBannerCard,
@@ -197,28 +113,27 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               <View style={styles.bannerHeaderRow}>
                 <View style={styles.bannerLeft}>
                   <View style={[styles.bannerIndicator, { backgroundColor: theme.primary }]} />
-                  <Text style={[styles.bannerActiveLabel, { color: theme.textSecondary }]}>
+                  <Text style={[styles.bannerActiveLabel, { color: theme.text }]}>
                     {selectedState === 'all'
                       ? 'All States Selected'
                       : `Active: ${activeStateName}`}
                   </Text>
-                  <View
-                    style={[
-                      styles.bannerCountBadge,
-                      { backgroundColor: theme.chipIdle, borderColor: theme.cardBorder },
-                    ]}
-                  >
-                    <Text style={[styles.bannerCountText, { color: theme.primaryLight }]}>
-                      {selectedState === 'all'
-                        ? `${MOCK_DESTINATIONS.length} Expeditions`
-                        : `${stateCounts[selectedState] || 0} ${
-                            (stateCounts[selectedState] || 0) === 1 ? 'Stay' : 'Stays'
-                          }`}
-                    </Text>
-                  </View>
+                  {selectedState !== 'all' && (
+                    <View
+                      style={[
+                        styles.bannerCountBadge,
+                        { backgroundColor: theme.chipIdle, borderColor: theme.cardBorder },
+                      ]}
+                    >
+                      <Text style={[styles.bannerCountText, { color: theme.primaryLight }]}>
+                        {stateCounts[selectedState] || 0}{' '}
+                        {(stateCounts[selectedState] || 0) === 1 ? 'Stay' : 'Stays'}
+                      </Text>
+                    </View>
+                  )}
                 </View>
 
-                {selectedState !== 'all' && (
+                {selectedState !== 'all' ? (
                   <TouchableOpacity
                     activeOpacity={0.7}
                     onPress={() => setSelectedState('all')}
@@ -229,7 +144,24 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                       All States
                     </Text>
                   </TouchableOpacity>
-                )}
+                ) : wishlistIds.length > 0 ? (
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={onNavigateToWishlist}
+                    style={[
+                      styles.savedHeaderChip,
+                      {
+                        backgroundColor: theme.chipIdle,
+                        borderColor: theme.cardBorder,
+                      },
+                    ]}
+                  >
+                    <MaterialIcons name="bookmark" size={12} color={theme.gold} />
+                    <Text style={[styles.savedHeaderText, { color: theme.textSecondary }]}>
+                      {wishlistIds.length} Saved
+                    </Text>
+                  </TouchableOpacity>
+                ) : null}
               </View>
 
               {/* Horizontal Scroll of All States to Select */}
@@ -240,7 +172,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               >
                 {STATES_LIST.map((st) => {
                   const isSelected = selectedState === st.id;
-                  const count = st.id === 'all' ? MOCK_DESTINATIONS.length : stateCounts[st.id] || 0;
+                  const count = st.id === 'all' ? 0 : stateCounts[st.id] || 0;
                   return (
                     <TouchableOpacity
                       key={st.id}
@@ -303,7 +235,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               </ScrollView>
             </View>
 
-            {/* 4. Interactive Regional SVG Map (Pure Vector Highlight - Zero Dots) */}
+            {/* 2. Interactive Regional SVG Map (Completely Uniform Highlights - Zero Dots) */}
             <IndiaMapExplorer
               selectedState={selectedState}
               onSelectState={setSelectedState}
@@ -313,15 +245,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               availableStateIds={availableStateIds}
             />
 
-            {/* 5. Destination Results Section Header */}
+            {/* 3. Destination Results Section Header */}
             <View style={styles.resultsHeaderRow}>
               <View style={styles.resultsTitleWrap}>
                 <MaterialIcons name="place" size={15} color={theme.primary} />
                 <Text style={[styles.resultsTitle, { color: theme.text }]}>
                   {selectedState === 'all'
-                    ? searchQuery
-                      ? `Search: "${searchQuery}"`
-                      : `All Expeditions`
+                    ? `All Expeditions`
                     : `${activeStateName}`}
                 </Text>
                 <View
@@ -365,9 +295,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                 ))}
               </ScrollView>
 
-              {(selectedState !== 'all' ||
-                selectedCategory !== 'All' ||
-                searchQuery.length > 0) && (
+              {(selectedState !== 'all' || selectedCategory !== 'All') && (
                 <TouchableOpacity
                   activeOpacity={0.7}
                   onPress={handleResetFilters}
@@ -398,8 +326,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             </Text>
             <Text style={[styles.emptySubtitle, { color: theme.textMuted }]}>
               {selectedState !== 'all'
-                ? `No current itineraries match "${searchQuery || selectedCategory}" in ${activeStateName}.`
-                : 'Try adjusting your search terms or selecting another state on the map.'}
+                ? `No current itineraries match "${selectedCategory}" in ${activeStateName}.`
+                : 'Try adjusting your travel style filter or selecting another state on the map.'}
             </Text>
             <TouchableOpacity
               activeOpacity={0.8}
@@ -426,52 +354,7 @@ const styles = StyleSheet.create({
   },
   headerArea: {
     marginBottom: Spacing.xs,
-  },
-  headerTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 10,
     paddingTop: 2,
-  },
-  heroEyebrow: {
-    fontSize: 10,
-    fontWeight: '800',
-    letterSpacing: 1.2,
-    marginBottom: 2,
-  },
-  heroHeadline: {
-    fontSize: 18,
-    fontWeight: '800',
-    letterSpacing: -0.4,
-  },
-  savedHeaderChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: BorderRadius.full,
-    borderWidth: 1,
-  },
-  savedHeaderText: {
-    fontSize: 10.5,
-    fontWeight: '700',
-  },
-  searchBarContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: BorderRadius.md,
-    borderWidth: 1,
-    gap: 8,
-    marginBottom: Spacing.xs + 2,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 12.5,
-    paddingVertical: 0,
   },
   stateBannerCard: {
     borderRadius: BorderRadius.md,
@@ -521,6 +404,19 @@ const styles = StyleSheet.create({
     fontSize: 10.5,
     fontWeight: '700',
   },
+  savedHeaderChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    paddingHorizontal: 7,
+    paddingVertical: 2.5,
+    borderRadius: BorderRadius.full,
+    borderWidth: 1,
+  },
+  savedHeaderText: {
+    fontSize: 10,
+    fontWeight: '700',
+  },
   stateSelectorScroll: {
     gap: 6,
     paddingBottom: 2,
@@ -551,7 +447,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   resultsHeaderRow: {
-    marginTop: 10,
+    marginTop: 8,
     marginBottom: 8,
     paddingHorizontal: 2,
     gap: 8,

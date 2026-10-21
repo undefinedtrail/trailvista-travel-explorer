@@ -50,65 +50,53 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
         </View>
       </View>
 
-      {/* Right Controls: Day/Night Switch & Profile */}
+      {/* Right Controls: Futuristic Sun & Moon Theme Toggle (No Profile Icon) */}
       <View style={styles.rightControls}>
-        <View
-          style={[
-            styles.themeToggleContainer,
-            {
-              backgroundColor: isDark ? '#1C1D25' : '#EDE9DF',
-              borderColor: theme.cardBorder,
-            },
-          ]}
-        >
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => isDark && onToggleTheme()}
-            style={[
-              styles.toggleOption,
-              !isDark && [styles.toggleActive, { backgroundColor: theme.card }],
-            ]}
-          >
-            <Text
-              style={[
-                styles.toggleText,
-                { color: !isDark ? theme.text : theme.textMuted },
-              ]}
-            >
-              Day
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => !isDark && onToggleTheme()}
-            style={[
-              styles.toggleOption,
-              isDark && [styles.toggleActive, { backgroundColor: theme.primary }],
-            ]}
-          >
-            <Text
-              style={[
-                styles.toggleText,
-                { color: isDark ? '#FFFFFF' : theme.textMuted },
-              ]}
-            >
-              Night
-            </Text>
-          </TouchableOpacity>
-        </View>
-
         <TouchableOpacity
           activeOpacity={0.8}
+          onPress={onToggleTheme}
           style={[
-            styles.profileButton,
+            styles.futuristicToggle,
             {
-              backgroundColor: isDark ? '#1C1D25' : '#EDE9DF',
-              borderColor: theme.cardBorder,
+              backgroundColor: isDark ? '#1C1D26' : '#EDE8DC',
+              borderColor: isDark ? '#2E3142' : '#D6CFBF',
             },
           ]}
-          accessibilityLabel="User Profile"
+          accessibilityLabel={`Switch to ${isDark ? 'light' : 'dark'} mode`}
         >
-          <MaterialIcons name="person" size={17} color={theme.text} />
+          {/* Sun Slot */}
+          <View
+            style={[
+              styles.toggleIconSlot,
+              !isDark && [
+                styles.toggleActiveSlot,
+                { backgroundColor: '#FFFFFF', shadowColor: '#D97706' },
+              ],
+            ]}
+          >
+            <MaterialIcons
+              name="wb-sunny"
+              size={13.5}
+              color={!isDark ? '#D97706' : isDark ? '#52556A' : '#8A8D9B'}
+            />
+          </View>
+
+          {/* Moon Slot */}
+          <View
+            style={[
+              styles.toggleIconSlot,
+              isDark && [
+                styles.toggleActiveSlot,
+                { backgroundColor: theme.primary, shadowColor: theme.primary },
+              ],
+            ]}
+          >
+            <MaterialIcons
+              name="nights-stay"
+              size={13}
+              color={isDark ? '#FFFFFF' : '#8A8D9B'}
+            />
+          </View>
         </TouchableOpacity>
       </View>
     </View>
@@ -146,66 +134,34 @@ const styles = StyleSheet.create({
   titleColumn: {
     justifyContent: 'center',
   },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
   title: {
     fontSize: 20,
     fontWeight: '800',
     letterSpacing: -0.5,
   },
-  badge: {
-    paddingHorizontal: 6,
-    paddingVertical: 1,
-    borderRadius: 6,
-    borderWidth: 1,
-  },
-  badgeText: {
-    fontSize: 9.5,
-    fontWeight: '800',
-    letterSpacing: 0.5,
-  },
-  tagline: {
-    fontSize: 10.5,
-    fontWeight: '500',
-    marginTop: 1,
-  },
   rightControls: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
   },
-  themeToggleContainer: {
+  futuristicToggle: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 2.5,
+    padding: 3,
     borderRadius: BorderRadius.full,
     borderWidth: 1,
+    gap: 3,
   },
-  toggleOption: {
-    paddingHorizontal: 9,
-    paddingVertical: 3.5,
-    borderRadius: BorderRadius.full,
-  },
-  toggleActive: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  toggleText: {
-    fontSize: 10.5,
-    fontWeight: '700',
-  },
-  profileButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    borderWidth: 1,
+  toggleIconSlot: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  toggleActiveSlot: {
+    elevation: 3,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.35,
+    shadowRadius: 3,
   },
 });
