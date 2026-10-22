@@ -2,8 +2,6 @@
 
 [![Download Android APK](https://img.shields.io/badge/Download-Android%20APK%20(v1.0.1)-E05A47?style=for-the-badge&logo=android&logoColor=white)](https://github.com/undefinedtrail/trailvista-travel-explorer/releases/latest/download/TrailVista.apk)
 [![GitHub Release](https://img.shields.io/github/v/release/undefinedtrail/trailvista-travel-explorer?style=for-the-badge&color=2EA44F)](https://github.com/undefinedtrail/trailvista-travel-explorer/releases/latest)
-[![Expo SDK 57](https://img.shields.io/badge/Expo-SDK%2057-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
 ---
 
@@ -70,7 +68,7 @@
 ## Setup
 
 ### Prerequisites
-- Node.js (v18.x or v20.x+)
+- Node.js (v20.x or v22.x+)
 - npm or bun
 - Expo Go app on an iOS or Android device, or a configured Android/iOS emulator
 
