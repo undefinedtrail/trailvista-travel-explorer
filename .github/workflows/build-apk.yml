@@ -38,15 +38,15 @@ jobs:
       - name: 🐘 Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: 🔨 Compile Android APK
+      - name: 🔨 Compile Standalone Release APK (Embedded JS Bundle)
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleRelease --no-daemon
 
       - name: 📂 Prepare APK
         run: |
-          cp android/app/build/outputs/apk/debug/app-debug.apk TrailVista.apk
+          cp android/app/build/outputs/apk/release/app-release.apk TrailVista.apk
 
       - name: 📤 Upload APK Artifact
         uses: actions/upload-artifact@v4
@@ -59,20 +59,20 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: github.ref == 'refs/heads/main'
         with:
-          tag_name: v1.0.0
-          name: "TrailVista v1.0.0 (Standalone APK)"
+          tag_name: v1.0.1
+          name: "TrailVista v1.0.1 (Standalone Offline APK)"
           draft: false
           prerelease: false
           body: |
-            ### 📱 TrailVista — Travel Explorer (Direct Android APK)
+            ### 📱 TrailVista — Standalone Android APK (Release v1.0.1)
 
-            Standalone installable Android APK for **TrailVista**.
-            No Expo dev server or Metro connection required.
+            Fully standalone release APK with embedded JavaScript bundle & assets.
+            **Does not require Metro or any development server.**
 
             #### 📥 Quick Install Instructions:
             1. Download **`TrailVista.apk`** below directly onto your Android device.
             2. Open the downloaded file and select **"Install"** (allow *Install unknown apps* in your browser/file manager if prompted).
-            3. Enjoy seamless travel exploration across India's top 17 destinations!
+            3. Launch TrailVista directly from your app drawer!
           files: |
             TrailVista.apk
         env:
