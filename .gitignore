@@ -43,3 +43,8 @@ debug_base.png
 # generated native folders
 /ios
 /android
+
+
+# Android builds
+*.apk
+*.aab
