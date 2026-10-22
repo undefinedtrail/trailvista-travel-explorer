@@ -3,6 +3,18 @@
 > **Boutique Travel Expedition Planner & Cultural Field Journal**  
 > Built with React Native (Expo SDK 57), TypeScript, and a modern editorial design inspired by Indian heritage and geography.
 
+[![Download Android APK](https://img.shields.io/badge/Download-Android%20APK%20(v1.0.0)-C2512D?style=for-the-badge&logo=android&logoColor=white)](https://github.com/undefinedtrail/trailvista-travel-explorer/releases/download/v1.0.0/TrailVista.apk)
+[![GitHub Release](https://img.shields.io/github/v/release/undefinedtrail/trailvista-travel-explorer?style=for-the-badge&color=2EA44F)](https://github.com/undefinedtrail/trailvista-travel-explorer/releases/latest)
+
+---
+
+### 📲 Instant Standalone Installation (No Dev Server Needed!)
+You can install **TrailVista** directly onto your Android device without running any local dev servers or Expo Go:
+- 🚀 **Direct APK Link**: [**Download TrailVista.apk (v1.0.0)**](https://github.com/undefinedtrail/trailvista-travel-explorer/releases/download/v1.0.0/TrailVista.apk)
+- 📦 **Releases Page**: [**View GitHub Releases**](https://github.com/undefinedtrail/trailvista-travel-explorer/releases/tag/v1.0.0)
+
+> **Installation Note**: Tap the downloaded file and select **"Install"** (enable *"Install unknown apps"* in your Android browser settings if prompted).
+
 ---
 
 ## 🧭 Project Overview
