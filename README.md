@@ -1,4 +1,4 @@
-# TrailVista • India Journey Explorer
+# TrailVista
 
 [![Download Android APK](https://img.shields.io/badge/Download-Android%20APK%20(v1.0.1)-E05A47?style=for-the-badge&logo=android&logoColor=white)](https://github.com/undefinedtrail/trailvista-travel-explorer/releases/latest/download/TrailVista.apk)
 [![GitHub Release](https://img.shields.io/github/v/release/undefinedtrail/trailvista-travel-explorer?style=for-the-badge&color=2EA44F)](https://github.com/undefinedtrail/trailvista-travel-explorer/releases/latest)
