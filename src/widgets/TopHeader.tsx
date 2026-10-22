@@ -39,7 +39,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
           ]}
         >
           <Image
-            source={require('../../assets/yatra_logo.png')}
+            source={require('../../assets/trailvista_logo.png')}
             style={styles.logoImage}
             resizeMode="cover"
           />

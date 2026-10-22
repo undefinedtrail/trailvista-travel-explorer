@@ -47,13 +47,6 @@ export const WishlistScreen: React.FC<WishlistScreenProps> = ({
     return savedDestinations.filter((d) => d.category === selectedFilter);
   }, [savedDestinations, selectedFilter]);
 
-  const handleExportItinerary = () => {
-    onShowToast(`Compiling ${savedDestinations.length} saved destinations into field journal JSON...`);
-    setTimeout(() => {
-      onShowToast('✓ Itinerary exported & ready for offline travel!');
-    }, 1200);
-  };
-
   const handlePromptClear = () => {
     Alert.alert(
       'Clear All Saved Journeys',
@@ -281,17 +274,6 @@ export const WishlistScreen: React.FC<WishlistScreenProps> = ({
         ListFooterComponent={
           savedDestinations.length > 0 ? (
             <View style={styles.footerActionsArea}>
-              <TouchableOpacity
-                activeOpacity={0.85}
-                onPress={handleExportItinerary}
-                style={[styles.exportButton, { backgroundColor: theme.primary }]}
-              >
-                <MaterialIcons name="file-download" size={17} color="#FFFFFF" />
-                <Text style={styles.exportButtonText}>
-                  Export Itinerary (JSON / PDF)
-                </Text>
-              </TouchableOpacity>
-
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={handlePromptClear}
@@ -553,21 +535,6 @@ const styles = StyleSheet.create({
   footerActionsArea: {
     marginTop: Spacing.md,
     gap: Spacing.sm,
-  },
-  exportButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    paddingVertical: 12,
-    borderRadius: BorderRadius.md,
-  },
-  exportButtonText: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '700',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
   },
   clearButton: {
     flexDirection: 'row',
