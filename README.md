@@ -105,7 +105,7 @@
 
 ## APK / Release
 
-As an added submission bonus, a pre-compiled standalone Android APK is available so that evaluators can test the application directly on an Android device without needing to run a local development server:
+A pre-compiled standalone Android APK is available to use the application directly on an Android device without needing to run a local development server:
 
 - **Direct Download**: [**Download TrailVista.apk (v1.0.1)**](https://github.com/undefinedtrail/trailvista-travel-explorer/releases/latest/download/TrailVista.apk)
 - **GitHub Releases**: [**View Release Assets**](https://github.com/undefinedtrail/trailvista-travel-explorer/releases/latest)
@@ -114,9 +114,3 @@ As an added submission bonus, a pre-compiled standalone Android APK is available
 1. Download `TrailVista.apk` directly onto an Android device.
 2. Tap the downloaded `.apk` file and confirm installation (allow installation from unknown sources in browser settings if prompted).
 3. Open **TrailVista**—the app runs standalone with embedded JavaScript bundle assets (live weather and map links connect over network when available).
-
----
-
-## License
-
-This project is submitted for educational and academic evaluation purposes.
