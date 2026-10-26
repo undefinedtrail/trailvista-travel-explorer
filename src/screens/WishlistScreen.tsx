@@ -3,6 +3,7 @@ import {
   Alert,
   FlatList,
   Image,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -34,23 +35,43 @@ export const WishlistScreen: React.FC<WishlistScreenProps> = ({
   onShowToast,
   theme,
 }) => {
+  // Category filter state ('All' or specific travel style)
   const [selectedFilter, setSelectedFilter] = useState<DestinationCategory>('All');
 
-  // Match saved IDs with mock destinations
+  // Match saved destination IDs from storage against mock database
   const savedDestinations = useMemo(() => {
     return MOCK_DESTINATIONS.filter((item) => wishlistIds.includes(item.id));
   }, [wishlistIds]);
 
-  // Filter within wishlist by category
+  // Apply active category filter to the saved destinations list
   const filteredSaved = useMemo(() => {
     if (selectedFilter === 'All') return savedDestinations;
     return savedDestinations.filter((d) => d.category === selectedFilter);
   }, [savedDestinations, selectedFilter]);
 
+  // Cross-platform confirmation prompt before clearing the entire wishlist
   const handlePromptClear = () => {
+    const confirmationText =
+      'Are you sure you want to remove all saved destinations from your wishlist?';
+
+    // On Web, Alert.alert doesn't show interactive action buttons in react-native-web
+    if (Platform.OS === 'web') {
+      const confirmed =
+        typeof window !== 'undefined' && window.confirm
+          ? window.confirm(confirmationText)
+          : true;
+
+      if (confirmed) {
+        onClearWishlist();
+        onShowToast('Wishlist cleared.');
+      }
+      return;
+    }
+
+    // On Native (Android / iOS), show standard native alert dialog
     Alert.alert(
       'Clear All Saved Journeys',
-      'Are you sure you want to remove all saved destinations from your wishlist?',
+      confirmationText,
       [
         { text: 'Cancel', style: 'cancel' },
         {

@@ -343,7 +343,11 @@ function MainApp() {
 export default function App() {
   return (
     <SafeAreaProvider style={styles.providerContainer}>
-      <MainApp />
+      <View style={styles.webDesktopWrapper}>
+        <View style={styles.phoneFrame}>
+          <MainApp />
+        </View>
+      </View>
     </SafeAreaProvider>
   );
 }
@@ -354,10 +358,44 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  webDesktopWrapper: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    ...(Platform.OS === 'web'
+      ? {
+          backgroundColor: '#090A0E',
+          alignItems: 'center' as const,
+          justifyContent: 'center' as const,
+        }
+      : {}),
+  },
+  phoneFrame: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    position: 'relative' as const,
+    overflow: 'hidden' as const,
+    ...(Platform.OS === 'web'
+      ? {
+          maxWidth: 440,
+          borderLeftWidth: 1,
+          borderRightWidth: 1,
+          borderColor: '#22252F',
+          shadowColor: '#000000',
+          shadowOffset: { width: 0, height: 0 },
+          shadowOpacity: 0.6,
+          shadowRadius: 30,
+          elevation: 15,
+        }
+      : {}),
+  },
   rootContainer: {
     flex: 1,
     width: '100%',
     height: '100%',
+    position: 'relative' as const,
+    overflow: 'hidden' as const,
   },
   screenWrapper: {
     flex: 1,

@@ -86,8 +86,8 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
           ]}
         >
           <MaterialIcons
-            name="auto-awesome"
-            size={17}
+            name="tune"
+            size={18}
             color={currentTab === 'matcher' ? '#FFFFFF' : theme.textMuted}
           />
           {currentTab === 'matcher' && (

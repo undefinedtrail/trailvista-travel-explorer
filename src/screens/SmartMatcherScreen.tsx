@@ -168,10 +168,10 @@ export const SmartMatcherScreen: React.FC<SmartMatcherScreenProps> = ({
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
           <View style={styles.headerArea}>
-            {/* Find My Trip Title */}
+            {/* Smart Destination Matcher Title */}
             <View style={styles.titleBadgeRow}>
               <View style={[styles.sparkleCircle, { backgroundColor: theme.primary }]}>
-                <MaterialIcons name="auto-awesome" size={15} color="#FFFFFF" />
+                <MaterialIcons name="tune" size={16} color="#FFFFFF" />
               </View>
               <Text style={[styles.pageTitle, { color: theme.text }]}>
                 Find My Trip
@@ -339,7 +339,7 @@ export const SmartMatcherScreen: React.FC<SmartMatcherScreenProps> = ({
                     },
                   ]}
                 >
-                  <MaterialIcons name="auto-awesome" size={12} color="#FFFFFF" />
+                  <MaterialIcons name="track-changes" size={12} color="#FFFFFF" />
                   <Text style={styles.matchScoreText}>
                     {item.matchPercent}% Match
                   </Text>

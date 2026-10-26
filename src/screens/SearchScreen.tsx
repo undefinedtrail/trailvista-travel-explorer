@@ -127,7 +127,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
               theme={theme}
             />
 
-            {/* Surprise Me Feature: Random Expedition Discovery */}
+            {/* Surprise Me Feature: Random Expedition Discovery with Shuffle Icon */}
             <TouchableOpacity
               activeOpacity={0.82}
               onPress={handleSurpriseMe}
@@ -141,7 +141,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
             >
               <View style={styles.surpriseLeft}>
                 <View style={[styles.surpriseIconCircle, { backgroundColor: theme.primary }]}>
-                  <MaterialIcons name="auto-awesome" size={17} color="#FFFFFF" />
+                  <MaterialIcons name="shuffle" size={18} color="#FFFFFF" />
                 </View>
                 <View style={styles.surpriseTextContainer}>
                   <View style={styles.surpriseTitleRow}>
